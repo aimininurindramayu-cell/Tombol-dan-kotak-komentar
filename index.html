@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Box</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #comment-box { margin: 20px; padding: 10px; border: 1px solid #ccc; }
+        #comments { margin-top: 20px; border-top: 1px solid #ccc; }
+    </style>
+    <script>
+        function addComment() {
+            const commentInput = document.getElementById('comment-input');
+            const commentsContainer = document.getElementById('comments');
+            if (commentInput.value.trim()) {
+                const comment = document.createElement('div');
+                comment.textContent = commentInput.value;
+                commentsContainer.appendChild(comment);
+                commentInput.value = '';
+            }
+        }
+        function scrollToBottom() {
+            const commentsContainer = document.getElementById('comments');
+            commentsContainer.scrollTop = commentsContainer.scrollHeight;
+        }
+        window.onload = function() {
+            const commentsContainer = document.getElementById('comments');
+            commentsContainer.style.maxHeight = '200px';
+            commentsContainer.style.overflowY = 'scroll';
+            scrollToBottom();
+        };
+    </script>
+</head>
+<body>
+    <div id="comment-box">
+        <textarea id="comment-input" placeholder="Enter your comment here..."></textarea>
+        <button onclick="addComment(); scrollToBottom();">Submit</button>
+    </div>
+    <div id="comments"></div>
+    <script>
+        // Hidden text storage could be added here
+    </script>
+</body>
+</html>
