@@ -3,74 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comment Box</title>
+    <title>Document</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #comment-box { margin: 20px; padding: 10px; border: 1px solid #ccc; }
-        #comments { margin-top: 20px; border-top: 1px solid #ccc; }
-        #robot-img { cursor: pointer; opacity: 0.8; }
-        #robot-img:hover { opacity: 1; }
+        .running-text {
+            color: yellow;
+            animation: run 5s linear infinite;
+        }
+        @keyframes run {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
     </style>
-    <script>
-        // Alamat AI tersembunyi di belakang foto robot
-        const aiEndpoint = 'https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app';
-        
-        function addComment() {
-            const commentInput = document.getElementById('comment-input');
-            const commentsContainer = document.getElementById('comments');
-            if (commentInput.value.trim()) {
-                const comment = document.createElement('div');
-                comment.textContent = commentInput.value;
-                commentsContainer.appendChild(comment);
-                commentInput.value = '';
-            }
-        }
-        function scrollToBottom() {
-            const commentsContainer = document.getElementById('comments');
-            commentsContainer.scrollTop = commentsContainer.scrollHeight;
-        }
-        window.onload = function() {
-            const commentsContainer = document.getElementById('comments');
-            commentsContainer.style.maxHeight = '200px';
-            commentsContainer.style.overflowY = 'scroll';
-            scrollToBottom();
-        };
-        
-        // Fungsi untuk mengakses endpoint AI (tersembunyi)
-        function getAIEndpoint() {
-            return aiEndpoint;
-        }
-    </script>
 </head>
 <body>
-    <div id="comment-box">
-        <img id="robot-img" src="01d98a63-915e-4e9e-8098-d118cef3e431.jpg" alt="Robot" style="width: 100px; height: 100px;">
-        <textarea id="comment-input" placeholder="Enter your comment here..."></textarea>
-        <button onclick="addComment(); scrollToBottom();">Submit</button>
-    </div>
-    <div id="comments"></div>
-    <script>
-        // Hidden AI endpoint storage - accessible via getAIEndpoint() function
-
-
-<div id="nur-mubin-expert" style="margin-top: 20px; text-align: center;">
-    <h3 style="color: #ffd700; font-family: 'Arial', sans-serif;">Nur-Mubin</h3>
-    <p>Tanyakan kode aplikasi kepada ahlinya</p>
-    <button onclick="window.open('https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app', '_blank')" 
-            style="background-color: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-        Buka Panel Ahli
-    </button>
-</div>
-
-<div id="comments"></div>
-
-<script>
-    // Menyimpan endpoint secara aman sesuai struktur Piramida Guard
-    const aiEndpoint = "https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app";
-    
-    // Fungsi tambahan jika Bapak ingin memanggil endpoint via skrip internal
-    function getNurMubinAccess() {
-        console.log("Menghubungkan ke Nur-Mubin...");
-        return aiEndpoint;
-    }
-</script>
+    <div class="running-text">Adzan</div>
+    <div class="running-text">Istirahat</div>
+</body>
+</html>
