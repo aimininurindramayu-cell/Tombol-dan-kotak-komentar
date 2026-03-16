@@ -51,6 +51,32 @@
     <div id="comments"></div>
     <script>
         // Hidden AI endpoint storage - accessible via getAIEndpoint() function
-    </script>
-</body>
-</html>
+
+
+        <div id="comment-box">
+    <img id="robot-img" src="01d98a63-915e-4e9e-809...">
+    <textarea id="comment-input" placeholder="Enter your message..."></textarea>
+    <button onclick="addComment(); scrollToBottom()">Kirim</button>
+</div>
+
+<div id="nur-mubin-expert" style="margin-top: 20px; text-align: center;">
+    <h3 style="color: #ffd700; font-family: 'Arial', sans-serif;">Nur-Mubin</h3>
+    <p>Tanyakan kode aplikasi kepada ahlinya</p>
+    <button onclick="window.open('https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app', '_blank')" 
+            style="background-color: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+        Buka Panel Ahli
+    </button>
+</div>
+
+<div id="comments"></div>
+
+<script>
+    // Menyimpan endpoint secara aman sesuai struktur Piramida Guard
+    const aiEndpoint = "https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app";
+    
+    // Fungsi tambahan jika Bapak ingin memanggil endpoint via skrip internal
+    function getNurMubinAccess() {
+        console.log("Menghubungkan ke Nur-Mubin...");
+        return aiEndpoint;
+    }
+</script>
