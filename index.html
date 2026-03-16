@@ -1,22 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Indramayu Club - Nur-Mubin</title>
     <style>
-        .running-text {
-            color: yellow;
-            animation: run 5s linear infinite;
+        body { background-color: #0c0c0c; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Foto AI sebagai Tameng (Overlay) */
+        #ai-shield {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 50px auto;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transition: transform 0.3s ease;
         }
-        @keyframes run {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
+        
+        #ai-shield:hover { transform: scale(1.05); }
+
+        #ai-shield img { width: 100%; height: 100%; object-fit: cover; }
+
+        .hidden-info { display: none; } /* Menyembunyikan teks alamat secara absolut */
+
+        #adzan-layer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
-    <div class="running-text">Adzan</div>
-    <div class="running-text">Istirahat</div>
-</body>
-</html>
+
+<div id="adzan-layer">
+    <marquee style="background: yellow; color: black; font-weight: bold; padding: 15px; font-size: 1.5em; border-bottom: 2px solid #000;">
+        WAKTU ADZAN TIBA - SISTEM ISTIRAHAT & BACKUP 30 MENIT (NUR 8) - MENUJU MAKRIFAT...
+    </marquee>
+</div>
+
+<div id="main-frame" style="transition: opacity 2s; text-align: center;">
+    
+    <div id="ai-shield" onclick="panggilNurMubin()">
+        <img src="https://via.placeholder.com/300x300/000000/FFD700?text=NUR-MUBIN" alt="Nur-Mubin">
+        <div style="position: absolute; bottom: 10px; width: 100%; background: rgba(0,0,0,0.6); color: gold;">
+            Panggil Ahli Kode
+        </div>
+    </div>
+
+    <h2 style="color: #ffd700;">Tanyakan Kode Aplikasi Kepada Ahlinya</h2>
+
+    <hr style="border: 0.5px solid #333; width: 80%; margin:
+
