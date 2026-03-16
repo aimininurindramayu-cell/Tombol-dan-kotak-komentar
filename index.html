@@ -8,8 +8,13 @@
         body { font-family: Arial, sans-serif; }
         #comment-box { margin: 20px; padding: 10px; border: 1px solid #ccc; }
         #comments { margin-top: 20px; border-top: 1px solid #ccc; }
+        #robot-img { cursor: pointer; opacity: 0.8; }
+        #robot-img:hover { opacity: 1; }
     </style>
     <script>
+        // Alamat AI tersembunyi di belakang foto robot
+        const aiEndpoint = 'https://ais-dev-bkkxigmrj5kk2a6yqqwtxl-717075273571.asia-southeast1.run.app';
+        
         function addComment() {
             const commentInput = document.getElementById('comment-input');
             const commentsContainer = document.getElementById('comments');
@@ -30,16 +35,22 @@
             commentsContainer.style.overflowY = 'scroll';
             scrollToBottom();
         };
+        
+        // Fungsi untuk mengakses endpoint AI (tersembunyi)
+        function getAIEndpoint() {
+            return aiEndpoint;
+        }
     </script>
 </head>
 <body>
     <div id="comment-box">
+        <img id="robot-img" src="01d98a63-915e-4e9e-8098-d118cef3e431.jpg" alt="Robot" style="width: 100px; height: 100px;">
         <textarea id="comment-input" placeholder="Enter your comment here..."></textarea>
         <button onclick="addComment(); scrollToBottom();">Submit</button>
     </div>
     <div id="comments"></div>
     <script>
-        // Hidden text storage could be added here
+        // Hidden AI endpoint storage - accessible via getAIEndpoint() function
     </script>
 </body>
 </html>
