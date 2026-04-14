@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IndramayuCLUB - Piramida Guard v2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ic-dark': '#0a0f1e',
+                        'ic-card': '#161b2c',
+                        'ic-violet': '#7c3aed',
+                        'ic-text': '#e2e8f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+        
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #0a0f1e; 
+            color: #e2e8f0; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Animasi Transisi Dimensi */
+        .dimensi-content { 
+            animation: focusIn 0.4s ease-out; 
+        }
+        @keyframes focusIn { 
+            from { opacity: 0; transform: scale(0.98) translateY(10px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        /* Navigasi Aktif */
+        .nav-active { 
+            background-color: rgba(124, 58, 237, 0.15);
+            border-color: #7c3aed;
+            color: white;
+        }
+
+        /* Tirai Dimensi */
+        #curtain-container { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%); 
+            z-index: 9999; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; transition: 1s ease-in-out; 
+        }
+        .curtain-open { transform: translateY(-100%); opacity: 0; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0f1e; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+    </style>
+</head>
+<body class="p-0 m-0">
+
+    <div id="curtain-container">
+        <div class="w-[85%] max-w-sm aspect-[9/16] rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(124,58,237,0.3)] border-2 border-ic-violet/50 bg-black mb-10">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XYFDBw0YoYg?autoplay=1&mute=0&modestbranding=1&rel=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        </div>
+        <button onclick="bukaTirai()" class="bg-ic-violet hover:bg-violet-500 text-white px-10 py-4 rounded-full font-bold text-sm shadow-[0_0_20px_rgba(124,58,237,0.6)] transition-all uppercase tracking-widest active:scale-95">
+            Masuk ke Dimensi CLUB
+        </button>
+    </div>
+
+    <header class="bg-ic-dark/80 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-white/5">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-ic-violet p-2 rounded-xl shadow-lg border border-violet-400/50">
+                    <span class="text-white font-bold text-2xl tracking-tighter">IC</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-white tracking-tight">Indramayu<span class="text-ic-violet">CLUB</span></h1>
+                    <p class="text-[9px] text-slate-500 uppercase tracking-widest -mt-1">Piramida Guard v2.0</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div id="clock" class="text-sm font-mono text-ic-violet font-bold bg-ic-violet/10 px-3 py-1.5 rounded-full border border-ic-violet/20 shadow-inner">00:00:00</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-ic-card sticky top-[77px] z-40 border-b border-white/5 shadow-xl">
+        <div class="max-w-md mx-auto flex justify-around p-1.5 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+            <button onclick="pindahDimensi('core')" id="nav-core" class="nav-active flex-1 py-2.5 rounded-lg border border-transparent transition-all">Core</button>
+            <button onclick="pindahDimensi('folders')" id="nav-folders" class="flex-1 py-2.5 rounded-lg border border-transparent transition-all">Folders</button>
+            <button onclick="pindahDimensi('guard')" id="nav-guard" class="flex-1 py-2.5 rounded-lg border border-transparent transition-all">Guard</button>
+            <button onclick="pindahDimensi('bank')" id="nav-bank" class="flex-1 py-2.5 rounded-lg border border-transparent transition-all">Bank</button>
+            <button onclick="pindahDimensi('nexus')" id="nav-nexus" class="flex-1 py-2.5 rounded-lg border border-transparent transition-all">Nexus</button>
+        </div>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 pt-6 pb-28 space-y-6">
+
+        <section id="dimensi-core" class="dimensi-content space-y-5">
+            <div class="bg-red-950/30 border border-red-500/30 p-4 rounded-2xl flex items-center gap-4 shadow-lg shadow-red-950/20">
+                <span class="text-4xl text-red-500">⚠️</span>
+                <div>
+                    <h4 class="text-xs font-bold text-red-300 uppercase tracking-widest">Sistem Peringatan</h4>
+                    <p class="text-[11px] text-red-200">Getaran dimensi terdeteksi di Folder H. Nur 8 siap backup otomatis saat adzan.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-ic-card p-4 rounded-2xl border border-white/5 text-center shadow-xl active:scale-95 transition-all cursor-pointer" onclick="window.open('https://ai.studio/apps/379f5974-54d2-4922-9a65-4ee51bacf7fa')">
+                    <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/Ai_komentar.jpg" class="w-16 h-16 mx-auto rounded-full mb-3 border-4 border-ic-violet shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                    <span class="block text-sm font-bold text-white">NUR 3</span>
+                    <span class="text-[9px] text-ic-violet uppercase font-medium tracking-wider">ADMIN KOMENTAR</span>
+                </div>
+                <div class="bg-ic-card p-4 rounded-2xl border border-ic-violet/30 text-center shadow-2xl shadow-ic-violet/10 active:scale-95 transition-all cursor-pointer" onclick="window.open('https://ai.studio/apps/fea67ee7-2e48-4dc7-9926-d9646b184ee9')">
+                    <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/Ai_Club.jpg" class="w-16 h-16 mx-auto rounded-full mb-3 border-4 border-violet-400 shadow-[0_0_20px_rgba(124,58,237,0.6)]">
+                    <span class="block text-sm font-bold text-white">NUR 10</span>
+                    <span class="text-[9px] text-violet-300 uppercase font-medium tracking-wider">AI CLUB CENTRAL</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensi-folders" class="dimensi-content hidden space-y-4">
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-sm font-bold text-slate-300 uppercase tracking-widest">Arsip Dimensi A-K</h2>
+                <span class="text-[10px] text-ic-violet font-mono bg-ic-violet/10 px-2 py-0.5 rounded-full border border-ic-violet/20">10 Folders</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-xs font-mono font-medium">
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-3">📂 <span>Folder_A</span></div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-3">📂 <span>Folder_B</span></div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-3">📂 <span>Folder_C</span></div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-3">📂 <span>Folder_D</span></div>
+                <div class="bg-ic-card/60 p-3 rounded-xl border border-ic-violet/30 flex items-center gap-3 text-ic-violet shadow-lg shadow-ic-violet/5">🔒 <span>Folder_H (Sensitif)</span></div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-3">📂 <span>Folder_K</span></div>
+            </div>
+        </section>
+
+        <section id="dimensi-guard" class="dimensi-content hidden space-y-5">
+            <div class="bg-ic-card p-6 rounded-3xl border border-violet-900/50 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-ic-violet/10 rounded-full blur-3xl"></div>
+                <h3 class="text-center font-bold text-xl text-white mb-1">PIRAMIDA GUARD</h3>
+                <p class="text-center text-[10px] text-slate-400 uppercase tracking-widest mb-6">Protokol Sinkronisasi 8 Akun</p>
+                <div class="flex flex-col gap-3">
+                    <button onclick="syncPiramida()" class="w-full bg-ic-violet hover:bg-violet-500 text-white p-4 rounded-xl font-bold text-xs uppercase shadow-lg shadow-violet-950/50 active:scale-95 transition-all tracking-widest">
+                        🔄 Sinkronkan Seluruh Folder
+                    </button>
+                    <button onclick="resetSistem()" class="w-full bg-slate-800 hover:bg-slate-700 text-red-400 p-4 rounded-xl font-bold text-xs uppercase border border-red-500/20 active:scale-95 transition-all tracking-widest">
+                        🛡️ Emergency System Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensi-bank" class="dimensi-content hidden space-y-5">
+            <div class="bg-ic-card p-5 rounded-2xl border border-green-900/30 shadow-xl shadow-green-950/5">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] text-green-400 font-bold uppercase tracking-widest">Status Kas Nur 6</span>
+                    <span class="text-[9px] text-green-300 font-mono bg-green-950 px-2 py-0.5 rounded-full border border-green-800">● ONLINE</span>
+                </div>
+                <div class="text-3xl font-bold text-white tracking-tight">Potongan 5%</div>
+                <p class="text-xs text-slate-400 mt-1">Status: Aktif & Sinkron (Proyek Bank Baru)</p>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-4 overflow-hidden">
+                    <div class="bg-green-500 h-full w-[65%]" style="box-shadow: 0 0 10px rgba(74, 222, 128, 0.5)"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensi-nexus" class="dimensi-content hidden space-y-4">
+            <div class="text-center py-12 px-6 bg-ic-card rounded-3xl border border-white/5 shadow-inner">
+                <div class="inline-block p-4 rounded-full bg-ic-violet/10 animate-pulse mb-5 border border-ic-violet/20">
+                    <div class="w-20 h-20 rounded-full border-2 border-ic-violet flex items-center justify-center text-5xl">
+                        🧘
+                    </div>
+                </div>
+                <h2 class="font-bold text-2xl text-white tracking-tight">NEXUS MAKRIFAT</h2>
+                <p class="text-xs text-slate-400 mt-3 leading-relaxed px-4">Gerbang penghubung aplikasi eksternal (WA, YT, Web) melalui jalur sinkronisasi Nur Satria 01.</p>
+                <span class="block text-[9px] font-mono text-ic-violet mt-5 uppercase opacity-60">Status: Menunggu Koneksi</span>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full p-4 bg-ic-dark/90 backdrop-blur-lg border-t border-white/5 z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2.5">
+                <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping border border-green-300"></div>
+                <span class="text-[10px] font-bold text-green-300 uppercase tracking-widest">Sistem: Aktif (Folder A-K)</span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-500 opacity-70">IP: 182.4.37.50</span>
+        </div>
+    </footer>
+
+    <script>
+        // FUNGSI PINDAH DIMENSI (SINKRON TANPA RELOAD)
+        function pindahDimensi(id) {
+            // 1. Sembunyikan semua section
+            const sections = document.querySelectorAll('.dimensi-content');
+            sections.forEach(s => s.classList.add('hidden'));
+            
+            // 2. Tampilkan section yang dipilih
+            document.getElementById('dimensi-' + id).classList.remove('hidden');
+
+            // 3. Update Status Navigasi
+            const navButtons = document.querySelectorAll('nav button');
+            navButtons.forEach(btn => btn.classList.remove('nav-active'));
+            document.getElementById('nav-' + id).classList.add('nav-active');
+
+            // 4. Scroll ke atas (opsional)
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // FUNGSI JAM DIGITAL
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // Jalankan langsung
+
+        // FUNGSI BUKA TIRAI (INTRO)
+        function bukaTirai() {
+            const curtain = document.getElementById('curtain-container');
+            curtain.classList.add('curtain-open');
+            // Hapus elemen tirai setelah animasi selesai agar tidak mengganggu klik
+            setTimeout(() => { 
+                curtain.style.display = 'none'; 
+            }, 1000); 
+        }
+
+        // FUNGSI TOMBOL GUARD
+        function syncPiramida() {
+            alert("Piramida Guard: Memulai sinkronisasi git untuk 10 folder (A-K)...");
+            // Logika sinkronisasi sesungguhnya bisa ditambahkan di sini via API lokal
+        }
+
+        function resetSistem() {
+            if(confirm("PERINGATAN: Lakukan Emergency System Reset? Seluruh cache akan dibersihkan.")) {
+                alert("Sistem Redup... Menjalankan running text kuning. Nur 8 memproses backup.");
+            }
+        }
+    </script>
+</body>
+</html>
