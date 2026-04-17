@@ -22,17 +22,7 @@
         }
     </script>
 <style>
-    * Tirai Dimensi */
-        /* Container Utama */
-.video-frame-container {
-    position: relative;
-    width: 100%;
-    max-width: 50px; /* Ukuran diperbesar */
-    margin: auto;
-    overflow: hidden;
-    border-radius: 25px; /* Sudut melengkung agar mewah */
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); /* Efek cahaya ungu */
-}
+    
 
 /* Mengatur iFrame Video agar menutupi bagian atas (Nama) */
 .video-frame-container iframe {
@@ -45,8 +35,8 @@
 /* Penutup Samping/Atas agar tampilan rapi */
 .video-overlay-mask {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 100;
+    left: 100;
     width: 100%;
     height: 50px; /* Menyesuaikan area yang ingin ditutup */
     background: linear-gradient(to bottom, #000, transparent);
@@ -91,7 +81,16 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
     </style>
 </head>
-    
+    <div id="welcome-screen">
+    <div class="glass-card">
+        <h2 style="color: #fff; margin-bottom: 10px;">NUR SYSTEM</h2>
+        <p style="color: #00f2ff; font-size: 0.9rem;">Indramayu Club Makrifat</p>
+        
+        <button class="btn-masuk" onclick="bukaSistem()">Masuk</button>
+    </div>
+</div>
+
+
     <div style="width: 100%; min-height: 100vh; background: linear-gradient(to bottom, #ffffff, #8b5cf6); padding: 20px; margin: 0;">
     
     <div style="width: 100%; height: auto;">
@@ -253,6 +252,22 @@ Indramayu Club — Menuju Makrifat Digital.
 </div>
 
     <script>
+
+        <script>
+function masukSistem() {
+    const welcome = document.getElementById('welcome-screen');
+    
+    // Animasi mengangkat layar ke atas
+    welcome.style.transform = 'translateY(-100%)';
+    
+    // Setelah animasi selesai, sembunyikan agar tidak mengganggu klik di sistem utama
+    setTimeout(() => {
+        welcome.style.display = 'none';
+        console.log("Hadir pak dulKohar, sistem utama siap digunakan.");
+    }, 800);
+}
+</script>
+
         function pindahDimensi(id) {
             const sections = document.querySelectorAll('.dimensi-content');
             sections.forEach(s => s.classList.add('hidden'));
