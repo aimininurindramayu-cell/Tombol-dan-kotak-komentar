@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndramayuCLUB - Piramida Guard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }
+        .purple-gradient { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); }
+        
+        /* CSS Dashboard Baru Pak DulKohar */
+        .indramayu-dashboard { background: #f4f4f9; padding: 15px; max-width: 400px; margin: auto; border-radius: 15px; }
+        .warning-box { background: #ff5252; color: white; padding: 10px; border-radius: 8px; font-size: 11px; margin-bottom: 15px; border-left: 5px solid #b71c1c; }
+        .section-title { color: #4a148c; font-size: 13px; font-weight: 800; border-left: 4px solid #4a148c; padding-left: 8px; margin-bottom: 10px; text-transform: uppercase; }
+        
+        .main-grid { display: flex; gap: 10px; }
+        .card { background: white; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; border: 1px solid #ddd; text-align: center; }
+        .card:active { transform: scale(0.95); background: #f0f0f0; }
+        
+        .big { flex: 1; min-height: 180px; }
+        .mini-grid { flex: 1.5; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        
+        .card img { width: 40px; height: 40px; margin-bottom: 8px; object-fit: contain; }
+        .nur-id { font-weight: 800; font-size: 13px; color: #4a148c; display: block; }
+        .nur-task { font-size: 9px; color: #777; font-weight: bold; text-transform: uppercase; }
+        
+        .highlight { border: 2px solid #6d28d9; box-shadow: 0 0 15px rgba(109, 40, 217, 0.3); }
+
+        /* Style Tirai */
+        #curtain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1.5s; }
+        .curtain-open { transform: translateY(-100%); }
+    </style>
+</head>
+<body>
+
+    <div id="curtain-container">
+        <div style="width:90%; max-width:400px; aspect-ratio:9/16;">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XYFDBw0YoYg?autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <button onclick="bukaTirai()" id="btn-buka" class="mt-5 bg-purple-600 text-white px-8 py-3 rounded-full font-bold shadow-xl">BUKA TIRAI INDRAMAYU CLUB</button>
+    </div>
+
+    <header class="purple-gradient text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-white p-1 rounded-lg"><span class="text-purple-700 font-extrabold text-xl">IC</span></div>
+                <h1 class="font-extrabold text-lg">Indramayu<span class="text-purple-200">CLUB</span></h1>
+            </div>
+            <div id="clock" class="text-sm font-mono bg-purple-900/50 px-3 py-1 rounded-full">00:00:00</div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+
+        <div class="indramayu-dashboard shadow-lg">
+            <div class="warning-box">
+                <strong>⚠️ PERINGATAN SISTEM:</strong>
+                <p>Sistem mendeteksi getaran dimensi. Harap backup data folder H segera.</p>
+            </div>
+
+            <h3 class="section-title">Gerbang Dimensi 10 Folder</h3>
+
+            <div class="main-grid">
+                <div class="card big shadow-sm" onclick="window.open('https://ai.studio/apps/379f5974-54d2-4922-9a65-4ee51bacf7fa', '_blank')">
+                    <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/Ai_komentar.jpg" onerror="this.src='https://via.placeholder.com/50?text=Nur3'">
+                    <span class="nur-id">Nur 3</span>
+                    <span class="nur-task">ADMIN KOMENTAR</span>
+                </div>
+
+                <div class="mini-grid">
+                    <div class="card" onclick="window.open('https://ai.studio/apps/c864dc0c-a3f7-4509-878f-fd246d420f94', '_blank')">
+                        <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/diskusi_makrifat.jpg" onerror="this.src='https://via.placeholder.com/40?text=Pusat'">
+                        <span class="nur-id">Pusat</span>
+                    </div>
+                    <div class="card" onclick="window.open('https://ai.studio/apps/cbafa9ed-972c-44eb-8adf-ebc7759579f2', '_blank')">
+                        <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/Ai_kreatif.jpg" onerror="this.src='https://via.placeholder.com/40?text=Nur4'">
+                        <span class="nur-id">Nur 4</span>
+                    </div>
+                    <div class="card" onclick="window.open('https://ai.studio/apps/61b74539-37e7-414a-b134-c2fe33764cd8', '_blank')">
+                        <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/systems_Indramayu.jpg" onerror="this.src='https://via.placeholder.com/40?text=Nur7'">
+                        <span class="nur-id">Nur 7</span>
+                    </div>
+                    <div class="card highlight" onclick="window.open('https://ai.studio/apps/fea67ee7-2e48-4dc7-9926-d9646b184ee9', '_blank')">
+                        <img src="https://raw.githubusercontent.com/indramayuclubmakrifat-tech/Main_System_IndramayuClub/main/Ai_Club.jpg" onerror="this.src='https://via.placeholder.com/40?text=Nur10'">
+                        <span class="nur-id">Nur 10</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; font-family: sans-serif;">
+
+  <div style="text-align: center; width: 150px;">
+    <img src="Ai_Club.jpeg" alt="Ai Club" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Ai Club</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="diskusi_makrifat.jpeg" alt="Diskusi Makrifat" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Diskusi Makrifat</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="ai_administrasi.jpeg" alt="Ai Administrasi" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Ai Administrasi</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="motherboard_ai.jpeg" alt="Motherboard AI" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Motherboard AI</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="Ai_kreatif.jpeg" alt="Ai Kreatif" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Ai Kreatif</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="bank_Indramayu.jpeg" alt="Bank Indramayu" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Bank Indramayu</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="ai_game.jpeg" alt="Ai Game" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Ai Game</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="Ai_komentar.jpeg" alt="Ai Komentar" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Ai Komentar</p>
+  </div>
+
+  <div style="text-align: center; width: 150px;">
+    <img src="systems_Indramayu.jpeg" alt="Systems Indramayu" style="width: 100%; border-radius: 10px; border: 2px solid #ccc;">
+    <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Systems Indramayu</p>
+  </div>
+
+</div>
+
+
+        <div class="grid grid-cols-2 gap-3">
+            <button onclick="syncPiramida()" class="bg-purple-100 text-purple-700 p-4 rounded-xl font-bold text-xs border border-purple-200 shadow-sm active:scale-95 transition">
+                🔄 SYNC FOLDER
+            </button>
+            <button onclick="resetSistem()" class="bg-red-600 text-white p-4 rounded-xl font-bold text-xs shadow-lg active:scale-95 transition">
+                🛡️ RESET SYSTEM
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+
+        function bukaTirai() {
+            const curtain = document.getElementById('curtain-container');
+            curtain.classList.add('curtain-open');
+            setTimeout(() => { curtain.style.display = 'none'; }, 1500);
+        }
+
+        function syncPiramida() {
+            alert("Piramida Guard: Sinkronisasi 8 Akun Berhasil. Data Aman.");
+        }
+
+        function resetSistem() {
+            if(confirm("Apakah Anda yakin ingin melakukan RESET SYSTEM?")) {
+                alert("Sistem direset. Nur 8 akan membackup data otomatis.");
+            }
+        }
+    </script>
+</body>
+</html>
