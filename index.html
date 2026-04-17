@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndramayuCLUB - Piramida Guard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #000; margin: 0; padding: 0; overflow: hidden; }
+        .purple-gradient { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); }
+        
+        /* Style Tirai Utama */
+        #curtain-container { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #000; 
+            z-index: 9999; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            transition: 1.5s; 
+        }
+        .curtain-open { transform: translateY(-100%); }
+
+        /* Clock Overlay */
+        #clock-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-family: monospace;
+            background: rgba(109, 40, 217, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock-overlay">00:00:00</div>
+
+    <div id="curtain-container">
+        <div style="width:90%; max-width:400px; aspect-ratio:9/16; border: 2px solid #6d28d9; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px rgba(109, 40, 217, 0.5);">
+            <iframe width="100%" height="100%" 
+                src="https://www.youtube.com/embed/XYFDBw0YoYg?autoplay=1&mute=0&controls=0&loop=1" 
+                frameborder="0" allow="autoplay">
+            </iframe>
+        </div>
+        
+        <div class="text-center mt-8">
+            <h1 class="text-white font-extrabold text-2xl mb-2">INDRAMAYU <span class="text-purple-500">CLUB</span></h1>
+            <p class="text-gray-400 text-xs tracking-widest mb-6">PIRAMIDA GUARD SYSTEM v1.0</p>
+            
+            <button onclick="bukaTirai()" id="btn-buka" 
+                class="purple-gradient text-white px-10 py-4 rounded-full font-bold shadow-[0_0_20px_rgba(109,40,217,0.6)] active:scale-95 transition-all">
+                MASUK DIMENSI
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Update Jam Real-time
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-overlay').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+
+        // Logika Buka Pintu
+        function bukaTirai() {
+            const curtain = document.getElementById('curtain-container');
+            curtain.classList.add('curtain-open');
+            // Sistem tetap berjalan di latar belakang
+            console.log("Piramida Guard: Akses diberikan.");
+            
+            // Jika ada halaman tujuan setelah tirai dibuka, arahkan di sini:
+            // setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+        }
+    </script>
+</body>
+</html>
