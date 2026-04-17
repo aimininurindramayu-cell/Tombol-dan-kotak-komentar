@@ -332,33 +332,17 @@ Indramayu Club — Menuju Makrifat Digital.
                 <p class="text-[11px]">Selamat datang di Dimensi Club. Silahkan tinggalkan pesan spiritual Anda.</p>
             </div>
         </div>
+<input type="text" id="username" placeholder="Nama Admin/Member..." 
+       class="bg-transparent border border-white/20 rounded-lg p-3 text-sm focus:border-ic-violet outline-none w-full">
 
-        <div class="bg-ic-card p-5 rounded-2xl border border-ic-violet/30 shadow-lg w-full">
-    <h3 class="text-xs font-bold text-ic-violet uppercase tracking-widest mb-4 flex items-center gap-2">
-        💬 Komunikasi Makrifat (Nur 7)
-    </h3>
-    <div class="space-y-4">
-        <div id="comment-list" class="max-h-60 overflow-y-auto space-y-3 pr-2 text-sm text-slate-300">
-            <div class="bg-white/5 p-3 rounded-lg border border-white/5">
-                <span class="text-ic-violet font-bold text-[10px]">SYSTEM</span>
-                <p class="text-[11px]">Selamat datang di Dimensi Club. Silahkan tinggalkan pesan spiritual Anda.</p>
-            </div>
-        </div>
+<textarea id="comment-text" placeholder="Ketik pesan kesan dan pesan ANDA..." 
+          class="bg-transparent border border-white/20 rounded-lg p-3 text-base focus:border-ic-violet outline-none h-80 w-full resize-none">
+</textarea>
 
-        <div class="flex flex-col gap-3 mt-4 border-t border-white/5 pt-4 w-full">
-            <input type="text" id="username" placeholder="Nama Admin/Member..." 
-                class="bg-ic-dark border border-white/10 rounded-lg p-3 text-sm focus:border-ic-violet outline-none w-full">
-            
-            <textarea id="comment-text" placeholder="Ketik pesan kesan dan pesan ANDA..." 
-                class="bg-ic-dark border border-white/10 rounded-lg p-3 text-base focus:border-ic-violet outline-none h-80 w-full resize-none"></textarea>
-            
-            <button onclick="handleComments()" 
-                class="bg-ic-violet hover:text-red-500 text-yellow-400  rounded-lg font-bold text-xs uppercase tracking-widest transition-all active:scale-95 w-full">
-                Kirim Pesan
-            </button>
-        </div>
+        <div id="comment-list" class="max-h-60 overflow-y-auto space-y-3 pr-2 text-sm text-slate-300 bg-transparent">
     </div>
-</div>
+
+
 
 
 <script src="script.js"></script>
