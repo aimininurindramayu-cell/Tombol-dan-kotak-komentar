@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndramayuCLUB | Piramida Guard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; }
+        .purple-gradient { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); }
+        .card { background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.95); background: #f9fafb; }
+        .nur-id { font-weight: 800; font-size: 10px; color: #4a148c; margin-top: 6px; text-align: center; }
+        #curtain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1.5s; }
+        .curtain-open { transform: translateY(-100%); }
+        .ai-card { background: #1e1b4b; color: white; border-radius: 16px; padding: 16px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="curtain-container">
+        <div style="width:90%; max-width:400px; aspect-ratio:9/16;">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XYFDBw0YoYg?autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>
+        </div>
+        <button onclick="bukaTirai()" class="mt-8 bg-purple-600 text-white px-8 py-3 rounded-full font-bold shadow-xl hover:bg-purple-700 transition">BUKA SISTEM</button>
+    </div>
+
+    <header class="purple-gradient text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <h1 class="font-extrabold text-lg">Indramayu<span class="text-purple-200">CLUB</span></h1>
+            <div id="clock" class="text-xs font-mono bg-purple-900/50 px-3 py-1 rounded-full">00:00:00</div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+        
+        <div class="bg-red-500 text-white p-4 rounded-xl text-xs font-bold border-l-4 border-red-700 shadow-md">
+            ⚠️ PIRAMIDA GUARD AKTIF: Folder A-J Terkunci. Backup data rutin disarankan.
+        </div>
+
+        <h2 class="text-purple-900 font-extrabold text-sm uppercase tracking-wider">Gerbang Folder A-J</h2>
+        <div class="grid grid-cols-3 gap-3">
+            <script>
+                const folders = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                folders.forEach(f => {
+                    document.write(`
+                        <div class="card" onclick="window.location.href='folder_${f}/'">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-bold">${f}</div>
+                            <span class="nur-id">Folder ${f}</span>
+                        </div>
+                    `);
+                });
+            </script>
+        </div>
+
+        <h2 class="text-purple-900 font-extrabold text-sm uppercase tracking-wider mt-4">Pusat Kendali Nur</h2>
+        <div class="ai-card shadow-lg">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span class="text-xs font-bold uppercase tracking-widest text-purple-300">Sistem Aktif</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="alert('Ai_kesatria Siap! Memantau Celengan...')" class="bg-white/10 p-3 rounded-lg text-center hover:bg-white/20 transition">
+                    <span class="block text-xs font-bold">Ai_kesatria</span>
+                    <span class="text-[10px] opacity-70">Celengan & Token</span>
+                </button>
+                <button onclick="alert('Nur_ai_mubin Siap! Menyusun Bait Puitis...')" class="bg-white/10 p-3 rounded-lg text-center hover:bg-white/20 transition">
+                    <span class="block text-xs font-bold">Nur_ai_mubin</span>
+                    <span class="text-[10px] opacity-70">Sapaan Spiritual</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Fungsi Buka Tirai
+        function bukaTirai() {
+            document.getElementById('curtain-container').classList.add('curtain-open');
+        }
+
+        // Fungsi Jam Digital
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
