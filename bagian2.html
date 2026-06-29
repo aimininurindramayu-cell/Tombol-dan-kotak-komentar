@@ -26,10 +26,14 @@
             border: 1px solid #4ecca3; 
             cursor: pointer; 
             transition: 0.3s;
+            position: relative;
         }
         .card:active { 
             background: #4ecca3; 
             color: black; 
+        }
+        .card:hover {
+            box-shadow: 0 0 15px #4ecca3;
         }
         h1 { 
             color: #4ecca3; 
@@ -73,6 +77,210 @@
             background: #16213e;
             color: white;
         }
+
+        /* STYLING FITUR LIKE & COMMENT */
+        .engagement-bar {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(78, 204, 163, 0.3);
+        }
+
+        .like-btn, .comment-btn {
+            flex: 1;
+            padding: 8px;
+            background: rgba(78, 204, 163, 0.2);
+            border: 1px solid #4ecca3;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .like-btn:hover, .comment-btn:hover {
+            background: #4ecca3;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        .like-btn.liked {
+            background: #4ecca3;
+            color: black;
+            font-weight: bold;
+        }
+
+        .like-count, .comment-count {
+            font-size: 12px;
+            margin-top: 3px;
+            opacity: 0.8;
+        }
+
+        /* MODAL KOMENTAR */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #16213e;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #4ecca3;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #4ecca3;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #4ecca3;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            color: #4ecca3;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: #ff6b6b;
+        }
+
+        .comment-input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .comment-input-area input {
+            flex: 1;
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #4ecca3;
+        }
+
+        .comment-input-area button {
+            padding: 8px 15px;
+            background: #4ecca3;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .comment-input-area button:hover {
+            background: #3bb89e;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comment-item {
+            background: rgba(78, 204, 163, 0.1);
+            padding: 12px;
+            border-left: 3px solid #4ecca3;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #4ecca3;
+            font-size: 14px;
+        }
+
+        .comment-text {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(78, 204, 163, 0.05);
+            border-radius: 5px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(78, 204, 163, 0.1);
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4ecca3;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
@@ -80,19 +288,66 @@
     <h1>INDRAMAYU CLUB</h1>
     <p>Pusat Kendali Digital Asset Management</p>
 
-    <!-- Grid Tombol Aksi -->
+    <!-- Grid Tombol Aksi dengan Like & Comment -->
     <div class="grid">
-        <div class="card" onclick="aksi('notif', 'Sinkronisasi Rclone Dimulai')">
-            🚀<br>Sync Rclone
+        <div class="card" id="card-rclone">
+            <div onclick="aksi('notif', 'Sinkronisasi Rclone Dimulai')">
+                🚀<br>Sync Rclone
+            </div>
+            <div class="engagement-bar">
+                <button class="like-btn" onclick="toggleLike(event, 'rclone')">❤️ Suka</button>
+                <button class="comment-btn" onclick="openCommentModal('rclone', 'Sync Rclone')">💬 Komentar</button>
+            </div>
+            <div class="like-count" id="like-count-rclone">0 suka</div>
         </div>
-        <div class="card" onclick="aksi('suara', 'Selamat datang Admin Dulkohar')">
-            🎙️<br>Tes Suara (TTS)
+
+        <div class="card" id="card-suara">
+            <div onclick="aksi('suara', 'Selamat datang Admin Dulkohar')">
+                🎙️<br>Tes Suara (TTS)
+            </div>
+            <div class="engagement-bar">
+                <button class="like-btn" onclick="toggleLike(event, 'suara')">❤️ Suka</button>
+                <button class="comment-btn" onclick="openCommentModal('suara', 'Tes Suara')">💬 Komentar</button>
+            </div>
+            <div class="like-count" id="like-count-suara">0 suka</div>
         </div>
-        <div class="card" onclick="window.location.href='/posts/'">
-            📂<br>Laporan Hugo
+
+        <div class="card" id="card-hugo">
+            <div onclick="window.location.href='/posts/'">
+                📂<br>Laporan Hugo
+            </div>
+            <div class="engagement-bar">
+                <button class="like-btn" onclick="toggleLike(event, 'hugo')">❤️ Suka</button>
+                <button class="comment-btn" onclick="openCommentModal('hugo', 'Laporan Hugo')">💬 Komentar</button>
+            </div>
+            <div class="like-count" id="like-count-hugo">0 suka</div>
         </div>
-        <div class="card" onclick="aksi('getar', '')">
-            📳<br>Cek Getar
+
+        <div class="card" id="card-getar">
+            <div onclick="aksi('getar', '')">
+                📳<br>Cek Getar
+            </div>
+            <div class="engagement-bar">
+                <button class="like-btn" onclick="toggleLike(event, 'getar')">❤️ Suka</button>
+                <button class="comment-btn" onclick="openCommentModal('getar', 'Cek Getar')">💬 Komentar</button>
+            </div>
+            <div class="like-count" id="like-count-getar">0 suka</div>
+        </div>
+    </div>
+
+    <!-- Statistik -->
+    <div class="stats-section">
+        <div class="stat-item">
+            <div class="stat-number" id="total-likes">0</div>
+            <div class="stat-label">Total Likes</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="total-comments">0</div>
+            <div class="stat-label">Total Komentar</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="total-items">4</div>
+            <div class="stat-label">Total Item</div>
         </div>
     </div>
 
@@ -136,15 +391,153 @@
         </select>
     </div>
 
+    <!-- MODAL KOMENTAR -->
+    <div id="commentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Komentar</h2>
+                <button class="close-btn" onclick="closeCommentModal()">&times;</button>
+            </div>
+
+            <div class="comment-input-area">
+                <input type="text" id="commentInput" placeholder="Tulis komentar Anda...">
+                <button onclick="submitComment()">Kirim</button>
+            </div>
+
+            <div id="commentsList" class="comments-list">
+                <div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Fungsi navigasi menu utama
+        // ========== STORAGE DATA ==========
+        const likes = {
+            rclone: 0,
+            suara: 0,
+            hugo: 0,
+            getar: 0
+        };
+
+        const comments = {
+            rclone: [],
+            suara: [],
+            hugo: [],
+            getar: []
+        };
+
+        let currentCommentSection = null;
+
+        // ========== LIKE FUNCTIONS ==========
+        function toggleLike(event, section) {
+            event.stopPropagation();
+            likes[section]++;
+            
+            const btn = event.target.closest('.like-btn');
+            btn.classList.add('liked');
+            
+            const likeCount = document.getElementById('like-count-' + section);
+            const count = likes[section];
+            likeCount.textContent = count + ' suka' + (count > 1 ? '' : '');
+            
+            updateStats();
+            
+            // Trigger aksi notif
+            aksi('notif', 'Anda menyukai fitur ini! 👍');
+            
+            setTimeout(() => {
+                btn.classList.remove('liked');
+            }, 300);
+        }
+
+        // ========== COMMENT FUNCTIONS ==========
+        function openCommentModal(section, title) {
+            currentCommentSection = section;
+            document.getElementById('modalTitle').textContent = '💬 Komentar - ' + title;
+            document.getElementById('commentModal').style.display = 'block';
+            document.getElementById('commentInput').value = '';
+            loadComments();
+        }
+
+        function closeCommentModal() {
+            document.getElementById('commentModal').style.display = 'none';
+            currentCommentSection = null;
+        }
+
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+
+            if (!text) {
+                alert('⚠ Tulis komentar terlebih dahulu!');
+                return;
+            }
+
+            const comment = {
+                text: text,
+                author: 'Admin Dulkohar',
+                time: new Date().toLocaleTimeString('id-ID', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                }),
+                date: new Date().toLocaleDateString('id-ID')
+            };
+
+            comments[currentCommentSection].push(comment);
+            input.value = '';
+            loadComments();
+            updateStats();
+
+            aksi('notif', 'Komentar berhasil disimpan! 📝');
+        }
+
+        function loadComments() {
+            const commentsList = document.getElementById('commentsList');
+            const sectionComments = comments[currentCommentSection];
+
+            if (sectionComments.length === 0) {
+                commentsList.innerHTML = '<div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>';
+                return;
+            }
+
+            commentsList.innerHTML = sectionComments.map((comment, index) => `
+                <div class="comment-item">
+                    <div class="comment-author">👤 ${comment.author}</div>
+                    <div class="comment-text">${escapeHtml(comment.text)}</div>
+                    <div class="comment-time">${comment.date} - ${comment.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateStats() {
+            const totalLikes = Object.values(likes).reduce((a, b) => a + b, 0);
+            const totalComments = Object.values(comments).reduce((a, b) => a + b.length, 0);
+
+            document.getElementById('total-likes').textContent = totalLikes;
+            document.getElementById('total-comments').textContent = totalComments;
+        }
+
+        // ========== MODAL CLOSE ON OUTSIDE CLICK ==========
+        window.onclick = function(event) {
+            const modal = document.getElementById('commentModal');
+            if (event.target === modal) {
+                closeCommentModal();
+            }
+        }
+
+        // ========== NAVIGATION FUNCTIONS ==========
         function navigasiMenu(url) {
             if (url) {
                 window.location.href = url;
             }
         }
 
-        // Fungsi navigasi antar sektor
         function pindahSektorOtomatis(namaHalaman) {
             if (!namaHalaman) return;
             
@@ -152,7 +545,7 @@
             window.location.href = urlSistem + "?p=" + namaHalaman;
         }
 
-        // Inisialisasi dropdown saat halaman dimuat
+        // ========== INITIALIZATION ==========
         document.addEventListener("DOMContentLoaded", function() {
             try {
                 const params = new URLSearchParams(window.location.search);
@@ -162,12 +555,14 @@
                 if (dropdownSektor) {
                     dropdownSektor.value = halamanAktif;
                 }
+
+                updateStats();
             } catch (e) {
                 console.error('Error inisialisasi:', e.message);
             }
         });
 
-        // Fungsi mengirim aksi ke Flask API
+        // ========== API FUNCTIONS ==========
         function aksi(tipe, pesan) {
             try {
                 fetch('http://localhost:5000/' + tipe, {
@@ -190,7 +585,6 @@
             }
         }
 
-        // Fungsi simpan data ke database
         function simpanData() {
             try {
                 const val = document.getElementById('db_input').value;
