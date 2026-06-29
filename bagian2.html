@@ -5,12 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indramayu Club Portal - Admin Dulkohar</title>
     <style>
-        body { font-family: sans-serif; background: #0a0f1e; color: white; text-align: center; padding: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; margin: auto; }
-        .card { background: #16213e; padding: 20px; border-radius: 15px; border: 1px solid #4ecca3; cursor: pointer; }
-        .card:active { background: #4ecca3; color: black; }
-        h1 { color: #4ecca3; text-shadow: 0 0 10px #4ecca3; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        body { 
+            font-family: sans-serif; 
+            background: #0a0f1e; 
+            color: white; 
+            text-align: center; 
+            padding: 20px; 
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            max-width: 400px; 
+            margin: auto; 
+        }
+        .card { 
+            background: #16213e; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 1px solid #4ecca3; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+        .card:active { 
+            background: #4ecca3; 
+            color: black; 
+        }
+        h1 { 
+            color: #4ecca3; 
+            text-shadow: 0 0 10px #4ecca3; 
+        }
+        input { 
+            width: 90%; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: none; 
+        }
+        .menu-list { 
+            list-style: none; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
+        .menu-list li { 
+            background: rgba(78, 204, 163, 0.1); 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        .menu-list li:hover { 
+            background: #4ecca3; 
+            color: black; 
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(168,126,46,0.5);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        select option {
+            background: #16213e;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -18,6 +80,7 @@
     <h1>INDRAMAYU CLUB</h1>
     <p>Pusat Kendali Digital Asset Management</p>
 
+    <!-- Grid Tombol Aksi -->
     <div class="grid">
         <div class="card" onclick="aksi('notif', 'Sinkronisasi Rclone Dimulai')">
             🚀<br>Sync Rclone
@@ -33,101 +96,118 @@
         </div>
     </div>
 
+    <!-- Input Member Baru -->
     <br>
     <input type="text" id="db_input" placeholder="Masukkan ID Member Baru...">
     <div class="card" style="max-width:360px; margin:auto;" onclick="simpanData()">
         💾 SIMPAN KE DATABASE
     </div>
 
+    <!-- Menu Dropdown Navigasi Utama -->
+    <div style="display:flex; flex-direction:column; gap:4px; margin-top: 20px;">
+        <label for="menu-dropdown-main"><strong>Menu Utama:</strong></label>
+        <select id="menu-dropdown-main" onchange="navigasiMenu(this.value)">
+            <option value="">-- Pilih Menu --</option>
+            <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi">🏠 Beranda / Administrasi</option>
+            <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android">🤖 Aplikasi Android</option>
+            <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus">📖 Kamus Dayak Ngaju</option>
+            <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2">📊 Halaman 2 (Laporan)</option>
+        </select>
+    </div>
 
-<div style="display:flex; flex-direction:column; gap:4px;">                                                                                                                        <label for="menu-dropdown-dev" style="font-size:10px; color:var(--gold); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN (DEV MODE)>                                   
-    <select id="menu-dropdown-dev" onchange="if (this.value) window.location.href=this.value;" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(168,126,46,0>
-      <option value="">-- Pilih Menu --</option>
-      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi">🏠 Beranda / Administrasi</option>
-      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android">🤖 Aplikasi Android</option>
-      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus">📖 Kamus Dayak Ngaju</option>
-      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2">📊 Halaman 2 (Laporan)</option>
-    </select>
-  </div>
+    <hr style="border:none; border-top:1px solid #4ecca3; margin:15px 0;">
 
-  <hr style="border:none; border-top:1px solid var(--border); margin:4px 0;">
+    <!-- Menu List -->
+    <ul class="menu-list">
+        <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi'">🏠 Beranda</li>
+        <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android'">🤖 Android</li>
+        <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus'">📖 Kamus</li>
+        <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2'">📊 Halaman 2</li>
+    </ul>
 
-  <ul class="menu-list">
-    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi'">🏠 Beranda</li>
-    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android'">🤖 Android</li>
-    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus'">📖 Kamus</li>
-    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2'">📊 Halaman 2</li>
-  </ul>
-</div>
-   
-<select id="menu-dropdown-dev" onchange="pindahSektorOtomatis(this.value)">
-  <option value="">-- Pilih Sektor --</option>
-  <option value="administrasi">🏠 Sektor Administrasi Utama</option>
-  <option value="bagian1">🌟 Dimensi Elite / Bagian 1</option>
-  <option value="bagian2">📊 Laporan Aset Digital / Bagian 2</option>
-</select>
+    <!-- Menu Dropdown Sektor -->
+    <div style="display:flex; flex-direction:column; gap:4px; margin-top: 20px;">
+        <label for="menu-dropdown-sektor"><strong>Pilih Sektor:</strong></label>
+        <select id="menu-dropdown-sektor" onchange="pindahSektorOtomatis(this.value)">
+            <option value="">-- Pilih Sektor --</option>
+            <option value="administrasi">🏠 Sektor Administrasi Utama</option>
+            <option value="bagian1">🌟 Dimensi Elite / Bagian 1</option>
+            <option value="bagian2">📊 Laporan Aset Digital / Bagian 2</option>
+        </select>
+    </div>
 
-<script>
-function pindahSektorOtomatis(namaHalaman) {
-  if (!namaHalaman) return;
-  
-  // Mengambil URL dasar Apps Script (Otomatis mendeteksi /dev atau /exec)
-  const urlSistem = window.location.href.split('?')[0];
-  
-  // Eksekusi pemindahan rute halaman dinamis
-  window.location.href = urlSistem + "?p=" + namaHalaman;
-}
+    <script>
+        // Fungsi navigasi menu utama
+        function navigasiMenu(url) {
+            if (url) {
+                window.location.href = url;
+            }
+        }
 
-// Menjaga indikator pilihan dropdown tetap bertahan sesuai halaman yang dibuka
-document.addEventListener("DOMContentLoaded", function() {
-  const params = new URLSearchParams(window.location.search);
-  const halamanAktif = params.get('p') || 'administrasi';
-  const dropdown = document.getElementById('menu-dropdown-dev');
-  if (dropdown) dropdown.value = halamanAktif;
-});
+        // Fungsi navigasi antar sektor
+        function pindahSektorOtomatis(namaHalaman) {
+            if (!namaHalaman) return;
+            
+            const urlSistem = window.location.href.split('?')[0];
+            window.location.href = urlSistem + "?p=" + namaHalaman;
+        }
 
+        // Inisialisasi dropdown saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const halamanAktif = params.get('p') || 'administrasi';
+                
+                const dropdownSektor = document.getElementById('menu-dropdown-sektor');
+                if (dropdownSektor) {
+                    dropdownSektor.value = halamanAktif;
+                }
+            } catch (e) {
+                console.error('Error inisialisasi:', e.message);
+            }
+        });
 
-//############$###
+        // Fungsi mengirim aksi ke Flask API
         function aksi(tipe, pesan) {
-            // Memanggil Flask api_bridge.py di port 5000
-            fetch('http://localhost:5000/' + tipe, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'msg=' + encodeURIComponent(pesan)
-            }).then(res => console.log('Aksi dikirim'));
+            try {
+                fetch('http://localhost:5000/' + tipe, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'msg=' + encodeURIComponent(pesan)
+                })
+                .then(res => {
+                    if (res.ok) {
+                        console.log('✓ Aksi dikirim: ' + tipe);
+                    } else {
+                        console.warn('⚠ Response: ' + res.status);
+                    }
+                })
+                .catch(err => {
+                    console.error('✗ Error fetch:', err.message);
+                });
+            } catch (e) {
+                console.error('Error aksi:', e.message);
+            }
         }
 
+        // Fungsi simpan data ke database
         function simpanData() {
-            let val = document.getElementById('db_input').value;
-            alert('Data ' + val + ' akan dikirim ke 03_ADM_KEUANGAN');
-            aksi('notif', 'Data Member Baru Tersimpan: ' + val);
+            try {
+                const val = document.getElementById('db_input').value;
+                
+                if (!val || val.trim() === '') {
+                    alert('⚠ Masukkan ID Member terlebih dahulu!');
+                    return;
+                }
+                
+                alert('✓ Data "' + val + '" akan dikirim ke 03_ADM_KEUANGAN');
+                aksi('notif', 'Data Member Baru Tersimpan: ' + val);
+                
+                document.getElementById('db_input').value = '';
+            } catch (e) {
+                console.error('Error simpanData:', e.message);
+            }
         }
-  
-
-function doGet(e) {
-  // Ambil parameter halaman, default ke administrasi jika kosong                         var page = e.parameter.p || 'administrasi';
-
-  var htmlFile;                                                                           switch(page) {
-    case 'android': htmlFile = 'android'; break;                                            case 'halaman2': htmlFile = 'halaman2'; break;
-    case 'kamus': htmlFile = 'kamus'; break;                                                case 'administrasi':                                                                    default:                                                                                  htmlFile = 'administrasi';
-      break;
-  }
-
-  // 1. Buat template dari file html yang dipilih
-  var template = HtmlService.createTemplateFromFile(htmlFile);
-
-  // 2. Oper parameter 'e' ke dalam HTML agar dropdown tahu halaman aktif saat ini
-  template.e = e;
-
-  // 3. Evaluasi dan kirimkan outputnya ke browser
-  return template.evaluate()                                                                  .setTitle('Indramayu Club Makrifat')
-      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-
-
-  </script>
+    </script>
 </body>
 </html>
-
