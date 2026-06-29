@@ -1,0 +1,13 @@
+# Jangan deploy file-file ini ke Apps Script
+node_modules/
+package-lock.json
+.git
+.github
+README.md
+.gitignore
+.clasprc.json
+*.md
+.DS_Store
+Thumbs.db
+.vscode
+.idea
