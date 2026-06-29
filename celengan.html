@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Celengan AI — Indramayu Club Makrifat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #c9952a;
+    --gold-light: #e8c060;
+    --gold-dim: #7a5a10;
+    --green-deep: #0a2a1a;
+    --green-mid: #143d28;
+    --green-light: #1e5c3c;
+    --cream: #faf6ec;
+    --ink: #1a1208;
+    --muted: #8a7a50;
+    --bg: #f0ead6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 30px;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(201,149,42,0.04) 0%, transparent 50%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9952a' fill-opacity='0.03'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    border-bottom: 3px solid var(--gold);
+    padding: 14px 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--gold-light); letter-spacing: 0.05em;
+  }
+  .logo-text p { font-size: 0.6rem; color: rgba(255,255,255,0.5); letter-spacing: 0.2em; text-transform: uppercase; }
+
+  .status-pill {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(201,149,42,0.3);
+    border-radius: 100px; padding: 4px 12px; font-size: 0.65rem; color: var(--gold-light);
+  }
+
+  .main-grid {
+    max-width: 1200px; margin: 24px auto; padding: 0 20px;
+    display: grid; grid-template-columns: 320px 1fr; gap: 24px;
+  }
+  @media(max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--cream); border: 1px solid rgba(201,149,42,0.25); border-radius: 4px;
+    box-shadow: 2px 2px 0 var(--gold-dim); overflow: hidden; margin-bottom: 20px;
+  }
+  .panel-header {
+    background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+    padding: 10px 16px; border-bottom: 1px solid var(--gold);
+    font-family: 'Playfair Display', serif; font-size: 0.75rem; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .panel-body { padding: 16px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 0.6rem; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.1em; }
+  .form-group input, .form-group select {
+    width: 100%; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem;
+    border: 1px solid rgba(201,149,42,0.3); border-radius: 3px; outline: none; background: #fff;
+  }
+
+  .btn {
+    width: 100%; padding: 10px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.8rem;
+    border: none; border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform 0.1s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-gold { background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: var(--green-deep); }
+  .btn-green { background: linear-gradient(135deg, var(--green-deep), var(--green-mid)); color: var(--gold-light); border: 1px solid rgba(201,149,42,0.3); margin-top: 8px; }
+
+  .stats-box {
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid)); color: #fff;
+    padding: 14px; border-radius: 3px; text-align: center; border: 1px solid var(--gold-dim);
+  }
+  .stats-val { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold-light); font-weight: 700; display: block; }
+  .stats-lbl { font-size: 0.58rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .receipt { background: #fff; border: 1px dashed var(--gold); padding: 20px; font-size: 0.75rem; line-height: 1.8; position: relative; }
+  .receipt-title { font-family: 'Playfair Display', serif; text-align: center; font-size: 1.1rem; font-weight: 900; color: var(--green-deep); }
+  .receipt-line { display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(0,0,0,0.08); padding: 4px 0; }
+  .receipt-total { display: flex; justify-content: space-between; font-weight: 700; border-top: 2px solid var(--gold-dim); margin-top: 10px; padding-top: 6px; font-size: 0.85rem; color: var(--green-deep); }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+  .badge-rp { background: rgba(16,185,129,0.1); color: #059669; border: 1px solid rgba(16,185,129,0.2); }
+  .badge-vch { background: rgba(201,149,42,0.1); color: var(--gold-dim); border: 1px solid rgba(201,149,42,0.2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-text">
+      <h1>CELENGAN AI — INDRAMAYU CLUB</h1>
+      <p>Gerbang Sinkronisasi Otoritas Nur Makrifat</p>
+    </div>
+    <div class="status-pill"><i class="fas fa-vault"></i> PIRAMIDA CACHE ACTIVE</div>
+  </div>
+</header>
+
+<div class="main-grid">
+  <!-- SISI KIRI: MONITOR CACHE & FORM MUTASI -->
+  <div class="left-col">
+    <div class="panel">
+      <div class="panel-header">Status Saldo Celengan</div>
+      <div class="panel-body" style="display:flex; flex-direction:column; gap:10px;">
+        <div class="stats-box">
+          <span class="stats-val" id="displayRpNur">Rp 0</span>
+          <span class="stats-lbl">Total Saldo RpNUR</span>
+        </div>
+        <div class="stats-box" style="background:var(--cream); border:1px solid rgba(201,149,42,0.3)">
+          <span class="stats-val" id="displayGifCount" style="color:var(--green-deep); font-size:1.1rem;">0 Unit</span>
+          <span class="stats-lbl" style="color:var(--muted)">Sisa GIF NUR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">Input Nilai Mutasi</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label>Identitas Anggota</label>
+          <input type="text" id="inputAnggota" placeholder="Nama..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Keterangan Manifest</label>
+          <input type="text" id="inputKeterangan" placeholder="Deskripsi..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Nilai Alur (Rp)</label>
+          <input type="number" id="inputNilai" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Instrumen Transaksi</label>
+          <select id="inputInstrumen" onchange="cekTipeInstrumen()">
+            <option value="rpNur">RpNUR (Saldo Utama)</option>
+            <option value="voucherNur">VOUCHER NUR</option>
+          </select>
+        </div>
+        <div class="form-group" id="groupVoucher" style="display:none;">
+          <label>Kode Voucher Nur</label>
+          <input type="text" id="inputKodeVoucher" placeholder="NUR-XX-XXX">
+        </div>
+        
+        <button class="btn btn-gold" onclick="prosesValidasi()"><i class="fas fa-fingerprint"></i> Validasi Alur</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SISI KANAN: MANIFEST STRUK -->
+  <div class="right-col">
+    <div class="panel">
+      <div class="panel-header">Manifest Struk Otoritas Nur</div>
+      <div class="panel-body">
+        <div class="receipt" id="manifestReceipt">
+          <div class="receipt-title">✦ INDRAMAYU CLUB ✦</div>
+          <p style="text-align:center; font-size:0.58rem; color:var(--muted); letter-spacing:0.1em; margin-bottom:10px;">CELENGAN ROUTER SYSTEM MANIFEST</p>
+          <div class="receipt-line"><span>Waktu Operasional</span><span id="vWaktu">--:--:--</span></div>
+          <div class="receipt-line"><span>Otoritas Anggota</span><span id="vAnggota">-</span></div>
+          <div class="receipt-line"><span>Keterangan Aset</span><span id="vKet">-</span></div>
+          <div class="receipt-line"><span>Instrumen</span><span id="vInstrumen">-</span></div>
+          <div class="receipt-total"><span>TOTAL NILAI MUTASI</span><span id="vTotal">Rp 0</span></div>
+        </div>
+        <button class="btn btn-green" onclick="eksekusiSinkronisasi()"><i class="fas fa-cloud-upload-alt"></i> Ambil Alih & Sinkron ke GAS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentRpNurRaw = 0;
+  let activeMutasiNilai = 0;
+
+  window.addEventListener('load', () => {
+    muatDataDariCore();
+    document.getElementById('vWaktu').textContent = new Date().toLocaleTimeString('id-ID');
+  });
+
+  function cekTipeInstrumen() {
+    const inst = document.getElementById('inputInstrumen').value;
+    document.getElementById('groupVoucher').style.display = (inst === 'voucherNur') ? 'block' : 'none';
+  }
+
+  function muatDataDariCore() {
+    if (typeof google !== 'undefined') {
+      google.script.run.withSuccessHandler(function(response) {
+        if(response && response.aset) {
+          document.getElementById('displayRpNur').textContent = response.aset.rpNur;
+          document.getElementById('displayGifCount').textContent = response.aset.gifNurCount;
+          currentRpNurRaw = parseInt(response.aset.rpNur.replace(/[^0-9]/g, '')) || 0;
+        }
+      }).layaniRequestTermux('cek_aset', {parameter: {}});
+    }
+  }
+
+  function prosesValidasi() {
+    const anggota = document.getElementById('inputAnggota').value.trim();
+    const ket = document.getElementById('inputKeterangan').value.trim();
+    const nilai = parseFloat(document.getElementById('inputNilai').value) || 0;
+    const instrumen = document.getElementById('inputInstrumen').value;
+
+    if(!anggota || !ket || nilai <= 0) {
+      alert('Mohon lengkapi seluruh kolom Otoritas Jalur!');
+      return;
+    }
+
+    activeMutasiNilai = nilai;
+    document.getElementById('vWaktu').textContent = new Date().toLocaleTimeString('id-ID');
+    document.getElementById('vAnggota').textContent = anggota;
+    document.getElementById('vKet').textContent = ket;
+    
+    if(instrumen === 'rpNur') {
+      document.getElementById('vInstrumen').innerHTML = `<span class="badge badge-rp">RpNUR</span>`;
+    } else {
+      const kodeVch = document.getElementById('inputKodeVoucher').value.trim();
+      document.getElementById('vInstrumen').innerHTML = `<span class="badge badge-vch">VOUCHER: ${kodeVch}</span>`;
+    }
+    
+    document.getElementById('vTotal').textContent = 'Rp ' + nilai.toLocaleString('id-ID');
+  }
+
+  function eksekusiSinkronisasi() {
+    if(activeMutasiNilai <= 0) {
+      alert('Tidak ada data manifest yang valid untuk disinkronkan!');
+      return;
+    }
+
+    const instrumen = document.getElementById('inputInstrumen').value;
+
+    if(typeof google === 'undefined') {
+      alert('Lingkungan Google Apps Script tidak terdeteksi (Mode Lokal).');
+      return;
+    }
+
+    if(instrumen === 'rpNur') {
+      let saldoBaru = currentRpNurRaw + activeMutasiNilai;
+      
+      google.script.run.withSuccessHandler(function(res) {
+        if(res.status === "success") {
+          alert('Alhamdulillah, ' + res.message);
+          muatDataDariCore();
+          resetForm();
+        }
+      }).layaniRequestTermux('update_rpnur', {parameter: {jumlah: saldoBaru.toString()}});
+
+    } else {
+      const kodeVch = document.getElementById('inputKodeVoucher').value.trim();
+      google.script.run.withSuccessHandler(function(res) {
+        if(res.status === "success") {
+          alert('Validasi Sukses: ' + res.detail);
+          resetForm();
+        } else {
+          alert('Gagal: ' + res.message);
+        }
+      }).layaniRequestTermux('gunakan_voucher', {parameter: {kode: kodeVch}});
+    }
+  }
+
+  function resetForm() {
+    document.getElementById('inputAnggota').value = '';
+    document.getElementById('inputKeterangan').value = '';
+    document.getElementById('inputNilai').value = '';
+    document.getElementById('inputKodeVoucher').value = '';
+    activeMutasiNilai = 0;
+  }
+</script>
+</body>
+</html>
