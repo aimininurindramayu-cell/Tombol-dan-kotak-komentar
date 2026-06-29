@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamus Indramayu · Agent Alwi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   RESET & VARIABEL
+══════════════════════════════════════════ */
+:root {
+  --emas       : #c9a84c;
+  --emas-muda  : #f0d070;
+  --emas-tua   : #7a5c1e;
+  --hitam      : #0d0d0d;
+  --gelap      : #1a1408;
+  --kartu      : #1e1608;
+  --border     : #3a2c0a;
+  --teks       : #e8d5a0;
+  --teks-redup : #9a8050;
+  --hijau      : #1a6b3a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background: var(--hitam);
+  background-image:
+    radial-gradient(ellipse at 10% 10%, #1a0f0220 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, #0a1a0520 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='0.3' opacity='0.12'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30 Z'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Cpath d='M30 5 L30 55 M5 30 L55 30'/%3E%3Cpath d='M10 10 L50 50 M50 10 L10 50'/%3E%3C/g%3E%3C/svg%3E");
+  color: var(--teks);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  background: linear-gradient(135deg, #0d0a02, #1a1408, #0d0a02);
+  border-bottom: 2px solid var(--emas-tua);
+  padding: 14px 20px 12px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.15);
+  position: sticky; top: 0; z-index: 100;
+}
+.bismillah {
+  font-size: 14px; color: var(--emas);
+  opacity: 0.7; margin-bottom: 4px; letter-spacing: 2px;
+}
+header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(18px, 5vw, 26px);
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas), var(--emas-muda), var(--emas));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: 3px;
+}
+.header-sub { font-size: 10px; color: var(--teks-redup); letter-spacing: 4px; margin-top: 3px; }
+.agent-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas));
+  color: #000; font-size: 10px; font-weight: 700;
+  padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; margin-top: 6px;
+}
+
+/* ══════════════════════════════════════════
+   NAV LINKS
+══════════════════════════════════════════ */
+.nav-links {
+  display: flex; gap: 6px; justify-content: center;
+  flex-wrap: wrap; padding: 8px 16px 0;
+}
+.nav-link {
+  background: rgba(201,168,76,0.08);
+  border: 1px solid var(--emas-tua);
+  color: var(--emas); font-size: 10px;
+  padding: 4px 12px; border-radius: 20px;
+  text-decoration: none; letter-spacing: 1px;
+  transition: all 0.2s;
+}
+.nav-link:hover { background: var(--emas-tua); color: #000; }
+
+/* ══════════════════════════════════════════
+   TICKER
+══════════════════════════════════════════ */
+.ticker-wrap {
+  background: linear-gradient(135deg, #1a3a2a, #0d2010);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  padding: 5px 0; overflow: hidden; position: relative;
+}
+.ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--emas); color: #000;
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  padding: 0 10px; display: flex; align-items: center; z-index: 2;
+}
+.ticker-track {
+  display: flex; animation: ticker 28s linear infinite;
+  padding-left: 80px; white-space: nowrap;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-size: 11px; color: var(--emas);
+  padding: 0 24px; cursor: pointer; letter-spacing: 0.5px;
+}
+.ticker-item:hover { color: var(--emas-muda); }
+.ticker-item span { color: rgba(255,255,255,0.5); font-size: 10px; margin-left: 3px; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════ */
+.main { flex: 1; max-width: 680px; margin: 0 auto; padding: 20px 16px; width: 100%; }
+
+/* ══════════════════════════════════════════
+   SEARCH BOX
+══════════════════════════════════════════ */
+.search-wrap { display: flex; gap: 8px; margin-bottom: 10px; }
+
+#inputKata {
+  flex: 1;
+  background: var(--kartu);
+  border: 1.5px solid var(--emas-tua);
+  color: var(--teks);
+  font-size: 18px;
+  font-family: 'Noto Sans', sans-serif;
+  padding: 13px 18px;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  letter-spacing: 1px;
+}
+#inputKata::placeholder { color: var(--teks-redup); }
+#inputKata:focus {
+  border-color: var(--emas);
+  box-shadow: 0 0 16px rgba(201,168,76,0.2);
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas));
+  color: #000; border: none;
+  padding: 13px 16px; border-radius: 10px;
+  font-size: 18px; cursor: pointer; font-weight: 700;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(201,168,76,0.4); }
+.btn:active { transform: scale(0.96); }
+.btn.recording { background: linear-gradient(135deg, #c0392b, #e74c3c); color: #fff; }
+
+/* ══════════════════════════════════════════
+   TOMBOL BAWAH SEARCH
+══════════════════════════════════════════ */
+.tools-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.tool-btn {
+  flex: 1; min-width: 100px;
+  background: transparent;
+  border: 1px solid var(--emas-tua);
+  color: var(--emas); padding: 8px 10px;
+  border-radius: 8px; font-size: 12px;
+  cursor: pointer; letter-spacing: 1px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tool-btn:hover { background: var(--emas-tua); color: #000; }
+
+/* ══════════════════════════════════════════
+   FILTER KATEGORI
+══════════════════════════════════════════ */
+.filter-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.filter-chip {
+  background: var(--kartu);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 11px; color: var(--teks-redup);
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+}
+.filter-chip:hover, .filter-chip.aktif {
+  border-color: var(--emas); color: var(--emas); background: var(--gelap);
+}
+.filter-chip span { color: var(--emas); font-weight: 700; margin-left: 3px; }
+
+/* ══════════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════════ */
+.status-bar {
+  text-align: center; font-size: 12px;
+  color: var(--teks-redup); margin-bottom: 14px;
+  letter-spacing: 1px; min-height: 18px;
+}
+.status-bar.ok    { color: #51cf66; }
+.status-bar.err   { color: #ff6b6b; }
+.status-bar.info  { color: var(--emas); }
+
+/* ══════════════════════════════════════════
+   KARTU HASIL
+══════════════════════════════════════════ */
+.kartu {
+  background: linear-gradient(135deg, var(--kartu), #150f03);
+  border: 1.5px solid var(--emas-tua);
+  border-radius: 14px; padding: 22px;
+  box-shadow: 0 8px 32px rgba(201,168,76,0.1),
+              inset 0 1px 0 rgba(201,168,76,0.15);
+  animation: fadeIn 0.35s ease;
+  margin-bottom: 12px;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(-10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.kartu-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 14px; gap: 10px;
+}
+.kata-utama {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 7vw, 36px);
+  color: var(--emas); letter-spacing: 3px;
+  line-height: 1.1;
+}
+.badge-kat {
+  background: var(--emas-tua); color: var(--emas-muda);
+  font-size: 10px; padding: 4px 10px;
+  border-radius: 20px; letter-spacing: 1px;
+  font-weight: 600; white-space: nowrap; flex-shrink: 0;
+}
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+.baris {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 6px; margin-bottom: 10px; align-items: start;
+}
+.lbl {
+  font-size: 10px; color: var(--teks-redup);
+  text-transform: uppercase; letter-spacing: 2px; padding-top: 3px;
+}
+.val       { font-size: 17px; color: var(--teks); line-height: 1.5; }
+.val-pasar { font-size: 14px; color: var(--emas-muda); font-style: italic; line-height: 1.5; }
+
+/* TTS BUTTONS */
+.tts-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.tts-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: transparent; border: 1px solid var(--emas-tua);
+  color: var(--emas); padding: 8px 14px;
+  border-radius: 8px; font-size: 12px; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.5px;
+}
+.tts-btn:hover   { background: var(--emas); color: #000; }
+.tts-btn.playing { background: var(--emas); color: #000; animation: pulse 1s infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
+}
+
+/* CONTOH KALIMAT */
+.contoh-box {
+  margin-top: 14px;
+  background: rgba(201,168,76,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 13px; color: var(--teks-redup);
+  font-style: italic; line-height: 1.6;
+  display: none;
+}
+.contoh-box.show { display: block; animation: fadeIn 0.3s ease; }
+.contoh-kata { color: var(--emas); font-weight: 600; font-style: normal; }
+
+/* ══════════════════════════════════════════
+   MIRIP / TIDAK ADA
+══════════════════════════════════════════ */
+.mirip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px; margin-top: 10px;
+}
+.mirip-item {
+  background: var(--kartu); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.mirip-item:hover {
+  border-color: var(--emas); background: var(--gelap);
+  transform: translateY(-2px);
+}
+.mi-kata { font-size: 14px; color: var(--emas); font-weight: 600; }
+.mi-arti { font-size: 11px; color: var(--teks-redup); margin-top: 2px; }
+
+/* ══════════════════════════════════════════
+   BROWSER LIST (tampil saat filter kategori)
+══════════════════════════════════════════ */
+.browser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px; margin-bottom: 20px;
+}
+
+/* ══════════════════════════════════════════
+   HISTORY PENCARIAN
+══════════════════════════════════════════ */
+.history-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.history-chip {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; color: var(--teks-redup);
+  cursor: pointer; transition: all 0.2s;
+}
+.history-chip:hover { border-color: var(--emas); color: var(--emas); }
+
+/* ══════════════════════════════════════════
+   ORNAMEN
+══════════════════════════════════════════ */
+.ornamen {
+  text-align: center; color: var(--emas-tua);
+  font-size: 16px; letter-spacing: 8px;
+  margin: 10px 0; opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  text-align: center; padding: 20px 16px;
+  color: var(--teks-redup); font-size: 11px;
+  letter-spacing: 2px; border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ══════════════════════════════════════════
+   RIPPLE EFFECT
+══════════════════════════════════════════ */
+.ripple {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(201,168,76,0.25), transparent);
+  animation: rippleAnim 0.7s ease-out forwards; z-index: 9999;
+}
+@keyframes rippleAnim {
+  from { width:0; height:0; opacity:1; transform:translate(-50%,-50%); }
+  to   { width:120px; height:120px; opacity:0; transform:translate(-50%,-50%); }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .baris { grid-template-columns: 80px 1fr; }
+  .tts-btn { font-size: 11px; padding: 7px 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div style="display:flex; flex-direction:column; gap:4px;">
+  <label for="menu-dropdown-dev" style="font-size:10px; color:var(--warna-emas); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN UTAMA</label>
+  <select id="menu-dropdown-dev" onchange="pindahHalamanOtomatis(this.value)" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid var(--warna-border); padding:10px; color:#fff; border-radius:6px; outline:none; font-size:13px; font-weight:500;">
+    <option value="">-- Menu Navigasi Sektor --</option>
+    <option value="administrasi">🏠 Sektor Administrasi / Beranda</option>
+    <option value="android">🤖 Sektor Aplikasi Android Terminal</option>
+    <option value="kamus">📖 Sektor Kamus Makrifat</option>
+    <option value="halaman2">📊 Sektor Laporan & Data Terpadu</option>
+  </select>
+</div>
+
+</header>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-wrap">
+  <div class="ticker-label">📖 BASA DERMAYU</div>
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+
+  <div class="ornamen">❧ ✦ ❧</div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input type="text" id="inputKata"
+      placeholder="Ketik kata Indramayu…"
+      autocomplete="off" autocapitalize="none"
+      oninput="onInput()" onkeydown="if(event.key==='Enter')cari()">
+    <button class="btn" onclick="cari()" title="Cari">🔍</button>
+    <button class="btn" id="btnMic" onclick="toggleMic()" title="Input Suara">🎤</button>
+  </div>
+
+  <!-- TOOLS ROW -->
+  <div class="tools-row">
+    <button class="tool-btn" onclick="acakKata()">🎲 Kata Acak</button>
+    <button class="tool-btn" onclick="showContoh()">💬 Contoh Kalimat</button>
+    <button class="tool-btn" onclick="clearHasil()">🗑️ Hapus</button>
+  </div>
+
+  <!-- FILTER KATEGORI -->
+  <div class="filter-row" id="filterRow">
+    <div class="filter-chip aktif" onclick="filterKat('',this)">
+      📚 Semua <span id="totalChip">0</span>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-row" id="historyRow" style="display:none"></div>
+
+  <!-- STATUS -->
+  <div class="status-bar" id="statusBar">⏳ Memuat kamus...</div>
+
+  <!-- HASIL -->
+  <div id="hasilBox"></div>
+
+  <!-- BROWSER LIST -->
+  <div class="browser-grid" id="browserGrid"></div>
+
+</div><!-- end main -->
+
+<div class="ornamen" style="margin:0 0 8px">✦ ✦ ✦</div>
+
+<footer>
+  ✦ Indramayu Club Makrifat · Agent Alwi v2.0 ✦<br>
+  <span style="font-size:10px;opacity:0.5;margin-top:4px;display:block;">
+    Nguri-uri Budaya lan Basa Indramayu
+  </span>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════
+// KONFIGURASI
+// ══════════════════════════════════════════════════════
+// Ganti dengan URL deploy GAS Anda
+const GAS_URL = (function() {
+  // Jika file ini dijalankan dari GAS (sudah di-inject URL-nya)
+  if (window.GAS_SCRIPT_URL) return window.GAS_SCRIPT_URL;
+  // Jika standalone local / testing
+  return window.location.href.split('?')[0];
+})();
+
+// ══════════════════════════════════════════════════════
+// DATA KAMUS LOKAL (fallback jika GAS tidak tersedia)
+// ══════════════════════════════════════════════════════
+const kamusLokal = {
+  "kula":      { indonesia:"saya",               pasar:"kula (formal)",              kategori:"Kata Ganti" },
+  "isun":      { indonesia:"aku",                pasar:"reang / isun",               kategori:"Kata Ganti" },
+  "sira":      { indonesia:"kamu",               pasar:"ira / sira",                 kategori:"Kata Ganti" },
+  "rika":      { indonesia:"kamu (sopan/tua)",   pasar:"rika",                       kategori:"Kata Ganti" },
+  "sampeyan":  { indonesia:"anda",               pasar:"sampeyan",                   kategori:"Kata Ganti" },
+  "deweke":    { indonesia:"dia",                pasar:"deweke / wonge",             kategori:"Kata Ganti" },
+  "reang":     { indonesia:"saya/aku (akrab)",   pasar:"reang",                      kategori:"Kata Ganti" },
+  "ira":       { indonesia:"kamu (akrab)",       pasar:"ira",                        kategori:"Kata Ganti" },
+  "sapa":      { indonesia:"siapa",              pasar:"sapa / sapane",              kategori:"Kata Tanya" },
+  "pira":      { indonesia:"berapa",             pasar:"pira",                       kategori:"Kata Tanya" },
+  "priben":    { indonesia:"bagaimana",          pasar:"priben / kepriben / priwe",  kategori:"Kata Tanya" },
+  "ngendi":    { indonesia:"di mana",            pasar:"ngendi / nendi",             kategori:"Kata Tanya" },
+  "mengkene":  { indonesia:"begini",             pasar:"mengkene / ngene",           kategori:"Penunjuk"   },
+  "mengkonon": { indonesia:"begitu",             pasar:"mengkonon / ngonon",         kategori:"Penunjuk"   },
+  "kene":      { indonesia:"sini",               pasar:"kene",                       kategori:"Penunjuk"   },
+  "kono":      { indonesia:"situ",               pasar:"kono",                       kategori:"Penunjuk"   },
+  "kana":      { indonesia:"sana",               pasar:"kana",                       kategori:"Penunjuk"   },
+  "iki":       { indonesia:"ini",                pasar:"iki / kene",                 kategori:"Penunjuk"   },
+  "kuen":      { indonesia:"itu",                pasar:"kuen / kaen",                kategori:"Penunjuk"   },
+  "mlaku":     { indonesia:"berjalan",           pasar:"mlaku",                      kategori:"Kata Kerja" },
+  "turu":      { indonesia:"tidur",              pasar:"turu / merem",               kategori:"Kata Kerja" },
+  "mangan":    { indonesia:"makan",              pasar:"mangan / madang / nguntal",  kategori:"Kata Kerja" },
+  "nginum":    { indonesia:"minum",              pasar:"nginum / ngorong",           kategori:"Kata Kerja" },
+  "adus":      { indonesia:"mandi",              pasar:"adus",                       kategori:"Kata Kerja" },
+  "gawe":      { indonesia:"kerja / buat",       pasar:"gawe / kerja",               kategori:"Kata Kerja" },
+  "tuku":      { indonesia:"beli",               pasar:"tuku",                       kategori:"Kata Kerja" },
+  "tangi":     { indonesia:"bangun tidur",       pasar:"tangi",                      kategori:"Kata Kerja" },
+  "lungguh":   { indonesia:"duduk",              pasar:"lungguh / ndodok",           kategori:"Kata Kerja" },
+  "manjing":   { indonesia:"masuk",              pasar:"manjing",                    kategori:"Kata Kerja" },
+  "metu":      { indonesia:"keluar",             pasar:"metu / mabor",               kategori:"Kata Kerja" },
+  "mangkat":   { indonesia:"berangkat",          pasar:"mangkat / OTW",              kategori:"Kata Kerja" },
+  "balik":     { indonesia:"pulang",             pasar:"balik / kondur",             kategori:"Kata Kerja" },
+  "teka":      { indonesia:"datang",             pasar:"teka / njedul",              kategori:"Kata Kerja" },
+  "gawa":      { indonesia:"bawa",               pasar:"gawa",                       kategori:"Kata Kerja" },
+  "deleng":    { indonesia:"lihat",              pasar:"deleng / ndeleng",           kategori:"Kata Kerja" },
+  "krungu":    { indonesia:"dengar",             pasar:"krungu",                     kategori:"Kata Kerja" },
+  "ngomong":   { indonesia:"bicara",             pasar:"ngomong / nggedobos",        kategori:"Kata Kerja" },
+  "nyilih":    { indonesia:"pinjam",             pasar:"nyilih / silih",             kategori:"Kata Kerja" },
+  "wehi":      { indonesia:"beri",               pasar:"keki / wehi / upai",         kategori:"Kata Kerja" },
+  "luru":      { indonesia:"cari",               pasar:"luru / golet",               kategori:"Kata Kerja" },
+  "ngladeni":  { indonesia:"melayani",           pasar:"ngladeni",                   kategori:"Kata Kerja" },
+  "kesasar":   { indonesia:"tersesat",           pasar:"kesasar / keblinger",        kategori:"Kata Kerja" },
+  "cilik":     { indonesia:"kecil",              pasar:"cilik / mrenil",             kategori:"Kata Sifat" },
+  "gede":      { indonesia:"besar",              pasar:"gede / gubrag",              kategori:"Kata Sifat" },
+  "lara":      { indonesia:"sakit",              pasar:"lara / ngenes",              kategori:"Kata Sifat" },
+  "sehat":     { indonesia:"sehat",              pasar:"sehat / seger",              kategori:"Kata Sifat" },
+  "pinter":    { indonesia:"pintar",             pasar:"pinter",                     kategori:"Kata Sifat" },
+  "bodo":      { indonesia:"bodoh",              pasar:"bodo / gemblung / kenthir",  kategori:"Kata Sifat" },
+  "nesu":      { indonesia:"marah",              pasar:"nesu / berengot",            kategori:"Kata Sifat" },
+  "seneng":    { indonesia:"senang",             pasar:"seneng / demen",             kategori:"Kata Sifat" },
+  "sedih":     { indonesia:"sedih",              pasar:"sedih / mewek",              kategori:"Kata Sifat" },
+  "anyar":     { indonesia:"baru",               pasar:"anyar",                      kategori:"Kata Sifat" },
+  "lawas":     { indonesia:"lama/usang",         pasar:"lawas / bengen",             kategori:"Kata Sifat" },
+  "adoh":      { indonesia:"jauh",               pasar:"adoh",                       kategori:"Kata Sifat" },
+  "parek":     { indonesia:"dekat",              pasar:"parek / perek",              kategori:"Kata Sifat" },
+  "ayu":       { indonesia:"cantik",             pasar:"ayu / mentes",               kategori:"Kata Sifat" },
+  "ganteng":   { indonesia:"tampan",             pasar:"ganteng / bagus",            kategori:"Kata Sifat" },
+  "wareg":     { indonesia:"kenyang",            pasar:"wareg / mblendung",          kategori:"Kata Sifat" },
+  "luwe":      { indonesia:"lapar",              pasar:"luwe / klenger",             kategori:"Kata Sifat" },
+  "panas":     { indonesia:"panas terik",        pasar:"panas / ngentang-ngentang",  kategori:"Kata Sifat" },
+  "pegel":     { indonesia:"pegal/capek",        pasar:"pegel / linu / puyeng",      kategori:"Kata Sifat" },
+  "apik":      { indonesia:"bagus/keren",        pasar:"apik / becik",               kategori:"Kata Sifat" },
+  "esuk":      { indonesia:"pagi",               pasar:"esuk",                       kategori:"Waktu"      },
+  "awan":      { indonesia:"siang",              pasar:"awan",                       kategori:"Waktu"      },
+  "sore":      { indonesia:"sore",               pasar:"sore",                       kategori:"Waktu"      },
+  "wengi":     { indonesia:"malam",              pasar:"wengi / peteng",             kategori:"Waktu"      },
+  "bengen":    { indonesia:"dulu/tadi",          pasar:"bengen / dongen",            kategori:"Waktu"      },
+  "saiki":     { indonesia:"sekarang",           pasar:"saiki / kien",               kategori:"Waktu"      },
+  "mengko":    { indonesia:"nanti",              pasar:"mengko / ngko",              kategori:"Waktu"      },
+  "wingi":     { indonesia:"kemarin",            pasar:"wingi",                      kategori:"Waktu"      },
+  "sesuk":     { indonesia:"besok",              pasar:"sesuk / suk",                kategori:"Waktu"      },
+  "ora":       { indonesia:"tidak",              pasar:"ora / dudu",                 kategori:"Umum"       },
+  "mboten":    { indonesia:"tidak (formal)",     pasar:"mboten",                     kategori:"Umum"       },
+  "langka":    { indonesia:"tidak ada",          pasar:"langka / laka",              kategori:"Umum"       },
+  "ana":       { indonesia:"ada",                pasar:"ana / na",                   kategori:"Umum"       },
+  "iwak":      { indonesia:"ikan / lauk",        pasar:"iwak",                       kategori:"Umum"       },
+  "banyu":     { indonesia:"air",                pasar:"banyu",                      kategori:"Umum"       },
+  "umah":      { indonesia:"rumah",              pasar:"umah / gubug",               kategori:"Umum"       },
+  "dalan":     { indonesia:"jalan",              pasar:"dalan",                      kategori:"Umum"       },
+  "segara":    { indonesia:"laut",               pasar:"segara / laut",              kategori:"Umum"       },
+  "batur":     { indonesia:"teman",              pasar:"batur / jandalan",           kategori:"Umum"       },
+  "jih":       { indonesia:"sih / kok",          pasar:"jih (penegas)",              kategori:"Partikel"   },
+  "tah":       { indonesia:"kah / tah",          pasar:"tah (tanya/ragu)",           kategori:"Partikel"   },
+  "belih":     { indonesia:"bukan? / kan?",      pasar:"belih / lah",                kategori:"Partikel"   },
+  "meneng":    { indonesia:"diam",               pasar:"meneng / mendelik",          kategori:"Partikel"   },
+  "wedhi":     { indonesia:"pasir",              pasar:"wedhi",                      kategori:"Tukang"     },
+  "macek":     { indonesia:"memasang bata/ubin", pasar:"macek / masang",             kategori:"Tukang"     },
+  "pancal":    { indonesia:"cangkul",            pasar:"pancal / pacul",             kategori:"Tukang"     },
+  "linggis":   { indonesia:"linggis",            pasar:"linggis",                    kategori:"Tukang"     },
+  "blebeg":    { indonesia:"papan kayu panjang", pasar:"blebeg",                     kategori:"Tukang"     },
+  "pegel":     { indonesia:"pegal/capek",        pasar:"pegel / linu / puyeng",      kategori:"Tukang"     },
+};
+
+// Contoh kalimat per kata
+const contohKalimat = {
+  "mangan" : { indr:"Reang arep mangan saiki, ira melu ora?",          indo:"Saya mau makan sekarang, kamu ikut tidak?"     },
+  "turu"   : { indr:"Wis wengi, ayo turu, esuk tangi esuk!",           indo:"Sudah malam, ayo tidur, besok bangun pagi!"    },
+  "batur"  : { indr:"Deweke baturku sing apik banget.",                 indo:"Dia temanku yang sangat baik."                 },
+  "seneng" : { indr:"Reang seneng banget krungu kabar kuen.",          indo:"Saya sangat senang mendengar kabar itu."       },
+  "luwe"   : { indr:"Priben, ira luwe ora? Ayo mangan.",               indo:"Gimana, kamu lapar tidak? Ayo makan."          },
+  "priben" : { indr:"Priben kabare, sehat belih?",                     indo:"Bagaimana kabarnya, sehat kan?"                },
+  "saiki"  : { indr:"Saiki wis jam pira? Reang luwe nih.",             indo:"Sekarang sudah jam berapa? Saya lapar nih."    },
+  "balik"  : { indr:"Jam pira ira balik umah?",                       indo:"Jam berapa kamu pulang ke rumah?"              },
+  "pegel"  : { indr:"Awak reang pegel kabeh bar gawe seharian.",      indo:"Badan saya pegal semua setelah kerja seharian."},
+  "wengi"  : { indr:"Wengi iki langite apik, akeh bintange.",         indo:"Malam ini langitnya bagus, banyak bintangnya." },
+  "ngomong": { indr:"Aja ngomong sing ora bener, jih!",               indo:"Jangan bicara yang tidak benar, sih!"          },
+  "ora"    : { indr:"Reang ora ngerti apa sing kuen ngomongke.",      indo:"Saya tidak mengerti apa yang itu dibicarakan." },
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let kamus       = kamusLokal; // akan diganti data GAS jika tersedia
+let audio       = null;
+let recognition = null;
+let kataTerakhir= '';
+let searchHistory = JSON.parse(localStorage.getItem('icm_kamus_history') || '[]');
+
+// ══════════════════════════════════════════════════════
+// RIPPLE
+// ══════════════════════════════════════════════════════
+document.addEventListener('click', e => {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  r.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;`;
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 700);
+});
+
+// ══════════════════════════════════════════════════════
+// TTS — Google TTS + Web Speech fallback
+// ══════════════════════════════════════════════════════
+function ttsPlay(teks, lang = 'jv', btn = null) {
+  if (audio) { audio.pause(); audio = null; }
+  document.querySelectorAll('.tts-btn').forEach(b => b.classList.remove('playing'));
+
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(teks)}`;
+  audio = new Audio(url);
+
+  if (btn) btn.classList.add('playing');
+
+  audio.play().catch(() => {
+    // Fallback Web Speech API
+    const u = new SpeechSynthesisUtterance(teks);
+    u.lang = 'id-ID'; u.rate = 0.85; u.pitch = 1.0;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    setStatus('🔊 (Fallback) ' + teks, 'info');
+  });
+
+  audio.onplay  = () => setStatus('🔊 Memutar: "' + teks + '"', 'ok');
+  audio.onended = () => {
+    if (btn) btn.classList.remove('playing');
+    setStatus('✅ Selesai', '');
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// SPEECH RECOGNITION
+// ══════════════════════════════════════════════════════
+function toggleMic() {
+  const btn = document.getElementById('btnMic');
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    setStatus('⚠️ Browser tidak mendukung input suara', 'err'); return;
+  }
+  if (recognition) {
+    recognition.stop(); recognition = null;
+    btn.textContent = '🎤'; btn.classList.remove('recording'); return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'id-ID'; recognition.interimResults = false;
+  recognition.onstart  = () => { btn.textContent = '🔴'; btn.classList.add('recording'); setStatus('🎤 Mendengarkan...', 'info'); };
+  recognition.onresult = e => {
+    const kata = e.results[0][0].transcript.toLowerCase().trim();
+    document.getElementById('inputKata').value = kata;
+    cari();
+  };
+  recognition.onerror  = () => { btn.textContent='🎤'; btn.classList.remove('recording'); recognition=null; };
+  recognition.onend    = () => { btn.textContent='🎤'; btn.classList.remove('recording'); recognition=null; };
+  recognition.start();
+}
+
+// ══════════════════════════════════════════════════════
+// CARI KATA
+// ══════════════════════════════════════════════════════
+async function cari() {
+  const inp  = document.getElementById('inputKata');
+  const kata = inp.value.toLowerCase().trim();
+  if (!kata) return;
+
+  document.getElementById('browserGrid').innerHTML = '';
+  kataTerakhir = kata;
+  setStatus('🔍 Mencari "' + kata + '"...', '');
+
+  // Cari di kamus lokal
+  const hasil = cariLokal(kata);
+
+  if (hasil.status === 'ketemu') {
+    tampilHasil(hasil);
+    simpanHistory(kata);
+  } else if (hasil.status === 'mirip') {
+    tampilMirip(hasil);
+  } else {
+    tampilTidakAda(kata);
+  }
+}
+
+function cariLokal(kata) {
+  if (kamus[kata]) return { status:'ketemu', kata, ...kamus[kata] };
+  const mirip = Object.entries(kamus)
+    .filter(([k]) => k.includes(kata) || kata.includes(k.slice(0,3)))
+    .map(([k,v]) => ({ kata:k, ...v }))
+    .slice(0,9);
+  if (mirip.length) return { status:'mirip', kata, hasil:mirip };
+  return { status:'tidak_ada', kata };
+}
+
+function onInput() {
+  const v = document.getElementById('inputKata').value.toLowerCase().trim();
+  if (!v) { clearHasil(); return; }
+  // Suggest saat ketik (3+ karakter)
+  if (v.length >= 2) {
+    const saran = Object.keys(kamus).filter(k => k.startsWith(v)).slice(0,5);
+    // bisa ditambah autocomplete dropdown jika perlu
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// TAMPIL HASIL
+// ══════════════════════════════════════════════════════
+function tampilHasil(d) {
+  setStatus('✅ Ketemu · ' + d.kategori, 'ok');
+  const contoh = contohKalimat[d.kata];
+
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu">
+      <div class="kartu-top">
+        <div class="kata-utama">${d.kata}</div>
+        <div class="badge-kat">${d.kategori}</div>
+      </div>
+      <hr class="divider">
+      <div class="baris">
+        <div class="lbl">🇮🇩 Indonesia</div>
+        <div class="val">${d.indonesia}</div>
+      </div>
+      <div class="baris">
+        <div class="lbl">🛒 Basa Pasar</div>
+        <div class="val-pasar">${d.pasar}</div>
+      </div>
+      <hr class="divider">
+      <div class="tts-row">
+        <button class="tts-btn" id="btnTtsKata" onclick="ttsPlay('${d.kata}','jv',this)">
+          🔊 Dengar Kata
+        </button>
+        <button class="tts-btn" onclick="ttsPlay('${d.indonesia}','id',this)">
+          🔈 Bahasa Indonesia
+        </button>
+        ${contoh ? `<button class="tts-btn" onclick="ttsPlay('${contoh.indr}','jv',this)">
+          💬 Contoh Kalimat
+        </button>` : ''}
+      </div>
+      ${contoh ? `
+      <div class="contoh-box" id="contohBox">
+        <div>🗣️ <span class="contoh-kata">Indramayu:</span><br>"${contoh.indr}"</div>
+        <div style="margin-top:8px">🇮🇩 <span class="contoh-kata">Indonesia:</span><br>"${contoh.indo}"</div>
+      </div>` : ''}
+    </div>`;
+
+  // Auto play suara setelah 400ms
+  setTimeout(() => {
+    const btn = document.getElementById('btnTtsKata');
+    if (btn) ttsPlay(d.kata, 'jv', btn);
+  }, 400);
+}
+
+function tampilMirip(d) {
+  setStatus(`🔎 ${d.hasil.length} kata mirip "${d.kata}"`, 'info');
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu">
+      <div style="font-size:11px;color:var(--teks-redup);letter-spacing:2px;margin-bottom:12px;">
+        MIRIP DENGAN "${d.kata.toUpperCase()}"
+      </div>
+      <div class="mirip-grid">
+        ${d.hasil.map(h => `
+          <div class="mirip-item" onclick="pilihKata('${h.kata}')">
+            <div class="mi-kata">${h.kata}</div>
+            <div class="mi-arti">${h.indonesia}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function tampilTidakAda(kata) {
+  setStatus(`😕 "${kata}" tidak ditemukan`, 'err');
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:10px">🤔</div>
+      <div style="color:var(--emas);font-size:18px;">"${kata}"</div>
+      <div style="color:var(--teks-redup);margin-top:8px;font-size:13px;">
+        Kata tidak ada di kamus.<br>Coba kata acak atau filter kategori di atas.
+      </div>
+    </div>`;
+}
+
+function pilihKata(kata) {
+  document.getElementById('inputKata').value = kata;
+  cari();
+}
+
+// ══════════════════════════════════════════════════════
+// CONTOH KALIMAT TOGGLE
+// ══════════════════════════════════════════════════════
+function showContoh() {
+  const box = document.getElementById('contohBox');
+  if (box) box.classList.toggle('show');
+  else if (kataTerakhir) {
+    setStatus('💬 Tidak ada contoh kalimat untuk "' + kataTerakhir + '"', 'info');
+  } else {
+    setStatus('💬 Cari kata dulu!', 'info');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// KATA ACAK
+// ══════════════════════════════════════════════════════
+function acakKata() {
+  const keys = Object.keys(kamus);
+  const k    = keys[Math.floor(Math.random() * keys.length)];
+  document.getElementById('inputKata').value = k;
+  const d = { status:'ketemu', kata:k, ...kamus[k] };
+  tampilHasil(d);
+  simpanHistory(k);
+  document.getElementById('browserGrid').innerHTML = '';
+}
+
+// ══════════════════════════════════════════════════════
+// CLEAR
+// ══════════════════════════════════════════════════════
+function clearHasil() {
+  document.getElementById('hasilBox').innerHTML  = '';
+  document.getElementById('browserGrid').innerHTML = '';
+  document.getElementById('inputKata').value     = '';
+  kataTerakhir = '';
+  setStatus('Siap', '');
+  if (audio) { audio.pause(); audio = null; }
+}
+
+// ══════════════════════════════════════════════════════
+// FILTER KATEGORI
+// ══════════════════════════════════════════════════════
+function filterKat(kat, el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('aktif'));
+  el.classList.add('aktif');
+  document.getElementById('hasilBox').innerHTML = '';
+
+  let data = Object.entries(kamus).map(([k,v]) => ({ kata:k, ...v }));
+  if (kat) data = data.filter(d => d.kategori === kat);
+
+  setStatus(`📚 ${data.length} kata${kat ? ' · ' + kat : ''}`, 'info');
+
+  document.getElementById('browserGrid').innerHTML = data.map(d => `
+    <div class="mirip-item" onclick="pilihKata('${d.kata}')">
+      <div class="mi-kata">${d.kata}</div>
+      <div class="mi-arti">${d.indonesia}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// HISTORY PENCARIAN
+// ══════════════════════════════════════════════════════
+function simpanHistory(kata) {
+  searchHistory = [kata, ...searchHistory.filter(h => h !== kata)].slice(0, 8);
+  localStorage.setItem('icm_kamus_history', JSON.stringify(searchHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const row = document.getElementById('historyRow');
+  if (!searchHistory.length) { row.style.display = 'none'; return; }
+  row.style.display = 'flex';
+  row.innerHTML = '<span style="font-size:10px;color:var(--teks-redup);align-self:center;letter-spacing:1px;white-space:nowrap;">🕐</span>'
+    + searchHistory.map(k =>
+        `<div class="history-chip" onclick="pilihKata('${k}')">${k}</div>`
+      ).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// TICKER
+// ══════════════════════════════════════════════════════
+function initTicker() {
+  const data = Object.entries(kamus).slice(0, 20).map(([k,v]) => ({ kata:k, arti:v.indonesia }));
+  const all  = [...data, ...data]; // duplikat untuk seamless
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = all.map(d =>
+    `<div class="ticker-item" onclick="pilihKata('${d.kata}')">${d.kata} <span>= ${d.arti}</span></div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// FILTER CHIPS DARI KAMUS
+// ══════════════════════════════════════════════════════
+function initFilter() {
+  const stats = {};
+  const iconMap = {
+    'Kata Ganti':'👤','Kata Tanya':'❓','Penunjuk':'👉',
+    'Kata Kerja':'🏃','Kata Sifat':'🎨','Waktu':'🕐',
+    'Umum':'📖','Partikel':'💬','Tukang':'🔨'
+  };
+  Object.values(kamus).forEach(v => { stats[v.kategori] = (stats[v.kategori]||0)+1; });
+
+  const total = Object.keys(kamus).length;
+  document.getElementById('totalChip').textContent = total;
+
+  const row = document.getElementById('filterRow');
+  Object.entries(stats).forEach(([k, n]) => {
+    const ic  = iconMap[k] || '📝';
+    const div = document.createElement('div');
+    div.className = 'filter-chip';
+    div.innerHTML = `${ic} ${k} <span>${n}</span>`;
+    div.onclick   = () => filterKat(k, div);
+    row.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// STATUS
+// ══════════════════════════════════════════════════════
+function setStatus(msg, tipe) {
+  const el = document.getElementById('statusBar');
+  el.textContent = msg;
+  el.className   = 'status-bar ' + (tipe || '');
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+window.onload = () => {
+  initTicker();
+  initFilter();
+  renderHistory();
+  setStatus('Siap · ' + Object.keys(kamus).length + ' kata tersedia', 'ok');
+  // Tampilkan kata acak saat buka
+  setTimeout(acakKata, 600);
+};
+
+// Enter = cari
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.id === 'inputKata') cari();
+});
+</script>
+</body>
+</html>
+
+
+Nanti android  member muncul tekan popup
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indramayu Club - Halaman 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f0f2f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══ TOP NAVBAR ═══ */
+.topnav {
+  position: sticky; top:0; z-index:200;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex; align-items: center;
+  padding: 0 16px;
+  height: 56px;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.nav-logo {
+  display:flex; align-items:center; gap:8px;
+  font-family:'Cinzel',serif; font-size:15px; font-weight:700;
+  color: #1a6b3a; white-space:nowrap;
+}
+.nav-logo span { font-size:20px; color:#C9A84C; }
+.nav-search {
+  flex:1; max-width:240px;
+  background:#f0f2f5; border:none; border-radius:20px;
+  padding: 8px 14px; font-size:13px; color:#333; outline:none;
+}
+.nav-links {
+  display:flex; gap:2px; flex:1; justify-content:center;
+}
+.nav-link {
+  padding: 8px 18px; border-radius:8px; font-size:13px; font-weight:600;
+  color:#65676B; cursor:pointer; border-bottom:3px solid transparent;
+  transition:all 0.15s;
+}
+.nav-link:hover { background:#f0f2f5; color:#1a6b3a; }
+.nav-link.active { color:#1a6b3a; border-bottom-color:#1a6b3a; }
+.nav-right { display:flex; gap:8px; align-items:center; }
+.nav-btn {
+  width:36px; height:36px; border-radius:50%; background:#f0f2f5;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; cursor:pointer; position:relative;
+}
+.nav-btn:hover { background:#e4e6eb; }
+.nbadge {
+  position:absolute; top:-2px; right:-2px;
+  background:#e41e3f; color:#fff; font-size:9px; font-weight:700;
+  min-width:16px; height:16px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff; padding:0 3px;
+}
+
+/* ═══ TICKER BAHASA INDRAMAYU ═══ */
+.ticker-bar {
+  background: linear-gradient(135deg, #1a3a2a, #0d2010);
+  border-bottom: 2px solid #C9A84C;
+  padding: 6px 0;
+  overflow: hidden;
+  position: relative;
+}
+.ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: #C9A84C; color: #000;
+  font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  padding: 0 12px;
+  display: flex; align-items: center;
+  z-index: 2; white-space: nowrap;
+}
+.ticker-track {
+  display: flex;
+  animation: ticker 30s linear infinite;
+  padding-left: 100px;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  white-space: nowrap; font-size: 12px; color: #C9A84C;
+  padding: 0 32px; letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.ticker-item span { color: rgba(255,255,255,0.6); font-size: 10px; margin-left: 4px; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ═══ MAIN LAYOUT ═══ */
+.main-layout {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 16px 12px;
+  gap: 16px;
+}
+
+/* ═══ LEFT SIDEBAR ═══ */
+.left-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  display:flex; flex-direction:column; gap:8px;
+}
+
+.sidebar-profile {
+  background:#fff; border-radius:12px;
+  padding:16px; text-align:center;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+.profile-avatar {
+  width:70px; height:70px; border-radius:50%; margin:0 auto 10px;
+  background:linear-gradient(135deg,#1a6b3a,#C9A84C);
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; font-weight:700; color:#fff;
+  font-family:'Cinzel',serif;
+  border:3px solid #C9A84C;
+}
+.profile-name { font-size:15px; font-weight:700; color:#1C1E21; }
+.profile-role { font-size:12px; color:#65676B; margin-top:3px; }
+/* SAPA KHAS — sapaan Indramayu di bawah profil */
+.profile-sapa {
+  margin-top: 8px; padding: 7px 10px;
+  background: linear-gradient(135deg,#f0fff4,#fffde7);
+  border: 1px solid #C9A84C40;
+  border-radius: 8px;
+  font-size: 12px; color: #1a6b3a;
+  font-style: italic; line-height: 1.5;
+  text-align: left;
+}
+.profile-sapa strong { color: #C9A84C; font-style: normal; font-size: 11px; display: block; margin-bottom: 2px; }
+.profile-badge {
+  display:inline-block; margin-top:8px;
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  color:#000; font-size:10px; font-weight:700;
+  padding:3px 10px; border-radius:10px; letter-spacing:0.05em;
+}
+.profile-stats {
+  display:flex; gap:0; margin-top:12px;
+  border-top:1px solid #f0f2f5; padding-top:12px;
+}
+.pstat { flex:1; text-align:center; }
+.pstat-val { font-size:15px; font-weight:700; color:#1C1E21; }
+.pstat-label { font-size:10px; color:#65676B; }
+
+/* LEFT MENU */
+.left-menu { background:#fff; border-radius:12px; padding:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+.menu-title { font-size:11px; font-weight:700; color:#65676B; letter-spacing:0.08em; text-transform:uppercase; padding:8px 8px 4px; }
+.menu-row {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border-radius:8px; cursor:pointer;
+  font-size:13px; font-weight:500; color:#1C1E21;
+  transition:background 0.12s;
+}
+.menu-row:hover { background:#f0f2f5; }
+.menu-row.active { background:#e8f5e9; color:#1a6b3a; font-weight:600; }
+.menu-icon-box {
+  width:32px; height:32px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+/* sub-label Indramayu di menu */
+.menu-sub { font-size:9px; color:#C9A84C; font-weight:400; display:block; margin-top:1px; }
+
+/* MINI CARDS */
+.mini-cards { display:flex; flex-direction:column; gap:8px; }
+.mini-card {
+  background:#fff; border-radius:12px; padding:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1); cursor:pointer;
+  transition:transform 0.12s, box-shadow 0.12s;
+  border-left:3px solid #C9A84C;
+}
+.mini-card:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,0.15); }
+.mc-label { font-size:10px; color:#65676B; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+.mc-val { font-size:18px; font-weight:700; color:#1a6b3a; margin:2px 0; }
+.mc-sub { font-size:11px; color:#65676B; }
+.mc-bar { height:4px; background:#f0f2f5; border-radius:2px; margin-top:8px; overflow:hidden; }
+.mc-fill { height:100%; background:linear-gradient(90deg,#1a6b3a,#C9A84C); border-radius:2px; }
+
+/* KAMUS MINI CARD — di sidebar kiri */
+.kamus-card {
+  background: linear-gradient(135deg,#1a3a2a,#0d2010);
+  border-radius: 12px; padding: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  cursor: pointer;
+}
+.kamus-card-title { font-size: 11px; color: rgba(201,168,76,0.7); font-weight:700; letter-spacing: 1px; text-transform: uppercase; }
+.kamus-kata-of-day { font-size: 22px; color: #C9A84C; font-family:'Cinzel',serif; font-weight:700; margin: 6px 0 2px; }
+.kamus-arti { font-size: 12px; color: rgba(255,255,255,0.7); }
+.kamus-pasar { font-size: 11px; color: rgba(201,168,76,0.6); font-style: italic; margin-top:2px; }
+.kamus-tts-btn {
+  margin-top: 8px; display:flex; align-items:center; gap:5px;
+  background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 6px; padding: 5px 10px; color: #C9A84C;
+  font-size: 11px; cursor: pointer; width: 100%;
+  transition: background 0.2s;
+}
+.kamus-tts-btn:hover { background: rgba(201,168,76,0.3); }
+
+/* ═══ CENTER FEED ═══ */
+.center-feed {
+  flex:1; min-width:0;
+  display:flex; flex-direction:column; gap:12px;
+}
+
+/* STORY BAR */
+.story-bar {
+  background:#fff; border-radius:12px; padding:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  display:flex; gap:8px; overflow-x:auto;
+}
+.story-bar::-webkit-scrollbar { display:none; }
+.story-item {
+  flex-shrink:0; width:80px; height:110px; border-radius:10px;
+  position:relative; cursor:pointer; overflow:hidden;
+}
+.story-bg {
+  width:100%; height:100%; border-radius:10px;
+  display:flex; align-items:flex-end; justify-content:center;
+  padding-bottom:8px; font-size:10px; font-weight:600; color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+}
+.story-avatar {
+  position:absolute; top:8px; left:8px;
+  width:28px; height:28px; border-radius:50%;
+  border:2px solid #C9A84C;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; background:#1a6b3a;
+}
+.story-add {
+  background:#f0f2f5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; font-size:11px; color:#65676B; font-weight:500;
+}
+.story-add-icon {
+  width:32px; height:32px; border-radius:50%; background:#1a6b3a;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; color:#fff;
+}
+
+/* POST COMPOSER */
+.post-composer {
+  background:#fff; border-radius:12px; padding:12px 16px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+.composer-top {
+  display:flex; gap:10px; align-items:center;
+}
+.composer-av {
+  width:38px; height:38px; border-radius:50%; background:#1a6b3a;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#fff; font-family:'Cinzel',serif; flex-shrink:0;
+}
+.composer-input {
+  flex:1; background:#f0f2f5; border:none; border-radius:20px;
+  padding:9px 14px; font-size:13px; color:#1C1E21; cursor:pointer;
+  outline:none;
+}
+.composer-input::placeholder { color:#65676B; }
+.composer-actions {
+  display:flex; gap:4px; margin-top:10px; padding-top:10px;
+  border-top:1px solid #f0f2f5;
+}
+.comp-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:5px;
+  padding:7px; border-radius:8px; font-size:12px; font-weight:600;
+  cursor:pointer; color:#65676B; transition:background 0.12s;
+}
+.comp-btn:hover { background:#f0f2f5; }
+
+/* FEED POST */
+.feed-post {
+  background:#fff; border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  overflow:hidden;
+}
+.post-header {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px 8px;
+}
+.post-av {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#fff; font-family:'Cinzel',serif; flex-shrink:0;
+}
+.post-info { flex:1; }
+.post-name { font-size:14px; font-weight:700; color:#1C1E21; }
+.post-meta { font-size:12px; color:#65676B; }
+.post-more { font-size:18px; color:#65676B; cursor:pointer; padding:4px 8px; border-radius:6px; }
+.post-more:hover { background:#f0f2f5; }
+.post-text { padding:0 16px 10px; font-size:14px; color:#1C1E21; line-height:1.6; }
+
+/* KATA INDRAMAYU INLINE di post */
+.indr-word {
+  display: inline-block;
+  background: #fffde7;
+  border: 1px solid #C9A84C60;
+  border-radius: 4px;
+  padding: 0 5px;
+  color: #7a5c1e;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s;
+  position: relative;
+}
+.indr-word:hover { background: #fff9c4; }
+.indr-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 130%; left: 50%; transform: translateX(-50%);
+  background: #1a3a2a; color: #C9A84C;
+  font-size: 11px; font-weight: 400;
+  padding: 5px 10px; border-radius: 6px;
+  white-space: nowrap; z-index: 20;
+  border: 1px solid rgba(201,168,76,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+.indr-word:hover .indr-tooltip { display: block; }
+
+/* POST IMAGE */
+.post-img {
+  width:100%; background:#f0f2f5;
+  display:flex; align-items:center; justify-content:center;
+  font-size:48px; min-height:180px;
+  background:linear-gradient(135deg,#1a3a2a,#0d1a12);
+  color:#C9A84C; letter-spacing:0.1em;
+  font-family:'Cinzel',serif; font-size:20px; font-weight:700;
+  text-align:center; padding:20px;
+  touch-action: pinch-zoom;
+  cursor: zoom-in;
+}
+.post-img.zoomed { cursor:zoom-out; }
+
+/* REACTION BAR */
+.reaction-summary {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 16px; border-bottom:1px solid #f0f2f5;
+  font-size:13px; color:#65676B;
+}
+.reaction-bar {
+  display:flex; border-top:1px solid #f0f2f5;
+}
+.react-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:5px;
+  padding:8px; font-size:13px; font-weight:600; color:#65676B;
+  cursor:pointer; transition:background 0.12s;
+  position:relative;
+}
+.react-btn:hover { background:#f0f2f5; }
+.react-btn.liked { color:#e41e3f; }
+.react-popup {
+  display:none; position:absolute;
+  bottom:48px; left:0;
+  background:#fff; border-radius:30px;
+  padding:8px 12px; gap:6px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  border:1px solid #ddd;
+  flex-direction:row;
+  z-index:10; white-space:nowrap;
+}
+.react-btn:hover .react-popup { display:flex; }
+.react-emoji {
+  font-size:24px; cursor:pointer; transition:transform 0.12s;
+  display:inline-block;
+}
+.react-emoji:hover { transform:scale(1.4) translateY(-4px); }
+
+/* COMMENTS */
+.comments-section { padding:8px 16px 12px; }
+.comment-input-row {
+  display:flex; gap:8px; align-items:center; margin-bottom:10px;
+}
+.comment-av {
+  width:30px; height:30px; border-radius:50%; background:#1a6b3a;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:#fff; flex-shrink:0;
+}
+.comment-box {
+  flex:1; background:#f0f2f5; border:none; border-radius:16px;
+  padding:7px 12px; font-size:13px; outline:none; color:#1C1E21;
+}
+.comment-box::placeholder { color:#65676B; }
+.comment-item {
+  display:flex; gap:8px; margin-bottom:8px;
+  padding-bottom:8px; border-bottom:1px solid #f5f5f5;
+}
+.comment-item:last-child { border-bottom:none; margin-bottom:0; }
+.comment-body {
+  background:#f0f2f5; border-radius:12px; padding:7px 11px; flex:1;
+}
+.comment-author { font-size:12px; font-weight:700; color:#1C1E21; }
+.comment-text { font-size:13px; color:#1C1E21; margin-top:2px; line-height:1.4; }
+.comment-actions { display:flex; gap:10px; margin-top:4px; padding-left:2px; }
+.comment-act { font-size:11px; color:#65676B; cursor:pointer; font-weight:600; }
+.comment-act:hover { color:#1a6b3a; }
+.comment-gender { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:600; }
+.g-male   { background:#e8f0fe; color:#1a73e8; }
+.g-female { background:#fce4ec; color:#e91e63; }
+
+/* ═══ RIGHT SIDEBAR ═══ */
+.right-sidebar {
+  width: 240px; flex-shrink:0;
+  display:flex; flex-direction:column; gap:10px;
+}
+
+/* POP YOO CARD */
+.pop-yoo {
+  background:#fff; border-radius:12px; overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+.pop-yoo-header {
+  background:linear-gradient(135deg,#1a3a2a,#0d2010);
+  padding:12px 14px 10px;
+  border-bottom:2px solid #C9A84C;
+}
+.pop-yoo-title { font-family:'Cinzel',serif; font-size:13px; color:#C9A84C; font-weight:700; }
+.pop-yoo-sub { font-size:10px; color:rgba(201,168,76,0.6); margin-top:2px; }
+.pop-yoo-body { padding:10px; }
+.live-member {
+  display:flex; align-items:center; gap:8px;
+  padding:6px 8px; border-radius:8px; cursor:pointer;
+  transition:background 0.12s; margin-bottom:2px;
+}
+.live-member:hover { background:#f0f2f5; }
+.lm-av {
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; color:#fff; font-weight:700; position:relative;
+}
+.online-dot {
+  position:absolute; bottom:0; right:0;
+  width:10px; height:10px; border-radius:50%; background:#31a24c;
+  border:2px solid #fff;
+}
+.lm-info { flex:1; }
+.lm-name { font-size:12px; font-weight:600; color:#1C1E21; }
+.lm-status { font-size:11px; color:#65676B; }
+.lm-badge { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:600; }
+.b-gold     { background:#FFF8E1; color:#F9A825; }
+.b-silver   { background:#ECEFF1; color:#546E7A; }
+.b-platinum { background:#E8EAF6; color:#3949AB; }
+.b-bronze   { background:#FBE9E7; color:#BF360C; }
+
+/* VOUCHER CARD */
+.voucher-card {
+  background:linear-gradient(135deg,#1a3a2a,#0d2010);
+  border-radius:12px; padding:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  border:1px solid rgba(201,168,76,0.3);
+  position:relative; overflow:hidden;
+}
+.voucher-card::before {
+  content:''; position:absolute;
+  top:-30px; right:-30px; width:100px; height:100px;
+  border-radius:50%; background:rgba(201,168,76,0.08);
+}
+.vc-label { font-size:10px; color:rgba(201,168,76,0.7); font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+.vc-title { font-family:'Cinzel',serif; font-size:14px; color:#C9A84C; font-weight:700; margin:4px 0; }
+.vc-desc { font-size:11px; color:rgba(255,255,255,0.6); line-height:1.4; }
+.vc-btn {
+  margin-top:10px; width:100%; padding:8px;
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  border:none; border-radius:8px; font-size:12px; font-weight:700;
+  color:#0a0a0a; cursor:pointer;
+}
+
+/* TRENDING */
+.trending-card {
+  background:#fff; border-radius:12px; padding:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+.tc-title { font-size:13px; font-weight:700; color:#1C1E21; margin-bottom:10px; }
+.trend-item {
+  display:flex; align-items:center; gap:8px;
+  padding:5px 0; border-bottom:1px solid #f5f5f5; cursor:pointer;
+}
+.trend-item:last-child { border-bottom:none; }
+.trend-num { font-size:12px; font-weight:700; color:#C9A84C; width:18px; }
+.trend-text { flex:1; font-size:12px; color:#1C1E21; }
+.trend-count { font-size:11px; color:#65676B; }
+
+/* ═══ KAMUS PANEL di right sidebar ═══ */
+.kamus-panel {
+  background:#fff; border-radius:12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.kamus-panel-head {
+  background: linear-gradient(135deg,#1a3a2a,#0d2010);
+  padding: 10px 14px;
+  border-bottom: 2px solid #C9A84C;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kamus-panel-title { font-family:'Cinzel',serif; font-size:12px; color:#C9A84C; font-weight:700; }
+.kamus-panel-sub { font-size:10px; color:rgba(201,168,76,0.6); margin-top:1px; }
+.kamus-search-wrap { padding: 10px; display:flex; gap:6px; }
+.kamus-search-inp {
+  flex:1; background:#f0f2f5; border:none; border-radius:12px;
+  padding:6px 10px; font-size:12px; outline:none; color:#1C1E21;
+}
+.kamus-search-btn {
+  width:28px; height:28px; border-radius:50%;
+  background:#1a6b3a; border:none; color:#fff;
+  font-size:12px; cursor:pointer; display:flex;
+  align-items:center; justify-content:center; flex-shrink:0;
+}
+.kamus-result {
+  padding: 0 10px 10px;
+  display: none;
+}
+.kamus-result.show { display:block; }
+.kr-kata { font-size:16px; font-weight:700; color:#1a6b3a; font-family:'Cinzel',serif; }
+.kr-arti { font-size:12px; color:#1C1E21; margin-top:2px; }
+.kr-pasar { font-size:11px; color:#65676B; font-style:italic; margin-top:1px; }
+.kr-kategori { font-size:10px; color:#C9A84C; font-weight:600; margin-top:4px; }
+.kr-tts { 
+  margin-top:6px; padding:4px 8px; background:#e8f5e9;
+  border:none; border-radius:6px; color:#1a6b3a;
+  font-size:11px; font-weight:600; cursor:pointer; width:100%;
+}
+.kr-tts:hover { background:#c8e6c9; }
+.kr-not-found { font-size:12px; color:#65676B; font-style:italic; text-align:center; padding:4px 0; }
+
+/* ═══ ZOOMABLE ═══ */
+.zoomable { touch-action: pinch-zoom; }
+.pinch-hint {
+  text-align:center; font-size:10px; color:#aaa;
+  padding:4px; letter-spacing:0.05em;
+}
+
+/* ═══ MESSENGER POPUP ═══ */
+.msg-popup {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.5); z-index:300;
+  align-items:flex-end; justify-content:flex-end;
+  padding:16px;
+}
+.msg-popup.show { display:flex; }
+.msg-box {
+  width:340px; background:#fff; border-radius:16px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.3); overflow:hidden;
+  display:flex; flex-direction:column; max-height:500px;
+}
+.msg-head {
+  background: linear-gradient(135deg,#1a3a2a,#1a6b3a);
+  color:#fff; padding:12px 16px;
+  display:flex; align-items:center; gap:10px;
+  border-bottom: 2px solid #C9A84C;
+}
+.msg-head-title { flex:1; font-size:14px; font-weight:700; }
+.msg-head-sub { font-size:10px; color:rgba(201,168,76,0.8); }
+.msg-close { font-size:20px; cursor:pointer; opacity:0.8; }
+.msg-close:hover { opacity:1; }
+.msg-body { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
+.msg-bubble {
+  max-width:80%; padding:8px 12px; border-radius:16px;
+  font-size:13px; line-height:1.5;
+}
+.msg-bubble.out { background:#1a6b3a; color:#fff; align-self:flex-end; border-radius:16px 16px 4px 16px; }
+.msg-bubble.in  { background:#f0f2f5; color:#1C1E21; align-self:flex-start; border-radius:16px 16px 16px 4px; }
+/* Badge Indramayu di bubble */
+.msg-bubble .indr-tag {
+  display:inline-block; background:#fffde7;
+  border:1px solid #C9A84C60; border-radius:3px;
+  padding:0 4px; color:#7a5c1e; font-size:11px; font-weight:600;
+  margin:0 1px;
+}
+.msg-bubble .tts-mini {
+  display:inline-block; cursor:pointer; margin-left:4px;
+  font-size:13px; vertical-align:middle;
+}
+/* Quick reply chips di messenger */
+.msg-chips { padding:6px 10px; display:flex; gap:6px; flex-wrap:wrap; border-top:1px solid #f0f2f5; }
+.msg-chip {
+  background:#e8f5e9; border:1px solid #1a6b3a40;
+  border-radius:12px; padding:4px 10px; font-size:11px;
+  color:#1a6b3a; font-weight:600; cursor:pointer;
+  transition:background 0.12s; white-space:nowrap;
+}
+.msg-chip:hover { background:#c8e6c9; }
+.msg-footer { padding:10px 12px; border-top:1px solid #f0f2f5; display:flex; gap:8px; }
+.msg-input { flex:1; background:#f0f2f5; border:none; border-radius:20px; padding:8px 14px; font-size:13px; outline:none; }
+.msg-send { width:36px; height:36px; border-radius:50%; background:#1a6b3a; border:none; color:#fff; font-size:16px; cursor:pointer; }
+.msg-typing { font-size:11px; color:#65676B; padding:4px 12px; font-style:italic; display:none; }
+.msg-typing.show { display:block; }
+
+@media (max-width:768px) {
+  .main-layout { flex-direction:column; padding:8px; gap:8px; }
+  .left-sidebar, .right-sidebar { width:100%; }
+  .nav-links { display:none; }
+  .ticker-bar { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <div class="nav-logo">
+    <span>ꦆ</span> Indramayu Club
+  </div>
+  <input class="nav-search" placeholder="🔍  Cari...">
+  <div class="nav-links">
+    <div style="display:flex; flex-direction:column; gap:4px;">
+  <label for="menu-dropdown-dev" style="font-size:10px; color:var(--warna-emas); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN UTAMA</label>
+  <select id="menu-dropdown-dev" onchange="pindahHalamanOtomatis(this.value)" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid var(--warna-border); padding:10px; color:#fff; border-radius:6px; outline:none; font-size:13px; font-weight:500;">
+    <option value="">-- Menu Navigasi Sektor --</option>
+    <option value="administrasi">🏠 Sektor Administrasi / Beranda</option>
+    <option value="android">🤖 Sektor Aplikasi Android Terminal</option>
+    <option value="kamus">📖 Sektor Kamus Makrifat</option>
+    <option value="halaman2">📊 Sektor Laporan & Data Terpadu</option>
+  </select>
+</div>
+
+  <div class="nav-right">
+    <div class="nav-btn" onclick="toggleMsg()">💬 <div class="nbadge">5</div></div>
+    <div class="nav-btn">🔔 <div class="nbadge">9</div></div>
+    <div class="nav-btn" style="background:linear-gradient(135deg,#1a6b3a,#C9A84C);color:#fff;font-family:Cinzel,serif;font-weight:700;">J</div>
+  </div>
+</div>
+
+<!-- ═══ TICKER BAHASA INDRAMAYU ═══ -->
+<div class="ticker-bar">
+  <div class="ticker-label">📖 BASA DERMAYU</div>
+  <div class="ticker-track" id="tickerTrack">
+    <!-- Diisi oleh JS -->
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout">
+
+  <!-- ══ LEFT SIDEBAR ══ -->
+  <div class="left-sidebar">
+
+    <!-- Profile Card -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">J</div>
+      <div class="profile-name">Pak Jamhari</div>
+      <div class="profile-role">Admin Utama · Indramayu Club</div>
+      <!-- SAPAAN INDRAMAYU -->
+      <div class="profile-sapa" id="sapaBox">
+        <strong>💬 Basa Dermayu</strong>
+        <span id="sapaText">Sugeng enjing, Pak Jamhari! Priben kabare?</span>
+      </div>
+      <div class="profile-badge">⭐ PLATINUM</div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="pstat-val">248</div><div class="pstat-label">Member</div></div>
+        <div class="pstat"><div class="pstat-val">37</div><div class="pstat-label">Post</div></div>
+        <div class="pstat"><div class="pstat-val">12</div><div class="pstat-label">Online</div></div>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="left-menu">
+      <div class="menu-title">Menu</div>
+      <div class="menu-row active">
+        <div class="menu-icon-box" style="background:#e8f5e9;">🏠</div>
+        <div>Beranda <span class="menu-sub">Omah</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#e3f2fd;">👥</div>
+        <div>Anggota <span class="menu-sub">Batur / Kanca</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#f3e5f5;">🗂️</div>
+        <div>Galeri <span class="menu-sub">Gambar</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#fff3e0;">🛒</div>
+        <div>Toko <span class="menu-sub">Tuku / Dagangan</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#fce4ec;">💰</div>
+        <div>Bank Makrifat <span class="menu-sub">Gawe duit</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#e0f2f1;">🤖</div>
+        <div>Nur AI <span class="menu-sub">Batur digital</span></div>
+      </div>
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#f1f8e9;">📊</div>
+        <div>Laporan <span class="menu-sub">Lapuran</span></div>
+      </div>
+    </div>
+
+    <!-- Mini Cards -->
+    <div class="mini-cards">
+      <div class="mini-card">
+        <div class="mc-label">Saldo Kas · <em style="color:#C9A84C;font-style:normal;font-size:9px;">Duwit Kas</em></div>
+        <div class="mc-val">Rp 12,45Jt</div>
+        <div class="mc-sub">5% setoran aktif</div>
+        <div class="mc-bar"><div class="mc-fill" style="width:72%"></div></div>
+      </div>
+      <div class="mini-card" style="border-left-color:#1a6b3a;">
+        <div class="mc-label">Member Aktif · <em style="color:#1a6b3a;font-style:normal;font-size:9px;">Batur Aktif</em></div>
+        <div class="mc-val">248 / 300</div>
+        <div class="mc-sub">Slot tersisa 52</div>
+        <div class="mc-bar"><div class="mc-fill" style="width:83%"></div></div>
+      </div>
+      <div class="mini-card" style="border-left-color:#1a73e8;">
+        <div class="mc-label">Nur AI</div>
+        <div class="mc-val">● Online</div>
+        <div class="mc-sub">v3.2 · port 11434</div>
+      </div>
+    </div>
+
+    <!-- KAMUS KATA HARI INI -->
+    <div class="kamus-card" onclick="bunyikanKataHariIni()">
+      <div class="kamus-card-title">📖 Kata Hari Ini</div>
+      <div class="kamus-kata-of-day" id="kotdKata">mangan</div>
+      <div class="kamus-arti" id="kotdArti">🇮🇩 makan</div>
+      <div class="kamus-pasar" id="kotdPasar">🛒 mangan / madang / nguntal</div>
+      <button class="kamus-tts-btn" onclick="event.stopPropagation();bunyikanKataHariIni()">
+        🔊 Dengar ucapan
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ══ CENTER FEED ══ -->
+  <div class="center-feed">
+
+    <!-- Stories -->
+    <div class="story-bar">
+      <div class="story-item">
+        <div class="story-bg story-add">
+          <div class="story-add-icon">＋</div>
+          Buat Story
+        </div>
+      </div>
+      <div class="story-item">
+        <div class="story-bg zoomable" style="background:linear-gradient(135deg,#1a3a2a,#C9A84C);">
+          <div class="story-avatar">J</div>
+          Pak Jamhari
+        </div>
+      </div>
+      <div class="story-item">
+        <div class="story-bg zoomable" style="background:linear-gradient(135deg,#0d2040,#1565C0);">
+          <div class="story-avatar" style="background:#1565C0;">A</div>
+          Ahmad
+        </div>
+      </div>
+      <div class="story-item">
+        <div class="story-bg zoomable" style="background:linear-gradient(135deg,#4a0040,#e91e63);">
+          <div class="story-avatar" style="background:#e91e63;">S</div>
+          Siti
+        </div>
+      </div>
+      <div class="story-item">
+        <div class="story-bg zoomable" style="background:linear-gradient(135deg,#1a2a00,#558B2F);">
+          <div class="story-avatar" style="background:#558B2F;">R</div>
+          Rahmat
+        </div>
+      </div>
+    </div>
+
+    <!-- Post Composer -->
+    <div class="post-composer">
+      <div class="composer-top">
+        <div class="composer-av">J</div>
+        <input class="composer-input" id="composerInput"
+          placeholder="Apa sing dipikir, Pak Jamhari? (Apa yang Bapak pikirkan?)">
+      </div>
+      <div class="composer-actions">
+        <div class="comp-btn">🎥 Live</div>
+        <div class="comp-btn">🖼️ Foto/Video</div>
+        <div class="comp-btn">😊 Perasaan · <em style="font-style:normal;color:#C9A84C;font-size:10px;">Rasa</em></div>
+      </div>
+    </div>
+
+    <!-- POST 1 — Indramayu Club -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-av" style="background:linear-gradient(135deg,#1a6b3a,#C9A84C);">ꦆ</div>
+        <div class="post-info">
+          <div class="post-name">Indramayu Club Makrifat</div>
+          <div class="post-meta">Admin Utama · 2 jam lalu · 🌐</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-text">
+        🌟 <strong>Selamat datang di platform komunitas Indramayu Club!</strong><br>
+        <span class="indr-word">Sugeng rawuh<div class="indr-tooltip">🇮🇩 Selamat datang · Basa Dermayu</div></span>
+        ing platform komunitas digital kita.
+        Bersama kami membangun komunitas berbasis makrifat, teknologi, dan kearifan lokal.
+        Nur AI siap
+        <span class="indr-word">ngladeni<div class="indr-tooltip">🇮🇩 melayani · ngladeni = to serve</div></span>
+        24 jam.
+        <br><br>
+        <em style="color:#65676B;font-size:13px;">
+          "<span class="indr-word" onclick="ttsPlay('Aja lali marang bumi lan basa deweke',this)">Aja lali marang bumi lan basa deweke<div class="indr-tooltip">🇮🇩 Jangan lupa pada tanah dan bahasa sendiri</div></span>"
+          — Filosofi Indramayu Club
+        </em>
+      </div>
+      <div class="post-img zoomable" id="img1" onclick="toggleZoom(this)">
+        ꦆ INDRAMAYU CLUB<br>
+        <span style="font-size:12px;color:rgba(201,168,76,0.7);font-family:Inter,sans-serif;font-weight:400;">Makrifat Intelligence · Nur System v3.2</span>
+      </div>
+      <div class="pinch-hint">🤏 Cubit kanggo zoom · Cubit untuk zoom</div>
+      <div class="reaction-summary">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span>❤️👍😮</span> <span>147 reaksi</span>
+        </div>
+        <span>23 komentar · 8 dibagikan</span>
+      </div>
+      <div class="reaction-bar">
+        <div class="react-btn liked" style="position:relative;">
+          ❤️ Suka
+          <div class="react-popup">
+            <span class="react-emoji" title="Suka">👍</span>
+            <span class="react-emoji" title="Cinta">❤️</span>
+            <span class="react-emoji" title="Haha">😂</span>
+            <span class="react-emoji" title="Wow">😮</span>
+            <span class="react-emoji" title="Sedih">😢</span>
+            <span class="react-emoji" title="Marah">😡</span>
+            <span class="react-emoji" title="Voucher">🎫</span>
+          </div>
+        </div>
+        <div class="react-btn">💬 Komentar</div>
+        <div class="react-btn">↗️ Bagikan · <em style="font-style:normal;font-size:10px;color:#C9A84C;">Sebarke</em></div>
+      </div>
+      <div class="comments-section">
+        <div class="comment-item">
+          <div class="comment-av" style="background:#1565C0;">A</div>
+          <div>
+            <div class="comment-body">
+              <div class="comment-author">Ahmad Fauzi <span class="comment-gender g-male">♂ Laki</span></div>
+              <div class="comment-text">
+                MasyaAllah, platform sing <span class="indr-word">apik<div class="indr-tooltip">🇮🇩 bagus / keren · Basa Dermayu</div></span> banget Pak! Semoga Indramayu Club semakin maju 🙏
+              </div>
+            </div>
+            <div class="comment-actions">
+              <span class="comment-act">👍 Suka</span>
+              <span class="comment-act">💬 Balas</span>
+              <span class="comment-act" style="color:#aaa;">1 jam lalu</span>
+            </div>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div class="comment-av" style="background:#e91e63;">S</div>
+          <div>
+            <div class="comment-body">
+              <div class="comment-author">Siti Nurhaliza <span class="comment-gender g-female">♀ Perempuan</span></div>
+              <div class="comment-text">
+                Subhanallah keren banget! Nur AI-nya bisa <span class="indr-word">ngomong<div class="indr-tooltip">🇮🇩 bicara · ngomong = to speak</div></span> bahasa Indramayu juga? <span class="indr-word">Priben<div class="indr-tooltip">🇮🇩 bagaimana / gimana · Basa Dermayu</div></span> carane? 😊
+              </div>
+            </div>
+            <div class="comment-actions">
+              <span class="comment-act">👍 Suka</span>
+              <span class="comment-act">💬 Balas</span>
+              <span class="comment-act" style="color:#aaa;">45 menit lalu</span>
+            </div>
+          </div>
+        </div>
+        <!-- Balasan Admin pakai bahasa Indramayu -->
+        <div class="comment-item">
+          <div class="comment-av" style="background:linear-gradient(135deg,#1a6b3a,#C9A84C);">J</div>
+          <div>
+            <div class="comment-body" style="border:1px solid #C9A84C40;">
+              <div class="comment-author">Pak Jamhari <span class="comment-gender" style="background:#fff9c4;color:#7a5c1e;">★ Admin</span></div>
+              <div class="comment-text">
+                <span class="indr-word">Iya bener<div class="indr-tooltip">🇮🇩 Iya benar · Basa Dermayu</div></span>,
+                Nur AI wis iso <span class="indr-word">ngomong<div class="indr-tooltip">🇮🇩 bicara</div></span> basa Dermayu!
+                <span class="indr-word">Coba<div class="indr-tooltip">🇮🇩 Coba · sama saja</div></span> ketik kata Indramayu ing kamus sidebar, <span class="indr-word">belih<div class="indr-tooltip">🇮🇩 bukan? / kan? · penegas Indramayu</div></span> 🌟
+                <button onclick="ttsPlay('Iya bener, Nur AI wis iso ngomong basa Dermayu!', this)" style="background:none;border:none;cursor:pointer;font-size:13px;vertical-align:middle;" title="Dengar">🔊</button>
+              </div>
+            </div>
+            <div class="comment-actions">
+              <span class="comment-act">👍 Suka</span>
+              <span class="comment-act">💬 Balas</span>
+              <span class="comment-act" style="color:#aaa;">30 menit lalu</span>
+            </div>
+          </div>
+        </div>
+        <div class="comment-input-row">
+          <div class="comment-av">J</div>
+          <input class="comment-box" placeholder="Tulis komentar... (Basa Dermayu boleh!)">
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 2 — Game -->
+    <div class="feed-post">
+      <div class="post-header">
+        <div class="post-av" style="background:linear-gradient(135deg,#1565C0,#5B3FA0);">R</div>
+        <div class="post-info">
+          <div class="post-name">Rahmat Hidayat</div>
+          <div class="post-meta">Member Silver · 4 jam lalu</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-text">
+        Ada sing <span class="indr-word">gelem<div class="indr-tooltip">🇮🇩 mau / bersedia · Basa Dermayu</div></span> main <strong>Chess</strong> atau <strong>Clash of Clans</strong> bareng?
+        <span class="indr-word">Ayo<div class="indr-tooltip">🇮🇩 Ayo · sama, digunakan di Indramayu</div></span>
+        <span class="indr-word">gabung<div class="indr-tooltip">🇮🇩 bergabung / manjing</div></span> di folder Games! ⚔️♟️
+        <br><small style="color:#65676B;">(<em>Ada yang mau main bareng? Ayo bergabung!</em>)</small>
+      </div>
+      <div class="reaction-summary">
+        <span>👍😂 34 reaksi</span>
+        <span>12 komentar</span>
+      </div>
+      <div class="reaction-bar">
+        <div class="react-btn" style="position:relative;">
+          👍 Suka
+          <div class="react-popup">
+            <span class="react-emoji">👍</span><span class="react-emoji">❤️</span><span class="react-emoji">😂</span><span class="react-emoji">😮</span><span class="react-emoji">😢</span><span class="react-emoji">😡</span><span class="react-emoji">🎫</span>
+          </div>
+        </div>
+        <div class="react-btn">💬 Komentar</div>
+        <div class="react-btn">↗️ Bagikan</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ RIGHT SIDEBAR ══ -->
+  <div class="right-sidebar">
+
+    <!-- KAMUS PANEL -->
+    <div class="kamus-panel">
+      <div class="kamus-panel-head">
+        <div>
+          <div class="kamus-panel-title">📖 Kamus Dermayu</div>
+          <div class="kamus-panel-sub">Cari kata Indramayu</div>
+        </div>
+        <span style="font-size:18px;color:#C9A84C;">🔊</span>
+      </div>
+      <div class="kamus-search-wrap">
+        <input class="kamus-search-inp" id="kamusSideInput" placeholder="mangan, turu, seneng..."
+          onkeydown="if(event.key==='Enter')cariSide()">
+        <button class="kamus-search-btn" onclick="cariSide()">🔍</button>
+      </div>
+      <div class="kamus-result" id="kamusResult"></div>
+    </div>
+
+    <!-- POP YOO — Member Online -->
+    <div class="pop-yoo">
+      <div class="pop-yoo-header">
+        <div class="pop-yoo-title">✦ POP YOO — Live Member</div>
+        <div class="pop-yoo-sub">12 <span style="color:#C9A84C;">batur</span> lagi online</div>
+      </div>
+      <div class="pop-yoo-body">
+        <div class="live-member">
+          <div class="lm-av" style="background:#1565C0;">A <div class="online-dot"></div></div>
+          <div class="lm-info"><div class="lm-name">Ahmad Fauzi</div><div class="lm-status">Aktif saiki</div></div>
+          <span class="lm-badge b-silver">Silver</span>
+        </div>
+        <div class="live-member">
+          <div class="lm-av" style="background:#e91e63;">S <div class="online-dot"></div></div>
+          <div class="lm-info"><div class="lm-name">Siti Nurhaliza</div><div class="lm-status">Aktif saiki</div></div>
+          <span class="lm-badge b-gold">Gold</span>
+        </div>
+        <div class="live-member">
+          <div class="lm-av" style="background:#558B2F;">R <div class="online-dot"></div></div>
+          <div class="lm-info"><div class="lm-name">Rahmat H.</div><div class="lm-status">2 menit wingi</div></div>
+          <span class="lm-badge b-silver">Silver</span>
+        </div>
+        <div class="live-member">
+          <div class="lm-av" style="background:#7B1FA2;">D <div class="online-dot" style="background:#ffc107;"></div></div>
+          <div class="lm-info"><div class="lm-name">Dewi Safitri</div><div class="lm-status">5 menit bengen</div></div>
+          <span class="lm-badge b-platinum">Platinum</span>
+        </div>
+        <div class="live-member">
+          <div class="lm-av" style="background:#BF360C;">M <div class="online-dot"></div></div>
+          <div class="lm-info"><div class="lm-name">Muhamad Ali</div><div class="lm-status">Aktif saiki</div></div>
+          <span class="lm-badge b-bronze">Bronze</span>
+        </div>
+        <div style="text-align:center;padding:6px;font-size:12px;color:#1a6b3a;cursor:pointer;font-weight:600;">Deleng kabeh member → <em style="font-weight:400;color:#65676B;">(Lihat semua)</em></div>
+      </div>
+    </div>
+
+    <!-- VOUCHER CARD -->
+    <div class="voucher-card">
+      <div class="vc-label">🎫 Voucher Aktif · <em style="font-style:normal;color:rgba(201,168,76,0.5);">Karcis</em></div>
+      <div class="vc-title">Diskon 5% Kas</div>
+      <div class="vc-desc">Khusus member Platinum & Gold bulan Juni 2026. Berlaku hingga 30 Juni.<br>
+        <em style="color:rgba(201,168,76,0.5);font-size:10px;">Kari nganti 30 Juni.</em>
+      </div>
+      <button class="vc-btn">Klaim Voucher · Jupuk</button>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="trending-card">
+      <div class="tc-title">🔥 Trending · <em style="font-size:11px;color:#C9A84C;font-style:normal;">Rame Diomongke</em></div>
+      <div class="trend-item">
+        <div class="trend-num">1</div>
+        <div class="trend-text">#NurAI</div>
+        <div class="trend-count">142 post</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-num">2</div>
+        <div class="trend-text">#IndramayuClub</div>
+        <div class="trend-count">98 post</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-num">3</div>
+        <div class="trend-text">#BankMakrifat</div>
+        <div class="trend-count">67 post</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-num">4</div>
+        <div class="trend-text">#BasaDermayu</div>
+        <div class="trend-count">55 post</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-num">5</div>
+        <div class="trend-text">#ClashofClans</div>
+        <div class="trend-count">29 post</div>
+      </div>
+    </div>
+
+    <div style="font-size:10px;color:#aaa;padding:4px 2px;line-height:1.8;">
+      Privasi · Ketentuan · Iklan · Cookie<br>
+      © 2026 Indramayu Club Makrifat<br>
+      <em style="color:#C9A84C60;">Nguri-uri Basa Dermayu</em>
+    </div>
+
+  </div>
+
+</div><!-- end main-layout -->
+
+<!-- ═══ MESSENGER POPUP (UPGRADE) ═══ -->
+<div class="msg-popup" id="msgPopup">
+  <div class="msg-box">
+    <div class="msg-head">
+      <span>🤖</span>
+      <div>
+        <div class="msg-head-title">Nur Messenger</div>
+        <div class="msg-head-sub">Nur AI · Basa Dermayu aktif</div>
+      </div>
+      <span class="msg-close" onclick="toggleMsg()">✕</span>
+    </div>
+    <div class="msg-body" id="msgBody">
+      <div class="msg-bubble in">
+        Assalamu'alaikum Pak Jamhari! 🌟<br>
+        <span class="indr-tag">Sugeng rawuh</span> — selamat datang di Nur Messenger.<br>
+        Ada yang bisa dibantu?
+      </div>
+    </div>
+    <div class="msg-typing" id="msgTyping">Nur AI lagi nulis... ✍️</div>
+    <!-- QUICK CHIPS INDRAMAYU -->
+    <div class="msg-chips" id="msgChips">
+      <div class="msg-chip" onclick="sendChip(this)">Cek status sistem</div>
+      <div class="msg-chip" onclick="sendChip(this)">Terjemahke basa Dermayu</div>
+      <div class="msg-chip" onclick="sendChip(this)">Priben kabare Nur AI?</div>
+      <div class="msg-chip" onclick="sendChip(this)">Apa sing bisa dibantu?</div>
+    </div>
+    <div class="msg-footer">
+      <input class="msg-input" id="msgInput" placeholder="Ketik pesan atau basa Dermayu..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="msg-send" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA KAMUS MINI (untuk sidebar & messenger)
+// ═══════════════════════════════════════════
+const kamusMini = {
+  "mangan": { indonesia: "makan", pasar: "mangan / madang / nguntal", kategori: "Kata Kerja" },
+  "turu": { indonesia: "tidur", pasar: "turu / merem", kategori: "Kata Kerja" },
+  "mlaku": { indonesia: "berjalan", pasar: "mlaku", kategori: "Kata Kerja" },
+  "ngomong": { indonesia: "bicara", pasar: "ngomong / nggedobos", kategori: "Kata Kerja" },
+  "seneng": { indonesia: "senang", pasar: "seneng / demen", kategori: "Kata Sifat" },
+  "luwe": { indonesia: "lapar", pasar: "luwe / klenger", kategori: "Kata Sifat" },
+  "wareg": { indonesia: "kenyang", pasar: "wareg / mblendung", kategori: "Kata Sifat" },
+  "pegel": { indonesia: "pegal/capek", pasar: "pegel / linu / puyeng", kategori: "Kata Sifat" },
+  "batur": { indonesia: "teman", pasar: "batur / jandalan", kategori: "Umum" },
+  "umah": { indonesia: "rumah", pasar: "umah / gubug", kategori: "Umum" },
+  "banyu": { indonesia: "air", pasar: "banyu", kategori: "Umum" },
+  "saiki": { indonesia: "sekarang", pasar: "saiki / kien", kategori: "Waktu" },
+  "wingi": { indonesia: "kemarin", pasar: "wingi", kategori: "Waktu" },
+  "esuk": { indonesia: "pagi", pasar: "esuk", kategori: "Waktu" },
+  "wengi": { indonesia: "malam", pasar: "wengi / peteng", kategori: "Waktu" },
+  "ora": { indonesia: "tidak", pasar: "ora / dudu", kategori: "Umum" },
+  "belih": { indonesia: "bukan? / kan?", pasar: "belih / lah", kategori: "Partikel" },
+  "priben": { indonesia: "bagaimana", pasar: "priben / kepriben / priwe", kategori: "Kata Tanya" },
+  "reang": { indonesia: "saya/aku", pasar: "reang (akrab)", kategori: "Kata Ganti" },
+  "ira": { indonesia: "kamu", pasar: "ira (akrab)", kategori: "Kata Ganti" },
+  "ayu": { indonesia: "cantik", pasar: "ayu / mentes", kategori: "Kata Sifat" },
+  "ganteng": { indonesia: "tampan", pasar: "ganteng / bagus", kategori: "Kata Sifat" },
+  "gawa": { indonesia: "bawa", pasar: "gawa", kategori: "Kata Kerja" },
+  "teka": { indonesia: "datang", pasar: "teka / njedul", kategori: "Kata Kerja" },
+  "balik": { indonesia: "pulang", pasar: "balik / kondur", kategori: "Kata Kerja" },
+  "macek": { indonesia: "memasang bata/ubin", pasar: "macek / masang", kategori: "Tukang" },
+  "wedhi": { indonesia: "pasir", pasar: "wedhi", kategori: "Tukang" },
+  "panas": { indonesia: "panas terik", pasar: "panas / ngentang-ngentang", kategori: "Kata Sifat" },
+};
+
+// TICKER DATA
+const tickerData = [
+  { kata: "mangan", arti: "makan" },
+  { kata: "turu", arti: "tidur" },
+  { kata: "batur", arti: "teman" },
+  { kata: "saiki", arti: "sekarang" },
+  { kata: "priben", arti: "bagaimana" },
+  { kata: "belih", arti: "bukan? / kan?" },
+  { kata: "wareg", arti: "kenyang" },
+  { kata: "luwe", arti: "lapar" },
+  { kata: "wengi", arti: "malam" },
+  { kata: "esuk", arti: "pagi" },
+  { kata: "reang", arti: "saya/aku" },
+  { kata: "ira", arti: "kamu" },
+  { kata: "seneng", arti: "senang" },
+  { kata: "ora", arti: "tidak" },
+  { kata: "ayu", arti: "cantik" },
+  { kata: "mlaku", arti: "berjalan" },
+];
+
+// ═══════════════════════════════════════════
+// INIT TICKER
+// ═══════════════════════════════════════════
+function initTicker() {
+  const track = document.getElementById('tickerTrack');
+  // Duplikat untuk seamless loop
+  const items = [...tickerData, ...tickerData];
+  track.innerHTML = items.map(d =>
+    `<div class="ticker-item" onclick="cariSideFromTicker('${d.kata}')">
+      ${d.kata} <span>= ${d.arti}</span>
+    </div>`
+  ).join('');
+}
+
+function cariSideFromTicker(kata) {
+  document.getElementById('kamusSideInput').value = kata;
+  cariSide();
+  document.getElementById('kamusResult').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+// ═══════════════════════════════════════════
+// SAPAAN WAKTU — sidebar profil
+// ═══════════════════════════════════════════
+function initSapaan() {
+  const jam = new Date().getHours();
+  let sapa;
+  if (jam >= 4 && jam < 11) {
+    sapa = 'Sugeng enjing, Pak Jamhari! Priben kabare?';
+  } else if (jam >= 11 && jam < 15) {
+    sapa = 'Sugeng awan, Pak Jamhari! Wis mangan durung?';
+  } else if (jam >= 15 && jam < 18) {
+    sapa = 'Sugeng sore, Pak Jamhari! Pegel ora?';
+  } else {
+    sapa = 'Sugeng wengi, Pak Jamhari! Ojo lali turu!';
+  }
+  document.getElementById('sapaText').textContent = sapa;
+}
+
+// ═══════════════════════════════════════════
+// KATA HARI INI — rotasi dari kamus
+// ═══════════════════════════════════════════
+function initKotd() {
+  const keys = Object.keys(kamusMini);
+  const idx = new Date().getDate() % keys.length;
+  const k = keys[idx];
+  const v = kamusMini[k];
+  document.getElementById('kotdKata').textContent = k;
+  document.getElementById('kotdArti').textContent = '🇮🇩 ' + v.indonesia;
+  document.getElementById('kotdPasar').textContent = '🛒 ' + v.pasar;
+}
+
+function bunyikanKataHariIni() {
+  const kata = document.getElementById('kotdKata').textContent;
+  ttsPlay(kata);
+}
+
+// ═══════════════════════════════════════════
+// TTS — Google TTS + fallback Web Speech
+// ═══════════════════════════════════════════
+let audio = null;
+function ttsPlay(teks, lang = 'jv') {
+  if (audio) { audio.pause(); audio = null; }
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(teks)}`;
+  audio = new Audio(url);
+  audio.play().catch(() => {
+    const u = new SpeechSynthesisUtterance(teks);
+    u.lang = 'id-ID'; u.rate = 0.85;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  });
+}
+
+// ═══════════════════════════════════════════
+// KAMUS SIDEBAR — cari kata
+// ═══════════════════════════════════════════
+function cariSide() {
+  const inp = document.getElementById('kamusSideInput').value.toLowerCase().trim();
+  const res = document.getElementById('kamusResult');
+  if (!inp) return;
+
+  const d = kamusMini[inp];
+  if (d) {
+    res.innerHTML = `
+      <div class="kr-kata">${inp}</div>
+      <div class="kr-arti">🇮🇩 ${d.indonesia}</div>
+      <div class="kr-pasar">🛒 ${d.pasar}</div>
+      <div class="kr-kategori">📂 ${d.kategori}</div>
+      <button class="kr-tts" onclick="ttsPlay('${inp}')">🔊 Dengar ucapan kata ini</button>`;
+    res.classList.add('show');
+    ttsPlay(inp);
+  } else {
+    // Cari mirip
+    const mirip = Object.keys(kamusMini).filter(k => k.includes(inp) || inp.includes(k.slice(0,3)));
+    if (mirip.length) {
+      res.innerHTML = `<div class="kr-not-found">Mirip: ${mirip.map(k =>
+        `<span onclick="document.getElementById('kamusSideInput').value='${k}';cariSide()" 
+         style="color:#1a6b3a;cursor:pointer;font-weight:600;">${k}</span>`).join(', ')}</div>`;
+    } else {
+      res.innerHTML = `<div class="kr-not-found">😕 "${inp}" ora ana · tidak ada</div>`;
+    }
+    res.classList.add('show');
+  }
+}
+
+// ═══════════════════════════════════════════
+// MESSENGER — upgrade dengan Indramayu AI
+// ═══════════════════════════════════════════
+const nurReplies = [
+  // Komentar pakai bahasa Indramayu
+  { trig: ['status','sistem'], msg: '✅ Semua sistem aktif Pak!\n• Flask port 5000 ✓\n• Ollama port 11434 ✓\n• Hugo build ✓\n• PM2 running ✓\n\nKabeh sistem <b>mlaku normal</b> 🤖', indr: true },
+  { trig: ['priben','kabare'], msg: '<span class="indr-tag">Alhamdulillah</span>, Nur AI <span class="indr-tag">sehat</span> lan aktif Pak! Siap ngladeni 24 jam 🌟', indr: true },
+  { trig: ['terjemah','basa','dermayu','indramayu'], msg: 'Ketik kata Indonesia atau Indramayu di kolom kamus sidebar kanan Pak! Contoh: <span class="indr-tag">mangan</span> = makan, <span class="indr-tag">turu</span> = tidur, <span class="indr-tag">batur</span> = teman 📖\n<button onclick="ttsPlay(\'mangan\')" style="background:#e8f5e9;border:none;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:12px;margin-top:4px;">🔊 Dengar "mangan"</button>', indr: true },
+  { trig: ['apa','bisa','bantu'], msg: 'Reang iso bantu Pak:\n• 📖 Terjemah basa Dermayu\n• ⚙️ Cek status server\n• 💰 Info Bank Makrifat\n• 🤖 Nur AI chat\n\n<span class="indr-tag">Priben</span>, mau apa dulu? 😊', indr: true },
+  { trig: ['mangan','makan'], msg: 'Oh, <span class="indr-tag">luwe</span> ya Pak? 😄 Wis mangan durung? <span class="indr-tag">Ojo lali mangan</span>! (Jangan lupa makan)\n<button onclick="ttsPlay(\'ojo lali mangan\')" style="background:#e8f5e9;border:none;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:12px;">🔊 Dengar</button>', indr: true },
+  { trig: ['turu','tidur'], msg: 'Hehe, <span class="indr-tag">ngantuk</span> ya Pak? 😴 Ojo <span class="indr-tag">turu</span> sek, tugas masih akeh! Sabar ya Pak 💪', indr: true },
+  { trig: ['member','anggota'], msg: 'Saiki ana <span class="indr-tag">248 batur</span> (member) aktif Pak. Target 300 <span class="indr-tag">batur</span>. Sisa 52 slot! Semangat 🎯', indr: true },
+];
+
+function getReply(txt) {
+  const t = txt.toLowerCase();
+  for (const r of nurReplies) {
+    if (r.trig.some(x => t.includes(x))) return r.msg;
+  }
+  // Default Indramayu random
+  const defaults = [
+    'Baik Pak, <span class="indr-tag">sedang diproses</span>... ⚙️',
+    '<span class="indr-tag">MasyaAllah</span>, pertanyaan apik banget! 🌟',
+    'Nur AI <span class="indr-tag">siap</span> ngladeni 24 jam Pak 🤖',
+    '<span class="indr-tag">Iya bener</span>, sistem berjalan normal ✅',
+    'Hmm, <span class="indr-tag">reang</span> (saya) perlu cek dulu Pak... 🔍',
+  ];
+  return defaults[Math.floor(Math.random() * defaults.length)];
+}
+
+function sendMsg() {
+  const input = document.getElementById('msgInput');
+  const body = document.getElementById('msgBody');
+  const txt = input.value.trim();
+  if (!txt) return;
+
+  // Bubble keluar
+  const out = document.createElement('div');
+  out.className = 'msg-bubble out';
+  out.textContent = txt;
+  body.appendChild(out);
+  input.value = '';
+  body.scrollTop = body.scrollHeight;
+
+  // Sembunyikan chips setelah kirim pertama
+  document.getElementById('msgChips').style.display = 'none';
+
+  // Typing indicator
+  const typing = document.getElementById('msgTyping');
+  typing.classList.add('show');
+
+  setTimeout(() => {
+    typing.classList.remove('show');
+    const rep = document.createElement('div');
+    rep.className = 'msg-bubble in';
+    rep.innerHTML = getReply(txt);
+    body.appendChild(rep);
+    body.scrollTop = body.scrollHeight;
+    // TTS auto untuk balasan pendek
+    if (txt.toLowerCase().includes('priben') || txt.toLowerCase().includes('kabare')) {
+      ttsPlay('Alhamdulillah sehat lan aktif Pak');
+    }
+  }, 900);
+}
+
+function sendChip(el) {
+  document.getElementById('msgInput').value = el.textContent;
+  sendMsg();
+}
+
+// ═══════════════════════════════════════════
+// STANDARD FUNCTIONS
+// ═══════════════════════════════════════════
+function setNav(el) {
+  document.querySelectorAll('.nav-link').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleMsg() {
+  document.getElementById('msgPopup').classList.toggle('show');
+}
+
+function toggleZoom(el) {
+  if (el.style.transform === 'scale(1.5)') {
+    el.style.transform = '';
+  } else {
+    el.style.transform = 'scale(1.5)';
+    el.style.transition = 'transform 0.3s';
+    el.style.transformOrigin = 'center center';
+  }
+}
+
+// PINCH ZOOM
+let startDist = 0;
+document.querySelectorAll('.zoomable').forEach(el => {
+  let scale = 1;
+  el.addEventListener('touchstart', e => {
+    if (e.touches.length === 2)
+      startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  });
+  el.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      scale = Math.min(3, Math.max(1, scale * (d / startDist)));
+      startDist = d;
+      el.style.transform = `scale(${scale})`;
+      el.style.transition = 'none';
+      e.preventDefault();
+    }
+  }, { passive: false });
+  el.addEventListener('touchend', e => {
+    if (e.touches.length < 2 && scale < 1.1) {
+      scale = 1; el.style.transform = ''; el.style.transition = 'transform 0.3s';
+    }
+  });
+});
+
+// ═══ INIT ═══
+initTicker();
+initSapaan();
+initKotd();
+
+// Fungsi Penyeimbang Jalur Dropdown Otomatis
+function pindahHalamanOtomatis(namaHalaman) {
+  if (!namaHalaman) return;
+  
+  // Deteksi URL dasar platform saat ini
+  const urlSistem = window.location.href.split('?')[0];
+  
+  // Alihkan jalur dengan membawa parameter p tanpa merusak struktur tautan
+  window.location.href = urlSistem + "?p=" + namaHalaman;
+}
+
+// Otomatisasi Penanda Dropdown (Menandai opsi sesuai halaman yang aktif saat ini)
+function sinkronisasiIndikatorDropdown() {
+  const params = new URLSearchParams(window.location.search);
+  const halamanAktif = params.get('p') || 'administrasi'; // Default ke administrasi jika kosong
+  
+  const dropdown = document.getElementById('menu-dropdown-dev');
+  if (dropdown) {
+    dropdown.value = halamanAktif;
+  }
+}
+
+// Jalankan sinkronisasi indikator sesaat setelah halaman dimuat utuh
+document.addEventListener("DOMContentLoaded", sinkronisasiIndikatorDropdown);
+
+</script>
+</body>
+</html>
+
+
+//########### Annti muncul pop up  halaman 2
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamus Indramayu · Agent Alwi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   RESET & VARIABEL
+══════════════════════════════════════════ */
+:root {
+  --emas       : #c9a84c;
+  --emas-muda  : #f0d070;
+  --emas-tua   : #7a5c1e;
+  --hitam      : #0d0d0d;
+  --gelap      : #1a1408;
+  --kartu      : #1e1608;
+  --border     : #3a2c0a;
+  --teks       : #e8d5a0;
+  --teks-redup : #9a8050;
+  --hijau      : #1a6b3a;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background: var(--hitam);
+  background-image:
+    radial-gradient(ellipse at 10% 10%, #1a0f0220 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, #0a1a0520 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='0.3' opacity='0.12'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30 Z'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Cpath d='M30 5 L30 55 M5 30 L55 30'/%3E%3Cpath d='M10 10 L50 50 M50 10 L10 50'/%3E%3C/g%3E%3C/svg%3E");
+  color: var(--teks);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  background: linear-gradient(135deg, #0d0a02, #1a1408, #0d0a02);
+  border-bottom: 2px solid var(--emas-tua);
+  padding: 14px 20px 12px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.15);
+  position: sticky; top: 0; z-index: 100;
+}
+.bismillah {
+  font-size: 14px; color: var(--emas);
+  opacity: 0.7; margin-bottom: 4px; letter-spacing: 2px;
+}
+header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(18px, 5vw, 26px);
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas), var(--emas-muda), var(--emas));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: 3px;
+}
+.header-sub { font-size: 10px; color: var(--teks-redup); letter-spacing: 4px; margin-top: 3px; }
+.agent-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas));
+  color: #000; font-size: 10px; font-weight: 700;
+  padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; margin-top: 6px;
+}
+
+/* ══════════════════════════════════════════
+   NAV LINKS
+══════════════════════════════════════════ */
+.nav-links {
+  display: flex; gap: 6px; justify-content: center;
+  flex-wrap: wrap; padding: 8px 16px 0;
+}
+.nav-link {
+  background: rgba(201,168,76,0.08);
+  border: 1px solid var(--emas-tua);
+  color: var(--emas); font-size: 10px;
+  padding: 4px 12px; border-radius: 20px;
+  text-decoration: none; letter-spacing: 1px;
+  transition: all 0.2s;
+}
+.nav-link:hover { background: var(--emas-tua); color: #000; }
+
+/* ══════════════════════════════════════════
+   TICKER
+══════════════════════════════════════════ */
+.ticker-wrap {
+  background: linear-gradient(135deg, #1a3a2a, #0d2010);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  padding: 5px 0; overflow: hidden; position: relative;
+}
+.ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--emas); color: #000;
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  padding: 0 10px; display: flex; align-items: center; z-index: 2;
+}
+.ticker-track {
+  display: flex; animation: ticker 28s linear infinite;
+  padding-left: 80px; white-space: nowrap;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-size: 11px; color: var(--emas);
+  padding: 0 24px; cursor: pointer; letter-spacing: 0.5px;
+}
+.ticker-item:hover { color: var(--emas-muda); }
+.ticker-item span { color: rgba(255,255,255,0.5); font-size: 10px; margin-left: 3px; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════ */
+.main { flex: 1; max-width: 680px; margin: 0 auto; padding: 20px 16px; width: 100%; }
+
+/* ══════════════════════════════════════════
+   SEARCH BOX
+══════════════════════════════════════════ */
+.search-wrap { display: flex; gap: 8px; margin-bottom: 10px; }
+
+#inputKata {
+  flex: 1;
+  background: var(--kartu);
+  border: 1.5px solid var(--emas-tua);
+  color: var(--teks);
+  font-size: 18px;
+  font-family: 'Noto Sans', sans-serif;
+  padding: 13px 18px;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  letter-spacing: 1px;
+}
+#inputKata::placeholder { color: var(--teks-redup); }
+#inputKata:focus {
+  border-color: var(--emas);
+  box-shadow: 0 0 16px rgba(201,168,76,0.2);
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--emas-tua), var(--emas));
+  color: #000; border: none;
+  padding: 13px 16px; border-radius: 10px;
+  font-size: 18px; cursor: pointer; font-weight: 700;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(201,168,76,0.4); }
+.btn:active { transform: scale(0.96); }
+.btn.recording { background: linear-gradient(135deg, #c0392b, #e74c3c); color: #fff; }
+
+/* ══════════════════════════════════════════
+   TOMBOL BAWAH SEARCH
+══════════════════════════════════════════ */
+.tools-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.tool-btn {
+  flex: 1; min-width: 100px;
+  background: transparent;
+  border: 1px solid var(--emas-tua);
+  color: var(--emas); padding: 8px 10px;
+  border-radius: 8px; font-size: 12px;
+  cursor: pointer; letter-spacing: 1px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tool-btn:hover { background: var(--emas-tua); color: #000; }
+
+/* ══════════════════════════════════════════
+   FILTER KATEGORI
+══════════════════════════════════════════ */
+.filter-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.filter-chip {
+  background: var(--kartu);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 11px; color: var(--teks-redup);
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+}
+.filter-chip:hover, .filter-chip.aktif {
+  border-color: var(--emas); color: var(--emas); background: var(--gelap);
+}
+.filter-chip span { color: var(--emas); font-weight: 700; margin-left: 3px; }
+
+/* ══════════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════════ */
+.status-bar {
+  text-align: center; font-size: 12px;
+  color: var(--teks-redup); margin-bottom: 14px;
+  letter-spacing: 1px; min-height: 18px;
+}
+.status-bar.ok    { color: #51cf66; }
+.status-bar.err   { color: #ff6b6b; }
+.status-bar.info  { color: var(--emas); }
+
+/* ══════════════════════════════════════════
+   KARTU HASIL
+══════════════════════════════════════════ */
+.kartu {
+  background: linear-gradient(135deg, var(--kartu), #150f03);
+  border: 1.5px solid var(--emas-tua);
+  border-radius: 14px; padding: 22px;
+  box-shadow: 0 8px 32px rgba(201,168,76,0.1),
+              inset 0 1px 0 rgba(201,168,76,0.15);
+  animation: fadeIn 0.35s ease;
+  margin-bottom: 12px;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(-10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.kartu-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 14px; gap: 10px;
+}
+.kata-utama {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 7vw, 36px);
+  color: var(--emas); letter-spacing: 3px;
+  line-height: 1.1;
+}
+.badge-kat {
+  background: var(--emas-tua); color: var(--emas-muda);
+  font-size: 10px; padding: 4px 10px;
+  border-radius: 20px; letter-spacing: 1px;
+  font-weight: 600; white-space: nowrap; flex-shrink: 0;
+}
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+.baris {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 6px; margin-bottom: 10px; align-items: start;
+}
+.lbl {
+  font-size: 10px; color: var(--teks-redup);
+  text-transform: uppercase; letter-spacing: 2px; padding-top: 3px;
+}
+.val       { font-size: 17px; color: var(--teks); line-height: 1.5; }
+.val-pasar { font-size: 14px; color: var(--emas-muda); font-style: italic; line-height: 1.5; }
+
+/* TTS BUTTONS */
+.tts-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.tts-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: transparent; border: 1px solid var(--emas-tua);
+  color: var(--emas); padding: 8px 14px;
+  border-radius: 8px; font-size: 12px; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.5px;
+}
+.tts-btn:hover   { background: var(--emas); color: #000; }
+.tts-btn.playing { background: var(--emas); color: #000; animation: pulse 1s infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
+}
+
+/* CONTOH KALIMAT */
+.contoh-box {
+  margin-top: 14px;
+  background: rgba(201,168,76,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 13px; color: var(--teks-redup);
+  font-style: italic; line-height: 1.6;
+  display: none;
+}
+.contoh-box.show { display: block; animation: fadeIn 0.3s ease; }
+.contoh-kata { color: var(--emas); font-weight: 600; font-style: normal; }
+
+/* ══════════════════════════════════════════
+   MIRIP / TIDAK ADA
+══════════════════════════════════════════ */
+.mirip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px; margin-top: 10px;
+}
+.mirip-item {
+  background: var(--kartu); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.mirip-item:hover {
+  border-color: var(--emas); background: var(--gelap);
+  transform: translateY(-2px);
+}
+.mi-kata { font-size: 14px; color: var(--emas); font-weight: 600; }
+.mi-arti { font-size: 11px; color: var(--teks-redup); margin-top: 2px; }
+
+/* ══════════════════════════════════════════
+   BROWSER LIST (tampil saat filter kategori)
+══════════════════════════════════════════ */
+.browser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px; margin-bottom: 20px;
+}
+
+/* ══════════════════════════════════════════
+   HISTORY PENCARIAN
+══════════════════════════════════════════ */
+.history-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.history-chip {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; color: var(--teks-redup);
+  cursor: pointer; transition: all 0.2s;
+}
+.history-chip:hover { border-color: var(--emas); color: var(--emas); }
+
+/* ══════════════════════════════════════════
+   ORNAMEN
+══════════════════════════════════════════ */
+.ornamen {
+  text-align: center; color: var(--emas-tua);
+  font-size: 16px; letter-spacing: 8px;
+  margin: 10px 0; opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  text-align: center; padding: 20px 16px;
+  color: var(--teks-redup); font-size: 11px;
+  letter-spacing: 2px; border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ══════════════════════════════════════════
+   RIPPLE EFFECT
+══════════════════════════════════════════ */
+.ripple {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(201,168,76,0.25), transparent);
+  animation: rippleAnim 0.7s ease-out forwards; z-index: 9999;
+}
+@keyframes rippleAnim {
+  from { width:0; height:0; opacity:1; transform:translate(-50%,-50%); }
+  to   { width:120px; height:120px; opacity:0; transform:translate(-50%,-50%); }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .baris { grid-template-columns: 80px 1fr; }
+  .tts-btn { font-size: 11px; padding: 7px 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="bismillah">﷽</div>
+  <h1>KAMUS INDRAMAYU</h1>
+  <div class="header-sub">BASA DERMAYU · PASAR · INDONESIA</div>
+  <div class="agent-badge">🤖 AGENT ALWI · PENJAGA KAMUS</div>
+  <div class="nav-links">
+    <a class="nav-link" href="?page=komunitas">🏠 Komunitas</a>
+    <a class="nav-link" href="?page=android">📱 Home</a>
+    <a class="nav-link" href="?page=dashboard">👤 Dashboard</a>
+    <a class="nav-link" href="?page=admin">⚙️ Admin</a>
+  </div>
+</header>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-wrap">
+  <div class="ticker-label">📖 BASA DERMAYU</div>
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+
+  <div class="ornamen">❧ ✦ ❧</div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input type="text" id="inputKata"
+      placeholder="Ketik kata Indramayu…"
+      autocomplete="off" autocapitalize="none"
+      oninput="onInput()" onkeydown="if(event.key==='Enter')cari()">
+    <button class="btn" onclick="cari()" title="Cari">🔍</button>
+    <button class="btn" id="btnMic" onclick="toggleMic()" title="Input Suara">🎤</button>
+  </div>
+
+  <!-- TOOLS ROW -->
+  <div class="tools-row">
+    <button class="tool-btn" onclick="acakKata()">🎲 Kata Acak</button>
+    <button class="tool-btn" onclick="showContoh()">💬 Contoh Kalimat</button>
+    <button class="tool-btn" onclick="clearHasil()">🗑️ Hapus</button>
+  </div>
+
+  <!-- FILTER KATEGORI -->
+  <div class="filter-row" id="filterRow">
+    <div class="filter-chip aktif" onclick="filterKat('',this)">
+      📚 Semua <span id="totalChip">0</span>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-row" id="historyRow" style="display:none"></div>
+
+  <!-- STATUS -->
+  <div class="status-bar" id="statusBar">⏳ Memuat kamus...</div>
+
+  <!-- HASIL -->
+  <div id="hasilBox"></div>
+
+  <!-- BROWSER LIST -->
+  <div class="browser-grid" id="browserGrid"></div>
+
+</div><!-- end main -->
+
+<div class="ornamen" style="margin:0 0 8px">✦ ✦ ✦</div>
+
+<footer>
+  ✦ Indramayu Club Makrifat · Agent Alwi v2.0 ✦<br>
+  <span style="font-size:10px;opacity:0.5;margin-top:4px;display:block;">
+    Nguri-uri Budaya lan Basa Indramayu
+  </span>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════
+// KONFIGURASI
+// ══════════════════════════════════════════════════════
+// Ganti dengan URL deploy GAS Anda
+const GAS_URL = (function() {
+  // Jika file ini dijalankan dari GAS (sudah di-inject URL-nya)
+  if (window.GAS_SCRIPT_URL) return window.GAS_SCRIPT_URL;
+  // Jika standalone local / testing
+  return window.location.href.split('?')[0];
+})();
+
+// ══════════════════════════════════════════════════════
+// DATA KAMUS LOKAL (fallback jika GAS tidak tersedia)
+// ══════════════════════════════════════════════════════
+const kamusLokal = {
+  "kula":      { indonesia:"saya",               pasar:"kula (formal)",              kategori:"Kata Ganti" },
+  "isun":      { indonesia:"aku",                pasar:"reang / isun",               kategori:"Kata Ganti" },
+  "sira":      { indonesia:"kamu",               pasar:"ira / sira",                 kategori:"Kata Ganti" },
+  "rika":      { indonesia:"kamu (sopan/tua)",   pasar:"rika",                       kategori:"Kata Ganti" },
+  "sampeyan":  { indonesia:"anda",               pasar:"sampeyan",                   kategori:"Kata Ganti" },
+  "deweke":    { indonesia:"dia",                pasar:"deweke / wonge",             kategori:"Kata Ganti" },
+  "reang":     { indonesia:"saya/aku (akrab)",   pasar:"reang",                      kategori:"Kata Ganti" },
+  "ira":       { indonesia:"kamu (akrab)",       pasar:"ira",                        kategori:"Kata Ganti" },
+  "sapa":      { indonesia:"siapa",              pasar:"sapa / sapane",              kategori:"Kata Tanya" },
+  "pira":      { indonesia:"berapa",             pasar:"pira",                       kategori:"Kata Tanya" },
+  "priben":    { indonesia:"bagaimana",          pasar:"priben / kepriben / priwe",  kategori:"Kata Tanya" },
+  "ngendi":    { indonesia:"di mana",            pasar:"ngendi / nendi",             kategori:"Kata Tanya" },
+  "mengkene":  { indonesia:"begini",             pasar:"mengkene / ngene",           kategori:"Penunjuk"   },
+  "mengkonon": { indonesia:"begitu",             pasar:"mengkonon / ngonon",         kategori:"Penunjuk"   },
+  "kene":      { indonesia:"sini",               pasar:"kene",                       kategori:"Penunjuk"   },
+  "kono":      { indonesia:"situ",               pasar:"kono",                       kategori:"Penunjuk"   },
+  "kana":      { indonesia:"sana",               pasar:"kana",                       kategori:"Penunjuk"   },
+  "iki":       { indonesia:"ini",                pasar:"iki / kene",                 kategori:"Penunjuk"   },
+  "kuen":      { indonesia:"itu",                pasar:"kuen / kaen",                kategori:"Penunjuk"   },
+  "mlaku":     { indonesia:"berjalan",           pasar:"mlaku",                      kategori:"Kata Kerja" },
+  "turu":      { indonesia:"tidur",              pasar:"turu / merem",               kategori:"Kata Kerja" },
+  "mangan":    { indonesia:"makan",              pasar:"mangan / madang / nguntal",  kategori:"Kata Kerja" },
+  "nginum":    { indonesia:"minum",              pasar:"nginum / ngorong",           kategori:"Kata Kerja" },
+  "adus":      { indonesia:"mandi",              pasar:"adus",                       kategori:"Kata Kerja" },
+  "gawe":      { indonesia:"kerja / buat",       pasar:"gawe / kerja",               kategori:"Kata Kerja" },
+  "tuku":      { indonesia:"beli",               pasar:"tuku",                       kategori:"Kata Kerja" },
+  "tangi":     { indonesia:"bangun tidur",       pasar:"tangi",                      kategori:"Kata Kerja" },
+  "lungguh":   { indonesia:"duduk",              pasar:"lungguh / ndodok",           kategori:"Kata Kerja" },
+  "manjing":   { indonesia:"masuk",              pasar:"manjing",                    kategori:"Kata Kerja" },
+  "metu":      { indonesia:"keluar",             pasar:"metu / mabor",               kategori:"Kata Kerja" },
+  "mangkat":   { indonesia:"berangkat",          pasar:"mangkat / OTW",              kategori:"Kata Kerja" },
+  "balik":     { indonesia:"pulang",             pasar:"balik / kondur",             kategori:"Kata Kerja" },
+  "teka":      { indonesia:"datang",             pasar:"teka / njedul",              kategori:"Kata Kerja" },
+  "gawa":      { indonesia:"bawa",               pasar:"gawa",                       kategori:"Kata Kerja" },
+  "deleng":    { indonesia:"lihat",              pasar:"deleng / ndeleng",           kategori:"Kata Kerja" },
+  "krungu":    { indonesia:"dengar",             pasar:"krungu",                     kategori:"Kata Kerja" },
+  "ngomong":   { indonesia:"bicara",             pasar:"ngomong / nggedobos",        kategori:"Kata Kerja" },
+  "nyilih":    { indonesia:"pinjam",             pasar:"nyilih / silih",             kategori:"Kata Kerja" },
+  "wehi":      { indonesia:"beri",               pasar:"keki / wehi / upai",         kategori:"Kata Kerja" },
+  "luru":      { indonesia:"cari",               pasar:"luru / golet",               kategori:"Kata Kerja" },
+  "ngladeni":  { indonesia:"melayani",           pasar:"ngladeni",                   kategori:"Kata Kerja" },
+  "kesasar":   { indonesia:"tersesat",           pasar:"kesasar / keblinger",        kategori:"Kata Kerja" },
+  "cilik":     { indonesia:"kecil",              pasar:"cilik / mrenil",             kategori:"Kata Sifat" },
+  "gede":      { indonesia:"besar",              pasar:"gede / gubrag",              kategori:"Kata Sifat" },
+  "lara":      { indonesia:"sakit",              pasar:"lara / ngenes",              kategori:"Kata Sifat" },
+  "sehat":     { indonesia:"sehat",              pasar:"sehat / seger",              kategori:"Kata Sifat" },
+  "pinter":    { indonesia:"pintar",             pasar:"pinter",                     kategori:"Kata Sifat" },
+  "bodo":      { indonesia:"bodoh",              pasar:"bodo / gemblung / kenthir",  kategori:"Kata Sifat" },
+  "nesu":      { indonesia:"marah",              pasar:"nesu / berengot",            kategori:"Kata Sifat" },
+  "seneng":    { indonesia:"senang",             pasar:"seneng / demen",             kategori:"Kata Sifat" },
+  "sedih":     { indonesia:"sedih",              pasar:"sedih / mewek",              kategori:"Kata Sifat" },
+  "anyar":     { indonesia:"baru",               pasar:"anyar",                      kategori:"Kata Sifat" },
+  "lawas":     { indonesia:"lama/usang",         pasar:"lawas / bengen",             kategori:"Kata Sifat" },
+  "adoh":      { indonesia:"jauh",               pasar:"adoh",                       kategori:"Kata Sifat" },
+  "parek":     { indonesia:"dekat",              pasar:"parek / perek",              kategori:"Kata Sifat" },
+  "ayu":       { indonesia:"cantik",             pasar:"ayu / mentes",               kategori:"Kata Sifat" },
+  "ganteng":   { indonesia:"tampan",             pasar:"ganteng / bagus",            kategori:"Kata Sifat" },
+  "wareg":     { indonesia:"kenyang",            pasar:"wareg / mblendung",          kategori:"Kata Sifat" },
+  "luwe":      { indonesia:"lapar",              pasar:"luwe / klenger",             kategori:"Kata Sifat" },
+  "panas":     { indonesia:"panas terik",        pasar:"panas / ngentang-ngentang",  kategori:"Kata Sifat" },
+  "pegel":     { indonesia:"pegal/capek",        pasar:"pegel / linu / puyeng",      kategori:"Kata Sifat" },
+  "apik":      { indonesia:"bagus/keren",        pasar:"apik / becik",               kategori:"Kata Sifat" },
+  "esuk":      { indonesia:"pagi",               pasar:"esuk",                       kategori:"Waktu"      },
+  "awan":      { indonesia:"siang",              pasar:"awan",                       kategori:"Waktu"      },
+  "sore":      { indonesia:"sore",               pasar:"sore",                       kategori:"Waktu"      },
+  "wengi":     { indonesia:"malam",              pasar:"wengi / peteng",             kategori:"Waktu"      },
+  "bengen":    { indonesia:"dulu/tadi",          pasar:"bengen / dongen",            kategori:"Waktu"      },
+  "saiki":     { indonesia:"sekarang",           pasar:"saiki / kien",               kategori:"Waktu"      },
+  "mengko":    { indonesia:"nanti",              pasar:"mengko / ngko",              kategori:"Waktu"      },
+  "wingi":     { indonesia:"kemarin",            pasar:"wingi",                      kategori:"Waktu"      },
+  "sesuk":     { indonesia:"besok",              pasar:"sesuk / suk",                kategori:"Waktu"      },
+  "ora":       { indonesia:"tidak",              pasar:"ora / dudu",                 kategori:"Umum"       },
+  "mboten":    { indonesia:"tidak (formal)",     pasar:"mboten",                     kategori:"Umum"       },
+  "langka":    { indonesia:"tidak ada",          pasar:"langka / laka",              kategori:"Umum"       },
+  "ana":       { indonesia:"ada",                pasar:"ana / na",                   kategori:"Umum"       },
+  "iwak":      { indonesia:"ikan / lauk",        pasar:"iwak",                       kategori:"Umum"       },
+  "banyu":     { indonesia:"air",                pasar:"banyu",                      kategori:"Umum"       },
+  "umah":      { indonesia:"rumah",              pasar:"umah / gubug",               kategori:"Umum"       },
+  "dalan":     { indonesia:"jalan",              pasar:"dalan",                      kategori:"Umum"       },
+  "segara":    { indonesia:"laut",               pasar:"segara / laut",              kategori:"Umum"       },
+  "batur":     { indonesia:"teman",              pasar:"batur / jandalan",           kategori:"Umum"       },
+  "jih":       { indonesia:"sih / kok",          pasar:"jih (penegas)",              kategori:"Partikel"   },
+  "tah":       { indonesia:"kah / tah",          pasar:"tah (tanya/ragu)",           kategori:"Partikel"   },
+  "belih":     { indonesia:"bukan? / kan?",      pasar:"belih / lah",                kategori:"Partikel"   },
+  "meneng":    { indonesia:"diam",               pasar:"meneng / mendelik",          kategori:"Partikel"   },
+  "wedhi":     { indonesia:"pasir",              pasar:"wedhi",                      kategori:"Tukang"     },
+  "macek":     { indonesia:"memasang bata/ubin", pasar:"macek / masang",             kategori:"Tukang"     },
+  "pancal":    { indonesia:"cangkul",            pasar:"pancal / pacul",             kategori:"Tukang"     },
+  "linggis":   { indonesia:"linggis",            pasar:"linggis",                    kategori:"Tukang"     },
+  "blebeg":    { indonesia:"papan kayu panjang", pasar:"blebeg",                     kategori:"Tukang"     },
+  "pegel":     { indonesia:"pegal/capek",        pasar:"pegel / linu / puyeng",      kategori:"Tukang"     },
+};
+
+// Contoh kalimat per kata
+const contohKalimat = {
+  "mangan" : { indr:"Reang arep mangan saiki, ira melu ora?",          indo:"Saya mau makan sekarang, kamu ikut tidak?"     },
+  "turu"   : { indr:"Wis wengi, ayo turu, esuk tangi esuk!",           indo:"Sudah malam, ayo tidur, besok bangun pagi!"    },
+  "batur"  : { indr:"Deweke baturku sing apik banget.",                 indo:"Dia temanku yang sangat baik."                 },
+  "seneng" : { indr:"Reang seneng banget krungu kabar kuen.",          indo:"Saya sangat senang mendengar kabar itu."       },
+  "luwe"   : { indr:"Priben, ira luwe ora? Ayo mangan.",               indo:"Gimana, kamu lapar tidak? Ayo makan."          },
+  "priben" : { indr:"Priben kabare, sehat belih?",                     indo:"Bagaimana kabarnya, sehat kan?"                },
+  "saiki"  : { indr:"Saiki wis jam pira? Reang luwe nih.",             indo:"Sekarang sudah jam berapa? Saya lapar nih."    },
+  "balik"  : { indr:"Jam pira ira balik umah?",                       indo:"Jam berapa kamu pulang ke rumah?"              },
+  "pegel"  : { indr:"Awak reang pegel kabeh bar gawe seharian.",      indo:"Badan saya pegal semua setelah kerja seharian."},
+  "wengi"  : { indr:"Wengi iki langite apik, akeh bintange.",         indo:"Malam ini langitnya bagus, banyak bintangnya." },
+  "ngomong": { indr:"Aja ngomong sing ora bener, jih!",               indo:"Jangan bicara yang tidak benar, sih!"          },
+  "ora"    : { indr:"Reang ora ngerti apa sing kuen ngomongke.",      indo:"Saya tidak mengerti apa yang itu dibicarakan." },
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let kamus       = kamusLokal; // akan diganti data GAS jika tersedia
+let audio       = null;
+let recognition = null;
+let kataTerakhir= '';
+let searchHistory = JSON.parse(localStorage.getItem('icm_kamus_history') || '[]');
+
+// ══════════════════════════════════════════════════════
+// RIPPLE
+// ══════════════════════════════════════════════════════
+document.addEventListener('click', e => {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  r.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;`;
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 700);
+});
+
+// ══════════════════════════════════════════════════════
+// TTS — Google TTS + Web Speech fallback
+// ══════════════════════════════════════════════════════
+function ttsPlay(teks, lang = 'jv', btn = null) {
+  if (audio) { audio.pause(); audio = null; }
+  document.querySelectorAll('.tts-btn').forEach(b => b.classList.remove('playing'));
+
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(teks)}`;
+  audio = new Audio(url);
+
+  if (btn) btn.classList.add('playing');
+
+  audio.play().catch(() => {
+    // Fallback Web Speech API
+    const u = new SpeechSynthesisUtterance(teks);
+    u.lang = 'id-ID'; u.rate = 0.85; u.pitch = 1.0;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    setStatus('🔊 (Fallback) ' + teks, 'info');
+  });
+
+  audio.onplay  = () => setStatus('🔊 Memutar: "' + teks + '"', 'ok');
+  audio.onended = () => {
+    if (btn) btn.classList.remove('playing');
+    setStatus('✅ Selesai', '');
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// SPEECH RECOGNITION
+// ══════════════════════════════════════════════════════
+function toggleMic() {
+  const btn = document.getElementById('btnMic');
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    setStatus('⚠️ Browser tidak mendukung input suara', 'err'); return;
+  }
+  if (recognition) {
+    recognition.stop(); recognition = null;
+    btn.textContent = '🎤'; btn.classList.remove('recording'); return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'id-ID'; recognition.interimResults = false;
+  recognition.onstart  = () => { btn.textContent = '🔴'; btn.classList.add('recording'); setStatus('🎤 Mendengarkan...', 'info'); };
+  recognition.onresult = e => {
+    const kata = e.results[0][0].transcript.toLowerCase().trim();
+    document.getElementById('inputKata').value = kata;
+    cari();
+  };
+  recognition.onerror  = () => { btn.textContent='🎤'; btn.classList.remove('recording'); recognition=null; };
+  recognition.onend    = () => { btn.textContent='🎤'; btn.classList.remove('recording'); recognition=null; };
+  recognition.start();
+}
+
+// ══════════════════════════════════════════════════════
+// CARI KATA
+// ══════════════════════════════════════════════════════
+async function cari() {
+  const inp  = document.getElementById('inputKata');
+  const kata = inp.value.toLowerCase().trim();
+  if (!kata) return;
+
+  document.getElementById('browserGrid').innerHTML = '';
+  kataTerakhir = kata;
+  setStatus('🔍 Mencari "' + kata + '"...', '');
+
+  // Cari di kamus lokal
+  const hasil = cariLokal(kata);
+
+  if (hasil.status === 'ketemu') {
+    tampilHasil(hasil);
+    simpanHistory(kata);
+  } else if (hasil.status === 'mirip') {
+    tampilMirip(hasil);
+  } else {
+    tampilTidakAda(kata);
+  }
+}
+
+function cariLokal(kata) {
+  if (kamus[kata]) return { status:'ketemu', kata, ...kamus[kata] };
+  const mirip = Object.entries(kamus)
+    .filter(([k]) => k.includes(kata) || kata.includes(k.slice(0,3)))
+    .map(([k,v]) => ({ kata:k, ...v }))
+    .slice(0,9);
+  if (mirip.length) return { status:'mirip', kata, hasil:mirip };
+  return { status:'tidak_ada', kata };
+}
+
+function onInput() {
+  const v = document.getElementById('inputKata').value.toLowerCase().trim();
+  if (!v) { clearHasil(); return; }
+  // Suggest saat ketik (3+ karakter)
+  if (v.length >= 2) {
+    const saran = Object.keys(kamus).filter(k => k.startsWith(v)).slice(0,5);
+    // bisa ditambah autocomplete dropdown jika perlu
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// TAMPIL HASIL
+// ══════════════════════════════════════════════════════
+function tampilHasil(d) {
+  setStatus('✅ Ketemu · ' + d.kategori, 'ok');
+  const contoh = contohKalimat[d.kata];
+
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu">
+      <div class="kartu-top">
+        <div class="kata-utama">${d.kata}</div>
+        <div class="badge-kat">${d.kategori}</div>
+      </div>
+      <hr class="divider">
+      <div class="baris">
+        <div class="lbl">🇮🇩 Indonesia</div>
+        <div class="val">${d.indonesia}</div>
+      </div>
+      <div class="baris">
+        <div class="lbl">🛒 Basa Pasar</div>
+        <div class="val-pasar">${d.pasar}</div>
+      </div>
+      <hr class="divider">
+      <div class="tts-row">
+        <button class="tts-btn" id="btnTtsKata" onclick="ttsPlay('${d.kata}','jv',this)">
+          🔊 Dengar Kata
+        </button>
+        <button class="tts-btn" onclick="ttsPlay('${d.indonesia}','id',this)">
+          🔈 Bahasa Indonesia
+        </button>
+        ${contoh ? `<button class="tts-btn" onclick="ttsPlay('${contoh.indr}','jv',this)">
+          💬 Contoh Kalimat
+        </button>` : ''}
+      </div>
+      ${contoh ? `
+      <div class="contoh-box" id="contohBox">
+        <div>🗣️ <span class="contoh-kata">Indramayu:</span><br>"${contoh.indr}"</div>
+        <div style="margin-top:8px">🇮🇩 <span class="contoh-kata">Indonesia:</span><br>"${contoh.indo}"</div>
+      </div>` : ''}
+    </div>`;
+
+  // Auto play suara setelah 400ms
+  setTimeout(() => {
+    const btn = document.getElementById('btnTtsKata');
+    if (btn) ttsPlay(d.kata, 'jv', btn);
+  }, 400);
+}
+
+function tampilMirip(d) {
+  setStatus(`🔎 ${d.hasil.length} kata mirip "${d.kata}"`, 'info');
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu">
+      <div style="font-size:11px;color:var(--teks-redup);letter-spacing:2px;margin-bottom:12px;">
+        MIRIP DENGAN "${d.kata.toUpperCase()}"
+      </div>
+      <div class="mirip-grid">
+        ${d.hasil.map(h => `
+          <div class="mirip-item" onclick="pilihKata('${h.kata}')">
+            <div class="mi-kata">${h.kata}</div>
+            <div class="mi-arti">${h.indonesia}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function tampilTidakAda(kata) {
+  setStatus(`😕 "${kata}" tidak ditemukan`, 'err');
+  document.getElementById('hasilBox').innerHTML = `
+    <div class="kartu" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:10px">🤔</div>
+      <div style="color:var(--emas);font-size:18px;">"${kata}"</div>
+      <div style="color:var(--teks-redup);margin-top:8px;font-size:13px;">
+        Kata tidak ada di kamus.<br>Coba kata acak atau filter kategori di atas.
+      </div>
+    </div>`;
+}
+
+function pilihKata(kata) {
+  document.getElementById('inputKata').value = kata;
+  cari();
+}
+
+// ══════════════════════════════════════════════════════
+// CONTOH KALIMAT TOGGLE
+// ══════════════════════════════════════════════════════
+function showContoh() {
+  const box = document.getElementById('contohBox');
+  if (box) box.classList.toggle('show');
+  else if (kataTerakhir) {
+    setStatus('💬 Tidak ada contoh kalimat untuk "' + kataTerakhir + '"', 'info');
+  } else {
+    setStatus('💬 Cari kata dulu!', 'info');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// KATA ACAK
+// ══════════════════════════════════════════════════════
+function acakKata() {
+  const keys = Object.keys(kamus);
+  const k    = keys[Math.floor(Math.random() * keys.length)];
+  document.getElementById('inputKata').value = k;
+  const d = { status:'ketemu', kata:k, ...kamus[k] };
+  tampilHasil(d);
+  simpanHistory(k);
+  document.getElementById('browserGrid').innerHTML = '';
+}
+
+// ══════════════════════════════════════════════════════
+// CLEAR
+// ══════════════════════════════════════════════════════
+function clearHasil() {
+  document.getElementById('hasilBox').innerHTML  = '';
+  document.getElementById('browserGrid').innerHTML = '';
+  document.getElementById('inputKata').value     = '';
+  kataTerakhir = '';
+  setStatus('Siap', '');
+  if (audio) { audio.pause(); audio = null; }
+}
+
+// ══════════════════════════════════════════════════════
+// FILTER KATEGORI
+// ══════════════════════════════════════════════════════
+function filterKat(kat, el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('aktif'));
+  el.classList.add('aktif');
+  document.getElementById('hasilBox').innerHTML = '';
+
+  let data = Object.entries(kamus).map(([k,v]) => ({ kata:k, ...v }));
+  if (kat) data = data.filter(d => d.kategori === kat);
+
+  setStatus(`📚 ${data.length} kata${kat ? ' · ' + kat : ''}`, 'info');
+
+  document.getElementById('browserGrid').innerHTML = data.map(d => `
+    <div class="mirip-item" onclick="pilihKata('${d.kata}')">
+      <div class="mi-kata">${d.kata}</div>
+      <div class="mi-arti">${d.indonesia}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// HISTORY PENCARIAN
+// ══════════════════════════════════════════════════════
+function simpanHistory(kata) {
+  searchHistory = [kata, ...searchHistory.filter(h => h !== kata)].slice(0, 8);
+  localStorage.setItem('icm_kamus_history', JSON.stringify(searchHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const row = document.getElementById('historyRow');
+  if (!searchHistory.length) { row.style.display = 'none'; return; }
+  row.style.display = 'flex';
+  row.innerHTML = '<span style="font-size:10px;color:var(--teks-redup);align-self:center;letter-spacing:1px;white-space:nowrap;">🕐</span>'
+    + searchHistory.map(k =>
+        `<div class="history-chip" onclick="pilihKata('${k}')">${k}</div>`
+      ).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// TICKER
+// ══════════════════════════════════════════════════════
+function initTicker() {
+  const data = Object.entries(kamus).slice(0, 20).map(([k,v]) => ({ kata:k, arti:v.indonesia }));
+  const all  = [...data, ...data]; // duplikat untuk seamless
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = all.map(d =>
+    `<div class="ticker-item" onclick="pilihKata('${d.kata}')">${d.kata} <span>= ${d.arti}</span></div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// FILTER CHIPS DARI KAMUS
+// ══════════════════════════════════════════════════════
+function initFilter() {
+  const stats = {};
+  const iconMap = {
+    'Kata Ganti':'👤','Kata Tanya':'❓','Penunjuk':'👉',
+    'Kata Kerja':'🏃','Kata Sifat':'🎨','Waktu':'🕐',
+    'Umum':'📖','Partikel':'💬','Tukang':'🔨'
+  };
+  Object.values(kamus).forEach(v => { stats[v.kategori] = (stats[v.kategori]||0)+1; });
+
+  const total = Object.keys(kamus).length;
+  document.getElementById('totalChip').textContent = total;
+
+  const row = document.getElementById('filterRow');
+  Object.entries(stats).forEach(([k, n]) => {
+    const ic  = iconMap[k] || '📝';
+    const div = document.createElement('div');
+    div.className = 'filter-chip';
+    div.innerHTML = `${ic} ${k} <span>${n}</span>`;
+    div.onclick   = () => filterKat(k, div);
+    row.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// STATUS
+// ══════════════════════════════════════════════════════
+function setStatus(msg, tipe) {
+  const el = document.getElementById('statusBar');
+  el.textContent = msg;
+  el.className   = 'status-bar ' + (tipe || '');
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+window.onload = () => {
+  initTicker();
+  initFilter();
+  renderHistory();
+  setStatus('Siap · ' + Object.keys(kamus).length + ' kata tersedia', 'ok');
+  // Tampilkan kata acak saat buka
+  setTimeout(acakKata, 600);
+};
+
+// Enter = cari
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.id === 'inputKata') cari();
+});
+</script>
+</body>
+</html>

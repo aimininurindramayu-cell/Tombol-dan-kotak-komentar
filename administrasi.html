@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pusat Kendali - Indramayu Club Makrifat</title>
+  <style>
+    /* ═══ THEME DARK & BLUE CYAN GLASSMORPHISM ═══ */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #0b111e; color: #e2e8f0; min-height: 100vh; overflow-x: hidden; }
+    
+    /* Gerbang Keamanan Blokir */
+    #lockScreen { position: fixed; top:0; left:0; width:100vw; height:100vh; background:#070a12; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; text-align:center; padding:20px; }
+    .lock-box { background: rgba(15, 23, 42, 0.8); border: 1px solid #ff4d4d; border-radius: 16px; padding: 30px; max-width: 400px; width: 100%; box-shadow: 0 0 20px rgba(255,77,77,0.2); }
+    .lock-box h2 { color: #ff4d4d; margin-bottom: 10px; font-size: 22px; }
+    .lock-input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+    .lock-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #06b6d4; color: #000; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+    .lock-btn:hover { background: #22d3ee; }
+
+    /* Konten Utama (Disembunyikan Sebelum Lolos Kunci) */
+    #mainContent { display: none; padding: 20px; }
+    header { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(6, 182, 212, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 20px; text-align: center; }
+    header h1 { color: #06b6d4; font-size: 24px; text-shadow: 0 0 10px rgba(6,182,212,0.3); }
+    
+    /* Struktur Anggota */
+    .member-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+    .member-card { background: #131c2e; border: 1px solid #1e293b; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
+    .member-card:hover { border-color: #06b6d4; background: #162238; }
+    .avatar { width: 50px; height: 50px; border-radius: 50%; background: #06b6d4; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; margin: 0 auto 10px; }
+
+    /* ═══ MODAL POPUP ANDROID STYLE ═══ */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-box { background: #131c2e; border: 1px solid #06b6d4; width: 100%; max-width: 360px; border-radius: 16px; overflow: hidden; animation: zoomIn 0.2s ease-out; }
+    .modal-header { background: linear-gradient(135deg, #0e243a, #06b6d4); padding: 15px; display: flex; align-items: center; justify-content: space-between; }
+    .modal-title-group { display: flex; align-items: center; gap: 12px; }
+    .modal-body { padding: 20px; }
+    .status-card { background: #1e293b; border-radius: 12px; padding: 15px; border-left: 4px solid #06b6d4; margin-bottom: 15px; }
+    .status-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
+    .sapaan-box { background: rgba(6, 182, 212, 0.05); border: 1px solid rgba(6, 182, 212, 0.1); border-radius: 10px; padding: 12px; font-size: 13px; font-style: italic; color: #a5f3fc; }
+    .modal-footer { display: flex; gap: 10px; padding: 15px; background: #0f172a; }
+    .btn-action { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; }
+
+    @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  </style>
+</head>
+<body>
+<select id="menu-dropdown-dev" onchange="pindahSektorOtomatis(this.value)">
+  <option value="">-- Pilih Sektor --</option>
+  <option value="administrasi">🏠 Sektor Administrasi Utama</option>
+  <option value="bagian1">🌟 Dimensi Elite / Bagian 1</option>
+  <option value="bagian2">📊 Laporan Aset Digital / Bagian 2</option>
+</select>
+
+  <!-- 1. GERBANG KEUANGAN & AKSES NUR -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <h2>Piramida Guard Locked</h2>
+      <p style="color: #94a3b8; font-size: 13px;">Sistem Terkunci. Masukkan Kunci Otoritas Nur.</p>
+      <input type="password" id="inputKunci" class="lock-input" placeholder="••••••••" onkeyup="if(event.key === 'Enter') validasiAkses()">
+      <button class="lock-btn" onclick="validasiAkses()">BUKA AKSES</button>
+      <div id="errorMsg" style="color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none;">❌ Kunci Salah! Akses ditolak.</div>
+    </div>
+  </div>
+<div class="glass-card" style="padding:12px; display:flex; flex-direction:column; gap:10px;">
+
+  <div style="display:flex; flex-direction:column; gap:4px;">
+    <label for="menu-dropdown-dev" style="font-size:10px; color:var(--gold); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN (DEV MODE)>
+
+    <select id="menu-dropdown-dev" onchange="if (this.value) window.location.href=this.value;" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(168,126,46,0>
+      <option value="">-- Pilih Menu --</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi">🏠 Beranda / Administrasi</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android">🤖 Aplikasi Android</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus">📖 Kamus Dayak Ngaju</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2">📊 Halaman 2 (Laporan)</option>
+    </select>
+  </div>
+
+  <hr style="border:none; border-top:1px solid var(--border); margin:4px 0;">
+
+  <ul class="menu-list">
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi'">🏠 Beranda</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android'">🤖 Android</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus'">📖 Kamus</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2'">📊 Halaman 2</li>
+  </ul>
+</div>
+
+  <!-- 1. GERBANG KEUANGAN & AKSES NUR -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <h2>Piramida Guard Locked</h2>
+      <p style="color: #94a3b8; font-size: 13px;">Sistem Terkunci. Masukkan Kunci Otoritas Nur.</p>
+      <input type="password" id="inputKunci" class="lock-input" placeholder="••••••••" onkeyup="if(event.key === 'Enter') validasiAkses()">
+      <button class="lock-btn" onclick="validasiAkses()">BUKA AKSES</button>
+      <div id="errorMsg" style="color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none;">❌ Kunci Salah! Akses ditolak.</div>
+    </div>
+  </div>
+<div class="glass-card" style="padding:12px; display:flex; flex-direction:column; gap:10px;">
+  
+  <div style="display:flex; flex-direction:column; gap:4px;">
+    <label for="menu-dropdown-dev" style="font-size:10px; color:var(--gold); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN (DEV MODE)</label>
+    <!-- 2. KONTEN PORTAL UTAMA (ADMIN NUR) -->
+  <div id="mainContent">
+    <header>
+      <h1>Pusat Administrasi Indramayu Club</h1>
+      <p style="color: #94a3b8; font-size: 13px; margin-top: 5px;">Otoritas Sistem: Admin Utama (JAMHARI DULKOHAR)</p>
+    </header>
+
+    <h3 style="color: #06b6d4; margin-bottom: 10px;">Daftar Anggota / Kanca</h3>
+    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">Klik kartu nama di bawah untuk memunculkan detail gawai & profil Android. Terima&kasih</p>
+
+    <div class="member-list">
+      <div class="member-card" onclick="bukaModal('Pak Jamhari')">
+        <div class="avatar" style="background:#22d3ee;">J</div><strong>Pak Jamhari</strong>
+        <div style="font-size:11px; color:#06b6d4; margin-top:4px;">PLATINUM</div>
+      </div>
+      <div class="member-card" onclick="bukaModal('Ahmad Fauzi')">
+        <div class="avatar" style="background:#94a3b8;">A</div><strong>Ahmad Fauzi</strong>
+        <div style="font-size:11px; color:#94a3b8; margin-top:4px;">SILVER</div>
+      </div>
+      <div class="member-card" onclick="bukaModal('Siti Nurhaliza')">
+        <div class="avatar" style="background:#fbbf24;">S</div> <strong>Siti Nurhaliza</strong>
+        <div style="font-size:11px; color:#fbbf24; margin-top:4px;">GOLD</div>
+      </div>
+      
+    <div class="member-list">
+      <div class="member-card" onclick="bukaModal('Pak Jamhari')">
+        <div class="avatar" style="background:#22d3ee;">J</div><strong>Pak Jamhari</strong>
+        <div style="font-size:11px; color:#06b6d4; margin-top:4px;">PLATINUM</div>
+      </div>                                                                                               <div class="member-card" onclick="bukaModal('Ahmad Fauzi')">
+        <div class="avatar" style="background:#94a3b8;">A</div><strong>Ahmad Fauzi</strong>
+        <div style="font-size:11px; color:#94a3b8; margin-top:4px;">SILVER</div>
+      </div>
+      <div class="member-card" onclick="bukaModal('Siti Nurhaliza')">
+        <div class="avatar" style="background:#fbbf24;">S</div> <strong>Siti Nurhaliza</strong>
+        <div style="font-size:11px; color:#fbbf24; margin-top:4px;">GOLD</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. MODAL POPUP DETAIL MEMBER ANDROID -->
+  <div id="androidModal" class="modal-overlay" onclick="tutupModal(event)"><div class="modal-box">
+      <div class="modal-header"><div class="modal-title-group">
+          <div id="mAva" class="avatar" style="width:36px; height:36px; font-size:16px; margin:0;">?</div>
+          <div>
+            <div id="mName" style="font-size: 14px; font-weight: bold; color: #fff;">Nama</div>
+            <div id="mRole" style="font-size: 11px; color: #a5f3fc;">Role</div>
+          </div>
+        </div>
+        <div style="cursor:pointer; color:#fff;" onclick="document.getElementById('androidModal').style.display='none'">✕</div>
+      </div>
+      <div class="modal-body">
+        <div class="status-card">
+          <div style="font-size: 10px; color: #06b6d4; font-weight: bold; letter-spacing: 1px;">OTORITAS GAWAI & INFRASTRUKTUR</div>
+          <div class="status-row" style="margin-top:10px;">
+            <span>Lencana:</span><strong id="mBadge" style="color:#fbbf24;">-</strong>
+          </div>
+          <div class="status-row">
+            <span>Status Perangkat:</span><strong style="color: #22c55e;">● Terhubung (Acode)</strong>
+          </div>
+          <div class="status-row">
+            <span>Terminal Core:</span><strong>Android (Termux Environment)</strong>
+          </div>
+        </div>
+        <div class="sapaan-box">
+          <strong>💬 Sapaan Pilihan:</strong>
+          <div id="mSapa" style="margin-top: 4px;">"-"</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-action" style="background:#1e293b; color:#fff;" onclick="putarSuaraSapaan()">🔊 Rungokake</button>
+        <button class="btn-action" style="background:#06b6d4; color:#000;" onclick="alert('Membuka Enkripsi Jalur Obrolan...')">💬 Chat Privat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LOGIKA OPERASIONAL NUR ENGINE FRONTEND -->
+  <script>
+    const KEY_VALID = "nur000555";
+    
+    const dbMember = {
+      "Pak Jamhari": { ava: "J", badge: "PLATINUM", role: "Admin Utama", sapa: "Sugeng enjing sedulur Indramayu Club Makrifat! Jaga sistem tetep aman." },
+      "Ahmad Fauzi": { ava: "A", badge: "SILVER", role: "Member Prioritas", sapa: "Priben kabare batur? Ayo dolan bareng ing folder komunitas." },
+      "Siti Nurhaliza": { ava: "S", badge: "GOLD", role: "Member VVIP", sapa: "Keren pisan platform niki, teknologi lan budayane mentes!" }
+    };
+
+    // Fungsi Validasi Kunci Masuk Portal
+    function validasiAkses() {
+      const pin = document.getElementById('inputKunci').value;
+      if(pin === KEY_VALID) {
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+      } else {
+        const err = document.getElementById('errorMsg');
+        err.style.display = 'block';
+        err.style.animation = 'none';
+        setTimeout(() => { err.style.display = 'none'; }, 2500);
+      }
+    }
+
+    // Fungsi Pengendali Popup Android Member
+    function bukaModal(nama) {
+      const data = dbMember[nama];
+      if(!data) return;
+
+      document.getElementById('mAva').textContent = data.ava;
+      document.getElementById('mName').textContent = nama;
+      document.getElementById('mRole').textContent = data.role + " · Terverifikasi";
+      document.getElementById('mBadge').textContent = data.badge;
+      document.getElementById('mSapa').textContent = `"${data.sapa}"`;
+      
+      document.getElementById('androidModal').style.display = 'flex';
+    }
+
+    function tutupModal(e) {
+      if(e.target.id === 'androidModal') {
+        document.getElementById('androidModal').style.display = 'none';
+      }
+    }
+
+    function putarSuaraSapaan() {
+      const teks = document.getElementById('mSapa').textContent;
+      const u = new SpeechSynthesisUtterance(teks);
+      u.lang = 'id-ID';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+
+function doGet(e) {
+  // Ambil parameter halaman, default ke administrasi jika kosong
+  var page = e.parameter.p || 'administrasi';
+  
+  var htmlFile;
+  switch(page) {
+    case 'android': htmlFile = 'android'; break;
+    case 'halaman2': htmlFile = 'halaman2'; break;
+    case 'kamus': htmlFile = 'kamus'; break;
+    case 'administrasi':
+    default:
+      htmlFile = 'administrasi';
+      break;
+  }
+  
+  // 1. Buat template dari file html yang dipilih
+  var template = HtmlService.createTemplateFromFile(htmlFile);
+  
+  // 2. Oper parameter 'e' ke dalam HTML agar dropdown tahu halaman aktif saat ini
+  template.e = e; 
+  
+  // 3. Evaluasi dan kirimkan outputnya ke browser
+  return template.evaluate()
+      .setTitle('Indramayu Club Makrifat')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+//#####
+function pindahSektorOtomatis(namaHalaman) {
+  if (!namaHalaman) return;
+  
+  // Mengambil URL dasar Apps Script (Otomatis mendeteksi /dev atau /exec)
+  const urlSistem = window.location.href.split('?')[0];
+  
+  // Eksekusi pemindahan rute halaman dinamis
+  window.location.href = urlSistem + "?p=" + namaHalaman;
+}
+
+// Menjaga indikator pilihan dropdown tetap bertahan sesuai halaman yang dibuka
+document.addEventListener("DOMContentLoaded", function() {
+  const params = new URLSearchParams(window.location.search);
+  const halamanAktif = params.get('p') || 'administrasi';
+  const dropdown = document.getElementById('menu-dropdown-dev');
+  if (dropdown) dropdown.value = halamanAktif;
+});
+</script>
+
+</body>
+</html>
+

@@ -191,13 +191,11 @@ body {
 .kamus-card {
   background: linear-gradient(135deg,#1a3a2a,#0d2010);
   border-radius: 12px; padding: 12px;
-  box-shadow: 0 1px 3px rgba(20,10,6,0.1);
- 3px rgba(0,0,0,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
-    cursor: pointer;
- 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  cursor: pointer;
 }
-.kamus-card-title { font-size: 11px; color: rgba(255,255,76,0.7); font-weight:700; letter-spacing: 1px; text-transform: uppercase; }
+.kamus-card-title { font-size: 11px; color: rgba(201,168,76,0.7); font-weight:700; letter-spacing: 1px; text-transform: uppercase; }
 .kamus-kata-of-day { font-size: 22px; color: #C9A84C; font-family:'Cinzel',serif; font-weight:700; margin: 6px 0 2px; }
 .kamus-arti { font-size: 12px; color: rgba(255,255,255,0.7); }
 .kamus-pasar { font-size: 11px; color: rgba(201,168,76,0.6); font-style: italic; margin-top:2px; }
@@ -609,36 +607,17 @@ body {
 </head>
 <body>
 
-<!-- TOP NAV -->
-<div class="topnav">
-  <div class="nav-logo">
-    <span>ꦆ</span> Indramayu Club
-  </div>
-  <input class="nav-search" placeholder="🔍  Cari...">
-  <div class="nav-links">
-    <div class="nav-link" onclick="setNav(this)">Beranda</div>
-    <div class="nav-link active" onclick="setNav(this)">Komunitas</div>
-    <div class="nav-link" onclick="setNav(this)">Member</div>
-    <div class="nav-link" onclick="setNav(this)">Galeri</div>
-    <div class="nav-link" onclick="setNav(this)">Toko</div>
-  </div>
-
-<div class="bottom-nav">                                                                                                                 
-     
-
-<div class="bottom-nav">                                                                                                                        <div class="nav-item active"><span style="font-size:18px;">🏠</span><span>Home</span></div>
-  <div class="nav-item" onclick="location.href='Dasbord.html">🎬</span><span>Media</span></div>
-  <div class="nav-item" onclick="location.href='media.html'">🎬</span><span>Media</span></div>
-<div class="bottom-nav">                                                                                                                        <div class="nav-item active"><span style="font-size:18px;">🏠</span><span>Home</span></div>
-  <div class="nav-item" onclick="location.href='nur_hecker.js">🎬</span><span>Media</span></div>
- </div>
-
-  <div class="nav-right">
-    <div class="nav-btn" onclick="toggleMsg()">ALWI 🐯 batur <div class="nbadge">5</div></div>
-    <div class="nav-btn">🔔 <div class="nbadge">9</div></div>
-    <div class="nav-btn" style="background:linear-gradient(135deg,#1a6b3a,#C9A84C);color:#fff;font-family:Cinzel,serif;font-weight:700;">J</div>
-  </div>
+<div style="display:flex; flex-direction:column; gap:4px;">
+  <label for="menu-dropdown-dev" style="font-size:10px; color:var(--warna-emas); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN UTAMA</label>
+  <select id="menu-dropdown-dev" onchange="pindahHalamanOtomatis(this.value)" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid var(--warna-border); padding:10px; color:#fff; border-radius:6px; outline:none; font-size:13px; font-weight:500;">
+    <option value="">-- Menu Navigasi Sektor --</option>
+    <option value="administrasi">🏠 Sektor Administrasi / Beranda</option>
+    <option value="android">🤖 Sektor Aplikasi Android Terminal</option>
+    <option value="kamus">📖 Sektor Kamus Makrifat</option>
+    <option value="halaman2">📊 Sektor Laporan & Data Terpadu</option>
+  </select>
 </div>
+
 
 <!-- ═══ TICKER BAHASA INDRAMAYU ═══ -->
 <div class="ticker-bar">
@@ -678,7 +657,7 @@ body {
       <div class="menu-row active">
         <div class="menu-icon-box" style="background:#e8f5e9;">🏠</div>
         <div>Beranda <span class="menu-sub">Omah</span></div>
-      </div>g
+      </div>
       <div class="menu-row">
         <div class="menu-icon-box" style="background:#e3f2fd;">👥</div>
         <div>Anggota <span class="menu-sub">Batur / Kanca</span></div>
@@ -695,7 +674,10 @@ body {
         <div class="menu-icon-box" style="background:#fce4ec;">💰</div>
         <div>Bank Makrifat <span class="menu-sub">Gawe duit</span></div>
       </div>
-      
+      <div class="menu-row">
+        <div class="menu-icon-box" style="background:#e0f2f1;">🤖</div>
+        <div>Nur AI <span class="menu-sub">Batur digital</span></div>
+      </div>
       <div class="menu-row">
         <div class="menu-icon-box" style="background:#f1f8e9;">📊</div>
         <div>Laporan <span class="menu-sub">Lapuran</span></div>
@@ -1351,6 +1333,33 @@ document.querySelectorAll('.zoomable').forEach(el => {
 initTicker();
 initSapaan();
 initKotd();
+
+// Fungsi Penyeimbang Jalur Dropdown Otomatis
+function pindahHalamanOtomatis(namaHalaman) {
+  if (!namaHalaman) return;
+  
+  // Deteksi URL dasar platform saat ini
+  const urlSistem = window.location.href.split('?')[0];
+  
+  // Alihkan jalur dengan membawa parameter p tanpa merusak struktur tautan
+  window.location.href = urlSistem + "?p=" + namaHalaman;
+}
+
+// Otomatisasi Penanda Dropdown (Menandai opsi sesuai halaman yang aktif saat ini)
+function sinkronisasiIndikatorDropdown() {
+  const params = new URLSearchParams(window.location.search);
+  const halamanAktif = params.get('p') || 'administrasi'; // Default ke administrasi jika kosong
+  
+  const dropdown = document.getElementById('menu-dropdown-dev');
+  if (dropdown) {
+    dropdown.value = halamanAktif;
+  }
+}
+
+// Jalankan sinkronisasi indikator sesaat setelah halaman dimuat utuh
+document.addEventListener("DOMContentLoaded", sinkronisasiIndikatorDropdown);
+
+
 </script>
 </body>
 </html>

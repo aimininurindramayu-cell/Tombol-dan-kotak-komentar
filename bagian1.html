@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensi Elite - Indramayu Club</title>
+    <style>
+        :root {
+            --emas: #ffd700;
+            --langit: #00c3ff;
+            --darurat: #ff0000;
+            --hijau-wa: #25D366;
+        }
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: 0.5s;
+        }
+        .container-elite {
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+        /* Header Dimensi */
+        .header-dimensi {
+            text-align: center;
+            border-bottom: 2px solid var(--emas);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        /* Kotak Arisan Nur 2 */
+        .arisan-card {
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            border: 1px solid var(--emas);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            text-align: center;
+        }
+        .pool-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0,255,0,0.5);
+            margin: 10px 0;
+        }
+        /* Tombol Utama */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-kocok { background: var(--emas); color: #000; }
+        .btn-wa { 
+            background: var(--hijau-wa); 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            text-decoration: none;
+        }
+        /* Status List */
+        .member-list {
+            background: #111;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+        }
+        /* Floating Backup Nur 8 */
+        .nur8-reset {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--darurat);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div style="display:flex; flex-direction:column; gap:4px;">                                                                                                                        <label for="menu-dropdown-dev" style="font-size:10px; color:var(--gold); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN (DEV MODE)>                                   
+    <select id="menu-dropdown-dev" onchange="if (this.value) window.location.href=this.value;" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(168,126,46,0>
+      <option value="">-- Pilih Menu --</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi">🏠 Beranda / Administrasi</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android">🤖 Aplikasi Android</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus">📖 Kamus Dayak Ngaju</option>
+      <option value="https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2">📊 Halaman 2 (Laporan)</option>
+    </select>
+  </div>
+
+  <hr style="border:none; border-top:1px solid var(--border); margin:4px 0;">
+
+  <ul class="menu-list">
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=administrasi'">🏠 Beranda</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=android'">🤖 Android</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=kamus'">📖 Kamus</li>
+    <li onclick="window.location.href='https://script.google.com/macros/s/AKfycbx3BAf5c4Yje5OTaJ3ZnEvnvTPfHwOcCuKeH9-c_8zJ/dev?p=halaman2'">📊 Halaman 2</li>
+  </ul>
+</div>
+
+<div class="container-elite">
+    <div class="header-dimensi">
+        <h2 style="margin:0; letter-spacing:3px; color: var(--emas);">⚔️ DIMENSI ELITE</h2>
+        <small id="status-nur">PENGAWAS: NUR 2 (DKOHAR011)</small>
+    </div>
+
+    <div class="arisan-card">
+        <div style="font-size: 10px; color: var(--langit);">POOL ARISAN NUR 9 (PERSALINAN)</div>
+        <div class="pool-amount" id="total-pool">Rp 1.500.000</div>
+        <div style="font-size: 11px; font-style: italic; margin-bottom: 15px;">"Arisan Internasional & Gudang Ilmu Aktif"</div>
+        
+        <button class="btn-action btn-kocok" onclick="kocokNama()">🎲 KOCOK NAMA (NUR 7)</button>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="https://wa.me/628XXXXXXXXXX?text=Hadir%20Nur%20Satria..%20Saya%20siap%20melangkah%20di%20Dimensi%202" class="btn-action btn-wa" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:20px; margin-right:10px;">
+            LOGIN WHATSAPP KHALIFAH
+        </a>
+    </div>
+
+    <div class="member-list">
+        <div style="color: var(--langit); font-weight: bold; margin-bottom: 10px;">🛡️ SATRIA TERDETEKSI:</div>
+        <div class="member-item">
+            <span>1. Jamhari (Satria Utama)</span>
+            <span style="color: var(--emas);">[LEGEND]</span>
+        </div>
+        <div class="member-item">
+            <span>2. Member_Indramayu</span>
+            <span style="color: #c0c0c0;">[ELITE]</span>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="../index.html" style="color: #444; font-size: 11px; text-decoration: none;">← Kembali ke Gerbang Warrior</a>
+    </div>
+</div>
+
+<div class="nur8-reset" onclick="panggilNur8()" title="Backup Nur 8">🛡️</div>
+<div style="color: var(--emas); font-size: 6px; margin-bottom: 8px; font-weight: bold;">💎 MODERN WOMEN & GAME ARENA</div>
+    <div class="menu-grid">
+        <a href="https://skinive.com/skin-check/" target="_blank" class="link-card">✨ Skinive AI (Kulit)</a>
+        <a href="https://haircaster.com/" target="_blank" class="link-card">💇‍♀️ Style AI (Rambut)</a>
+        <a href="https://www.tetris.com/play/online" target="_blank" class="link-card"> 🎲tetris Online</a>
+        <a href="https://venge.io/" target="_blank" class="link-card">🔫 Arcade </a>
+        <a href="https://skinive.com/skin-check/" target="_blank" class="link-card">✨ Skinive AI (Kulit)</a>
+        <a href="https://haircaster.com/" target="_blank" class="link-card">💇‍♀️ Style AI (Rambut)</a>
+        <a href="https://www.chess.com/play/online" target="_blank" class="link-card">♟️ Chess Online</a
+    </div>
+<div style="color: var(--emas); font-size: 6px; margin-bottom: 8px; font-weight: bold;">💎 MODERN WOMEN & GAME ARENA</div>
+<div style="display:flex; flex-direction:column; gap:4px;">
+  <label for="menu-dropdown-dev" style="font-size:10px; color:var(--warna-emas); font-weight:700; letter-spacing:0.5px;">PILIH HALAMAN UTAMA</label>
+  <select id="menu-dropdown-dev" onchange="pindahHalamanOtomatis(this.value)" style="width:100%; background:rgba(0,0,0,0.6); border:1px solid var(--warna-border); padding:10px; color:#fff; border-radius:6px; outline:none; font-size:13px; font-weight:500;">
+    <option value="">-- Menu Navigasi Sektor --</option>
+    <option value="administrasi">🏠 Sektor Administrasi / Beranda</option>
+    <option value="android">🤖 Sektor Aplikasi Android Terminal</option>
+    <option value="kamus">📖 Sektor Kamus Makrifat</option>
+    <option value="halaman2">📊 Sektor Laporan & Data Terpadu</option>
+  </select>
+</div>
+
+
+<select id="menu-dropdown-dev" onchange="pindahSektorOtomatis(this.value)">
+  <option value="">-- Pilih Sektor --</option>
+  <option value="administrasi">🏠 Sektor Administrasi Utama</option>
+  <option value="bagian1">🌟 Dimensi Elite / Bagian 1</option>
+  <option value="bagian2">📊 Laporan Aset Digital / Bagian 2</option>
+</select>
+
+<script>
+function pindahSektorOtomatis(namaHalaman) {
+  if (!namaHalaman) return;
+  
+  // Mengambil URL dasar Apps Script (Otomatis mendeteksi /dev atau /exec)
+  const urlSistem = window.location.href.split('?')[0];
+  
+  // Eksekusi pemindahan rute halaman dinamis
+  window.location.href = urlSistem + "?p=" + namaHalaman;
+}
+
+// Menjaga indikator pilihan dropdown tetap bertahan sesuai halaman yang dibuka
+document.addEventListener("DOMContentLoaded", function() {
+  const params = new URLSearchParams(window.location.search);
+  const halamanAktif = params.get('p') || 'administrasi';
+  const dropdown = document.getElementById('menu-dropdown-dev');
+  if (dropdown) dropdown.value = halamanAktif;
+});
+
+    // Logika Nur 7: Pengocokan & Sapaan
+    function kocokNama() {
+        let pool = document.getElementById("total-pool");
+        let status = document.getElementById("status-nur");
+        
+        alert("Nur 7 sedang memanggil energi makrifat untuk mencari pemenang...");
+        
+        let count = 0;
+        let shuffle = setInterval(() => {
+            pool.style.transform = "scale(1.1)";
+            pool.style.color = (count % 2 == 0) ? "#fff" : "#00ff00";
+            count++;
+            if(count > 15) {
+                clearInterval(shuffle);
+                pool.style.transform = "scale(1)";
+                pool.style.color = "#00ff00";
+                alert("Nur 6 sedang memvalidasi potongan kas 5%... Pemenang segera dihubungi via WhatsApp.");
+            }
+        }, 80);
+    }
+
+    // Logika Nur 8: Backup & Redup (Sesuai Pesan Bapak)
+    function panggilNur8() {
+        if(confirm("Nur 8 akan membackup data dan mereset tampilan. Lanjutkan?")) {
+            document.body.style.opacity = "0.3"; // Sistem redup
+            document.getElementById("status-nur").innerText = "NUR 8: SEDANG BACKUP...";
+            document.getElementById("status-nur").style.color = "yellow";
+            
+            setTimeout(() => {
+                alert("Data berhasil diamankan oleh Nurindrmayumini@gmail.com. Menampilkan Running Text Kuning...");
+                document.body.style.opacity = "1";
+                document.getElementById("status-nur").innerText = "PENGAWAS: NUR 2 (AKTIF)";
+                document.getElementById("status-nur").style.color = "#00c3ff";
+            }, 3000);
+        }
+    }
+
+
+/* ==========================================
+   SISTEM NAVIGASI OTOMATIS WEB APP (DO-GET)
+   ========================================== */
+function navigasiHalaman(namaHalaman) {
+  // Mengambil URL dasar Web App secara dinamis dari Apps Script
+  const urlDasar = "<?= ScriptApp.getService().getUrl() ?>";
+  
+  if (urlDasar) {
+    // Alihkan halaman menggunakan parameter ?p=nama_halaman
+    window.location.href = urlDasar + "?p=" + namaHalaman;
+  } else {
+    // Jalur cadangan jika dijalankan di mode development / lokal biasa
+    alert("Mengalihkan ke halaman: " + namaHalaman);
+  }
+}
+
+function doGet(e) {
+  // Ambil parameter halaman, default ke administrasi jika kosong                         var page = e.parameter.p || 'administrasi';
+
+  var htmlFile;                                                                           switch(page) {
+    case 'android': htmlFile = 'android'; break;                                            case 'halaman2': htmlFile = 'halaman2'; break;
+    case 'kamus': htmlFile = 'kamus'; break;                                                case 'administrasi':                                                                    default:                                                                                  htmlFile = 'administrasi';
+      break;
+  }
+
+  // 1. Buat template dari file html yang dipilih
+  var template = HtmlService.createTemplateFromFile(htmlFile);
+
+  // 2. Oper parameter 'e' ke dalam HTML agar dropdown tahu halaman aktif saat ini
+  template.e = e;
+
+  // 3. Evaluasi dan kirimkan outputnya ke browser
+  return template.evaluate()                                                                  .setTitle('Indramayu Club Makrifat')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+</script>
+
+</body>
+</html>

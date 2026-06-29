@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Android Home Screen v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    width: 390px;
+    height: 844px;
+    margin: 0 auto;
+    background: #0A0A0A;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .wallpaper {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(30,15,60,0.95) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(10,30,20,0.9) 0%, transparent 60%),
+      linear-gradient(160deg, #0D0820 0%, #050D10 40%, #0A1205 100%);
+  }
+  .wallpaper::before {
+    content:''; position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(201,168,76,0.025) 0, rgba(201,168,76,0.025) 1px, transparent 1px, transparent 18px),
+      repeating-linear-gradient(-45deg, rgba(201,168,76,0.025) 0, rgba(201,168,76,0.025) 1px, transparent 1px, transparent 18px);
+  }
+  body > * { position: relative; z-index: 1; }
+
+  /* STATUS BAR */
+  .statusbar {
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 12px 22px 6px;
+    font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85);
+  }
+  .sb-time { font-size: 15px; }
+  .sb-icons { display:flex; gap:5px; align-items:center; font-size:11px; }
+
+  /* CLOCK */
+  .clock-widget { text-align:center; padding: 20px 0 8px; }
+  .clock-time { font-size: 54px; font-weight:200; color:#fff; letter-spacing:-2px; line-height:1; text-shadow: 0 0 40px rgba(201,168,76,0.3); }
+  .clock-date { font-size:13px; color:rgba(255,255,255,0.6); margin-top:4px; }
+
+  /* SEARCH */
+  .search-bar {
+    margin: 10px 20px 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 28px; padding: 10px 18px;
+    display:flex; align-items:center; gap:10px; backdrop-filter:blur(10px);
+  }
+  .search-g { font-size:16px; font-weight:700; background:linear-gradient(135deg,#4285F4,#EA4335,#FBBC05,#34A853); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .search-text { font-size:13px; color:rgba(255,255,255,0.5); flex:1; }
+
+  /* SCROLL AREA */
+  .scroll-area {
+    height: 580px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+  }
+  .scroll-area::-webkit-scrollbar { display:none; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 10px; font-weight:600; letter-spacing:0.12em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    padding: 10px 20px 6px;
+  }
+
+  /* APP GRID */
+  .app-grid {
+    display:grid; grid-template-columns: repeat(4,1fr);
+    gap: 16px 8px; padding: 4px 16px 12px;
+  }
+
+  .app-item {
+    display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;
+  }
+  .app-item:active .app-icon { transform:scale(0.85); }
+
+  .app-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 0.12s; position:relative; overflow:visible;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .app-icon img { width:100%; height:100%; object-fit:cover; border-radius:16px; }
+  .app-icon svg { width:32px; height:32px; }
+
+  .app-name {
+    font-size:10px; color:rgba(255,255,255,0.85);
+    text-align:center; text-shadow:0 1px 4px rgba(0,0,0,0.8);
+    font-weight:400; line-height:1.3; max-width:64px;
+    white-space: nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  .badge {
+    position:absolute; top:-4px; right:-4px;
+    background:#FF3B30; color:#fff; font-size:9px; font-weight:700;
+    min-width:16px; height:16px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    padding: 0 3px; border:1.5px solid #0A0A0A; z-index:2;
+  }
+
+  /* FOLDER */
+  .folder-box {
+    width:56px; height:56px; border-radius:16px;
+    background:rgba(255,255,255,0.12); backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.2);
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+    gap:2px; padding:6px; transition:transform 0.12s;
+    box-shadow:0 4px 16px rgba(0,0,0,0.3);
+  }
+  .app-item:active .folder-box { transform:scale(0.85); }
+  .folder-mini { border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:11px; }
+
+  /* ICON BACKGROUNDS */
+  .ic-fb   { background: linear-gradient(145deg,#1877F2,#0C5DC7); }
+  .ic-wa   { background: linear-gradient(145deg,#25D366,#128C7E); }
+  .ic-tt   { background: #010101; border:0.5px solid rgba(255,255,255,0.15); }
+  .ic-gdrive { background: linear-gradient(145deg,#fff,#f0f0f0); }
+  .ic-chess  { background: linear-gradient(145deg,#769656,#4a6741); }
+  .ic-game   { background: linear-gradient(145deg,#FF6B35,#E84393); }
+  .ic-coc    { background: linear-gradient(145deg,#1A2B6D,#5B3FA0); }
+  .ic-android{ background: linear-gradient(145deg,#3DDC84,#1ea85e); }
+  .ic-claude { background: linear-gradient(145deg,#D97757,#b85c3a); }
+  .ic-indclub{ background: linear-gradient(145deg,#0D1A12,#1C3D20); border:1px solid rgba(201,168,76,0.5); }
+  .ic-grey   { background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); }
+
+  /* DIVIDER */
+  .page-dots { display:flex; justify-content:center; gap:5px; padding:6px 0; }
+  .dot { width:5px; height:5px; border-radius:3px; background:rgba(255,255,255,0.3); }
+  .dot.active { width:16px; background:rgba(255,255,255,0.8); }
+
+  /* DOCK */
+  .dock { position:absolute; bottom:0; left:0; right:0; }
+  .dock-bar {
+    margin: 0 16px 24px;
+    background: rgba(255,255,255,0.1); backdrop-filter:blur(30px);
+    border:1px solid rgba(255,255,255,0.15); border-radius:28px;
+    padding: 10px 18px;
+    display:flex; justify-content:space-around; align-items:center;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  }
+  .dock-item { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+  .dock-item:active .dock-icon { transform:scale(0.85); }
+  .dock-icon {
+    width:48px; height:48px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; transition:transform 0.12s;
+  }
+  .home-indicator { display:flex; justify-content:center; padding-bottom:6px; }
+  .home-bar { width:110px; height:4px; border-radius:2px; background:rgba(255,255,255,0.3); }
+
+  /* PHONE FRAME */
+  .phone-frame {
+    position:fixed; top:0; left:50%; transform:translateX(-50%);
+    width:390px; height:844px; border-radius:44px;
+    border:8px solid #1a1a1a;
+    box-shadow: 0 0 0 1px #333, 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+    pointer-events:none; z-index:999;
+  }
+  .phone-frame::before {
+    content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:120px; height:30px; background:#1a1a1a; border-radius:0 0 18px 18px;
+  }
+
+  /* POPUP OVERLAY */
+  .popup-overlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7);
+    z-index:500; backdrop-filter:blur(4px);
+    align-items:center; justify-content:center;
+  }
+  .popup-overlay.show { display:flex; }
+  .popup-box {
+    width:340px; background:#1a1a1a; border-radius:20px;
+    border:1px solid rgba(255,255,255,0.15); overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.8);
+  }
+  .popup-header {
+    padding:14px 18px 12px;
+    background:rgba(255,255,255,0.05);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    display:flex; align-items:center; gap:10px;
+  }
+  .popup-icon { font-size:22px; }
+  .popup-title { font-size:14px; font-weight:600; color:#fff; }
+  .popup-url { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; }
+  .popup-close { margin-left:auto; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.1); border:none; color:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .popup-iframe { width:100%; height:380px; border:none; background:#000; }
+  .popup-actions { display:flex; gap:8px; padding:12px; }
+  .popup-btn {
+    flex:1; padding:10px; border-radius:12px; border:none;
+    font-size:12px; font-weight:600; cursor:pointer; letter-spacing:0.03em;
+  }
+  .popup-btn.open { background:linear-gradient(135deg,#C9A84C,#E8C97A); color:#0A0A0A; }
+  .popup-btn.cancel { background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+
+<div class="phone-frame"></div>
+<div class="wallpaper"></div>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="sb-time" id="sb-time">09:41</span>
+  <div class="sb-icons"><span>▲▲▲</span><span>WiFi</span><span>🔋 87%</span></div>
+</div>
+
+<!-- CLOCK -->
+<div class="clock-widget">
+  <div class="clock-time" id="clock-time">09:41</div>
+  <div class="clock-date" id="clock-date">Rabu, 25 Juni 2026</div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <span class="search-g">G</span>
+  <span class="search-text">Cari di Google...</span>
+  <span>🎤</span>
+</div>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area">
+
+  <!-- ── FOLDER SOSMED ── -->
+  <div class="section-label">📱 Sosial Media</div>
+  <div class="app-grid">
+
+    <!-- Facebook -->
+    <div class="app-item" onclick="openApp('Facebook','https://m.facebook.com/','📘')">
+      <div class="app-icon ic-fb" style="position:relative;">
+        <svg viewBox="0 0 36 36" fill="white"><path d="M20.18 35.84V20.39h5.2l.78-6.04h-5.98v-3.86c0-1.75.49-2.94 3-2.94h3.2V2.15A42.8 42.8 0 0021.13 2c-4.6 0-7.75 2.81-7.75 7.97v4.38H8.13v6.04h5.25v15.45h6.8z"/></svg>
+        <div class="badge">3</div>
+      </div>
+      <span class="app-name">Facebook</span>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="app-item" onclick="openApp('WhatsApp Web','https://web.whatsapp.com/','💬')">
+      <div class="app-icon ic-wa" style="position:relative;">
+        <svg viewBox="0 0 36 36" fill="white"><path d="M18 2C9.16 2 2 9.16 2 18c0 2.85.74 5.52 2.02 7.84L2 34l8.4-2c2.24 1.15 4.77 1.8 7.6 1.8 8.84 0 16-7.16 16-16S26.84 2 18 2zm8.27 22.55c-.35.98-2.04 1.88-2.8 1.96-.75.09-1.46.37-4.9-1.02-4.12-1.67-6.76-5.87-6.97-6.14-.2-.27-1.67-2.22-1.67-4.23s1.06-3 1.44-3.41c.37-.4.82-.51 1.09-.51.27 0 .54 0 .78.01.25.01.59-.1.92.7.35.82 1.2 2.83 1.3 3.04.11.2.18.44.04.7-.14.27-.2.44-.4.67-.2.24-.42.53-.6.71-.2.2-.41.41-.18.8.24.4 1.06 1.74 2.27 2.82 1.56 1.38 2.87 1.81 3.27 2.02.4.2.64.17.87-.1.24-.27 1.02-1.19 1.29-1.6.27-.4.54-.33.91-.2.37.14 2.37 1.12 2.78 1.32.4.2.67.3.77.47.1.17.1.98-.25 1.96z"/></svg>
+        <div class="badge">12</div>
+      </div>
+      <span class="app-name">WhatsApp</span>
+    </div>
+
+    <!-- TikTok -->
+    <div class="app-item" onclick="openApp('TikTok','https://www.tiktok.com/','🎵')">
+      <div class="app-icon ic-tt">
+        <span style="font-size:26px;font-weight:900;color:#fff;text-shadow:2px 2px 0 #69C9D0,-2px -2px 0 #EE1D52;font-family:Arial Black,sans-serif;">♪</span>
+      </div>
+      <span class="app-name">TikTok</span>
+    </div>
+
+    <!-- Google Drive / Gallery Member -->
+    <div class="app-item" onclick="openApp('Gallery Member','https://drive.google.com/drive/folders/1S4zZBfhYD7f0i4amQDu56I5T7DsHMcEy','🗂️')">
+      <div class="app-icon ic-gdrive">
+        <svg viewBox="0 0 87.3 78" width="36" height="36">
+          <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+          <path d="M43.65 25L29.9 1.2c-1.35.8-2.5 1.9-3.3 3.3L1.2 48.5c-.8 1.4-1.2 2.95-1.2 4.5h27.5z" fill="#00ac47"/>
+          <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.9 11.5z" fill="#ea4335"/>
+          <path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+          <path d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+          <path d="M73.4 26.5l-12.65-21.9c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28H87.3c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+        </svg>
+      </div>
+      <span class="app-name">Gallery Member</span>
+    </div>
+
+  </div>
+
+  <!-- ── FOLDER GAME ── -->
+  <div class="section-label">🎮 Games</div>
+  <div class="app-grid">
+
+    <!-- Chess.com -->
+    <div class="app-item" onclick="openApp('Chess.com','https://www.chess.com/id/play','♟️')">
+      <div class="app-icon ic-chess">
+        <span style="font-size:28px;">♟</span>
+      </div>
+      <span class="app-name">Chess.com</span>
+    </div>
+
+    <!-- Permainan.co.id -->
+    <div class="app-item" onclick="openApp('Permainan','https://www.permainan.co.id/','🎯')">
+      <div class="app-icon ic-game">
+        <span style="font-size:26px;">🎯</span>
+      </div>
+      <span class="app-name">Permainan</span>
+    </div>
+
+    <!-- Clash of Clans -->
+    <div class="app-item" onclick="openApp('Clash of Clans','https://web.cloudmoonapp.com/id/game/com.supercell.clashofclans/','⚔️')">
+      <div class="app-icon ic-coc">
+        <span style="font-size:26px;">⚔️</span>
+      </div>
+      <span class="app-name">Clash of Clans</span>
+    </div>
+
+    <!-- Folder Games -->
+    <div class="app-item" onclick="">
+      <div class="folder-box">
+        <div class="folder-mini ic-chess" style="font-size:11px;">♟</div>
+        <div class="folder-mini ic-game" style="font-size:11px;">🎯</div>
+        <div class="folder-mini ic-coc" style="font-size:11px;">⚔️</div>
+        <div class="folder-mini ic-grey"></div>
+      </div>
+      <span class="app-name">Games</span>
+    </div>
+
+  </div>
+
+  <!-- ── FOLDER DEV & TOOLS ── -->
+  <div class="section-label">🛠️ Developer & Tools</div>
+  <div class="app-grid">
+
+    <!-- Android Studio -->
+    <div class="app-item" onclick="openApp('Android Studio','https://developer.android.com/studio?hl=id','🤖')">
+      <div class="app-icon ic-android">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M17.523 15.341a5 5 0 01-3.523 1.461 5 5 0 01-5-5 5 5 0 015-5 5 5 0 013.6 1.527l1.06-1.06A6.5 6.5 0 0014 5.802V4h-4v1.802A6.5 6.5 0 005.5 11.8a6.5 6.5 0 006.5 6.5 6.5 6.5 0 004.586-1.9zM9 4h6v1H9zm-1 8a4 4 0 014-4 4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4zm7.5 0a3.5 3.5 0 00-3.5-3.5 3.5 3.5 0 00-3.5 3.5 3.5 3.5 0 003.5 3.5 3.5 3.5 0 003.5-3.5z"/></svg>
+      </div>
+      <span class="app-name">Android Studio</span>
+    </div>
+
+    <!-- Claude AI -->
+    <div class="app-item" onclick="openApp('Claude AI','https://claude.ai/','✦')">
+      <div class="app-icon ic-claude">
+        <span style="font-size:24px; color:#fff; font-weight:300;">✦</span>
+      </div>
+      <span class="app-name">Claude AI</span>
+    </div>
+
+    <!-- Indramayu Club -->
+    <div class="app-item" onclick="openApp('Indramayu Club','https://indramayuclubmakrifat-tech.github.io/Main_System_IndramayuClub/','ꦆ')">
+      <div class="app-icon ic-indclub">
+        <span style="font-size:22px; color:#C9A84C; font-weight:700; text-shadow:0 0 12px rgba(201,168,76,0.6);">ꦆ</span>
+      </div>
+      <span class="app-name">Indramayu Club</span>
+    </div>
+
+    <!-- Folder Dev -->
+    <div class="app-item">
+      <div class="folder-box" style="background:rgba(201,168,76,0.08); border-color:rgba(201,168,76,0.2);">
+        <div class="folder-mini ic-android"></div>
+        <div class="folder-mini ic-claude" style="font-size:10px;color:#fff;">✦</div>
+        <div class="folder-mini ic-indclub" style="font-size:10px;color:#C9A84C;">ꦆ</div>
+        <div class="folder-mini ic-grey"></div>
+      </div>
+      <span class="app-name">Dev Tools</span>
+    </div>
+
+  </div>
+
+  <!-- PAGE DOTS -->
+  <div class="page-dots">
+    <div class="dot"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+
+</div><!-- end scroll-area -->
+
+<!-- DOCK -->
+<div class="dock">
+  <div class="dock-bar">
+    <div class="dock-item" onclick="openApp('Telepon','tel:','📞')">
+      <div class="dock-icon" style="background:linear-gradient(145deg,#34C759,#248A3D);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.58.11.35.03.74-.25 1.02L6.6 10.8z"/></svg>
+      </div>
+    </div>
+    <div class="dock-item" onclick="openApp('WhatsApp','https://web.whatsapp.com/','💬')">
+      <div class="dock-icon ic-wa" style="border-radius:14px;">
+        <svg viewBox="0 0 36 36" width="26" height="26" fill="white"><path d="M18 2C9.16 2 2 9.16 2 18c0 2.85.74 5.52 2.02 7.84L2 34l8.4-2c2.24 1.15 4.77 1.8 7.6 1.8 8.84 0 16-7.16 16-16S26.84 2 18 2zm8.27 22.55c-.35.98-2.04 1.88-2.8 1.96-.75.09-1.46.37-4.9-1.02-4.12-1.67-6.76-5.87-6.97-6.14-.2-.27-1.67-2.22-1.67-4.23s1.06-3 1.44-3.41c.37-.4.82-.51 1.09-.51h.78c.25.01.59-.1.92.7.35.82 1.2 2.83 1.3 3.04.11.2.18.44.04.7-.14.27-.2.44-.4.67-.2.24-.42.53-.6.71-.2.2-.41.41-.18.8.24.4 1.06 1.74 2.27 2.82 1.56 1.38 2.87 1.81 3.27 2.02.4.2.64.17.87-.1.24-.27 1.02-1.19 1.29-1.6.27-.4.54-.33.91-.2.37.14 2.37 1.12 2.78 1.32.4.2.67.3.77.47.1.17.1.98-.25 1.96z"/></svg>
+      </div>
+    </div>
+    <div class="dock-item" onclick="openApp('Indramayu Club','https://indramayuclubmakrifat-tech.github.io/Main_System_IndramayuClub/','ꦆ')">
+      <div class="dock-icon ic-indclub" style="border-radius:14px; border:1px solid rgba(201,168,76,0.4);">
+        <span style="font-size:20px;color:#C9A84C;">ꦆ</span>
+      </div>
+    </div>
+    <div class="dock-item" onclick="openApp('Claude AI','https://claude.ai/','✦')">
+      <div class="dock-icon ic-claude" style="border-radius:14px;">
+        <span style="font-size:20px;color:#fff;">✦</span>
+      </div>
+    </div>
+  </div>
+  <div class="home-indicator"><div class="home-bar"></div></div>
+</div>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <div class="popup-header">
+      <span class="popup-icon" id="p-icon">🌐</span>
+      <div>
+        <div class="popup-title" id="p-title">App</div>
+        <div class="popup-url" id="p-url">url</div>
+      </div>
+      <button class="popup-close" onclick="closePopup()">✕</button>
+    </div>
+    <iframe class="popup-iframe" id="p-frame" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+    <div class="popup-actions">
+      <button class="popup-btn open" id="p-open" onclick="openExternal()">🔗 Buka di Browser</button>
+      <button class="popup-btn cancel" onclick="closePopup()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Clock update
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const t = h+':'+m;
+    document.getElementById('clock-time').textContent = t;
+    document.getElementById('sb-time').textContent = t;
+    const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    document.getElementById('clock-date').textContent = days[now.getDay()]+', '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+  }
+  updateClock(); setInterval(updateClock, 10000);
+
+  let currentUrl = '';
+  function openApp(name, url, icon) {
+    currentUrl = url;
+    document.getElementById('p-icon').textContent = icon;
+    document.getElementById('p-title').textContent = name;
+    document.getElementById('p-url').textContent = url.replace('https://','').replace('http://','').split('/')[0];
+    document.getElementById('p-frame').src = url;
+    document.getElementById('popup').classList.add('show');
+  }
+  function closePopup() {
+    document.getElementById('popup').classList.remove('show');
+    document.getElementById('p-frame').src = 'about:blank';
+  }
+  function openExternal() {
+    window.open(currentUrl, '_blank');
+    closePopup();
+  }
+
+  // Tap animation
+  document.querySelectorAll('.app-item, .dock-item').forEach(el => {
+    el.addEventListener('click', function() {
+      const icon = this.querySelector('.app-icon,.folder-box,.dock-icon');
+      if(icon){ icon.style.transform='scale(0.82)'; setTimeout(()=>icon.style.transform='',150); }
+    });
+  });
+</script>
+</body>
+</html>
+
