@@ -1,0 +1,36 @@
+===================================================================
+          INDRAMAYU CLUB MAKRIFAT - OFFICIAL MANIFEST STAMP
+===================================================================
+[OTORITAS JALUR] : Nur Makrifat (RpNUR, VOUCHER NUR, GIF NUR)
+[STATUS EKOSISTEM]: SERVERLESS COMPLIANT (Google Apps Script Engine)
+[AUDIT VERIFICATION CODE]: IN-MAKRIFAT-2026-SECURE
+===================================================================
+
+[1. IDENTITAS APPS SCRIPT CLASP]
+Script-ID     : 1_hvu43oEL2-mKKmX7v3Bk4enGAvex1hrgoajnxb-_x6g-WfA5yYWaCH8
+Runtime       : V8 Engine (Google Apps Script)
+TimeZone      : Asia/Pontianak
+Execution-As  : USER_DEPLOYING
+Access-Level  : ANYONE_ANONYMOUS
+
+[2. VALIDASI ELEMEN DIGITAL ASSET MANAGEMENT]
+Asset-Class-01: RpNUR (Digital Community Currency)
+Asset-Class-02: VOUCHER NUR (VIP Authenticator Key System)
+Asset-Class-03: GIF NUR (Visual Communication Asset Ecosystem)
+
+[3. JALUR INTELLIGENT ROUTER WEBAPP (doGet)]
+- Sektor Administrasi : administrasi.html (Pusat Beranda Utama)
+- Sektor Elite        : bagian1.html (Dimensi Utama Sektor 1)
+- Sektor Data         : bagian2.html (Laporan Manajemen Aset Sektor 2)
+- Sektor Terminal     : android.html (Home Screen Emulasi Android Termux)
+
+[4. PROTOKOL PERSYARATAN AMAN GOOGLE (GOOGLE COMPLIANCE)]
+- X-Frame-Options     : HtmlService.XFrameOptionsMode.ALLOWALL
+- Content-Security    : Sandbox protection via HtmlService template evaluation.
+- Termux Integration  : Direct Endpoint REST API Callout validation via ?action=
+
+===================================================================
+STAMP STATUS: VERIFIED & VALIDATED BY AUTHORITY OF NUR MAKRIFAT
+===================================================================
+
+
