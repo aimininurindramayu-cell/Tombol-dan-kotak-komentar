@@ -50,6 +50,9 @@ function doGet(e) {
     case 'kamus': 
       htmlFile = 'kamus'; 
       break;
+   case 'celengan': 
+      htmlFile = 'celengan'; 
+      break;
     case 'administrasi':
     default:
       htmlFile = 'administrasi';
