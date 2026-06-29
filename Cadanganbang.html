@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasir AI — Indramayu Club Makrifat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Noto+Serif+Javanese&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #c9952a;
+    --gold-light: #e8c060;
+    --gold-pale: #f5e8c0;
+    --gold-dim: #7a5a10;
+    --green-deep: #0a2a1a;
+    --green-mid: #143d28;
+    --green-light: #1e5c3c;
+    --green-accent: #2e7d52;
+    --cream: #faf6ec;
+    --ink: #1a1208;
+    --muted: #8a7a50;
+    --bg: #f0ead6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(201,149,42,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(20,61,40,0.08) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9952a' fill-opacity='0.04'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30z'/%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; }
+
+  header {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-zone {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-emblem {
+    width: 52px; height: 52px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, var(--gold-dim), var(--green-deep));
+    position: relative;
+    flex-shrink: 0;
+  }
+  .logo-emblem::after {
+    content: '✦';
+    font-size: 22px;
+    color: var(--gold-light);
+    text-shadow: 0 0 12px var(--gold);
+  }
+
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .logo-text p {
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,149,42,0.3);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    color: var(--gold-pale);
+    letter-spacing: 0.1em;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    background: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #4ade80;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .clock-display {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .main-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 28px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    min-height: calc(100vh - 85px);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .panel {
+    background: var(--cream);
+    border: 1px solid rgba(201,149,42,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 2px 2px 0 var(--gold-dim), 4px 4px 0 rgba(0,0,0,0.1);
+  }
+
+  .panel-header {
+    background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--gold);
+  }
+  .panel-header i { color: var(--gold); font-size: 0.85rem; }
+  .panel-header span {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.78rem;
+    color: var(--gold-pale);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .panel-body { padding: 16px; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    background: #fff;
+    border: 1px solid rgba(201,149,42,0.35);
+    border-radius: 3px;
+    padding: 9px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ink);
+    transition: all 0.2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,149,42,0.12);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 11px 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+    color: var(--green-deep);
+    box-shadow: 0 2px 0 var(--gold-dim), 0 4px 12px rgba(201,149,42,0.25);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--gold-dim), 0 8px 20px rgba(201,149,42,0.35);
+  }
+  .btn-gold:active { transform: translateY(0); }
+
+  .btn-green {
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    color: var(--gold-light);
+    border: 1px solid rgba(201,149,42,0.4);
+    margin-top: 8px;
+  }
+  .btn-green:hover {
+    background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+    border-color: var(--gold);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stat-item {
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    border-radius: 3px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid rgba(201,149,42,0.2);
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 2px;
+    display: block;
+  }
+
+  .content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .receipt-zone {
+    background: var(--cream);
+    border: 1px solid rgba(201,149,42,0.3);
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 var(--gold-dim), 4px 4px 0 rgba(0,0,0,0.1);
+    flex: 1;
+  }
+
+  .receipt-header {
+    background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .receipt-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .receipt-title i { color: var(--gold); }
+
+  .trx-id {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.2em;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .receipt-body {
+    padding: 20px;
+    min-height: 280px;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .receipt-body::-webkit-scrollbar { width: 4px; }
+  .receipt-body::-webkit-scrollbar-track { background: transparent; }
+  .receipt-body::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 99px; }
+
+  .empty-state {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--muted);
+  }
+  .empty-state i { font-size: 2.5rem; opacity: 0.3; color: var(--gold); }
+  .empty-state p { font-size: 0.75rem; letter-spacing: 0.1em; opacity: 0.6; }
+
+  .item-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(201,149,42,0.2);
+    font-size: 0.78rem;
+    animation: fadeSlide 0.3s ease;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .item-name { color: var(--ink); font-weight: 500; }
+  .item-qty { color: var(--muted); text-align: center; min-width: 28px; }
+  .item-price { color: var(--green-accent); font-weight: 600; text-align: right; min-width: 90px; }
+  .item-del {
+    color: rgba(201,149,42,0.4);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    padding: 2px 4px;
+  }
+  .item-del:hover { color: #e55; }
+
+  .receipt-footer {
+    border-top: 2px solid rgba(201,149,42,0.3);
+    padding: 16px 20px;
+    background: linear-gradient(to bottom, transparent, rgba(201,149,42,0.04));
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+  }
+  .total-row.grand {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(201,149,42,0.3);
+  }
+  .total-row .label { color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.65rem; }
+  .total-row .val { color: var(--ink); font-weight: 600; }
+  .total-row.grand .label { color: var(--green-deep); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; font-family: 'Playfair Display', serif; }
+  .total-row.grand .val { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--gold-dim); }
+
+  .payment-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .ai-zone {
+    background: var(--cream);
+    border: 1px solid rgba(201,149,42,0.3);
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 var(--gold-dim), 4px 4px 0 rgba(0,0,0,0.1);
+  }
+
+  .ai-messages {
+    padding: 16px 20px;
+    min-height: 180px;
+    max-height: 220px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ai-messages::-webkit-scrollbar { width: 4px; }
+  .ai-messages::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 99px; }
+
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    max-width: 88%;
+    animation: fadeSlide 0.3s ease;
+  }
+  .msg-bubble.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    color: var(--gold-pale);
+    border-bottom-right-radius: 0;
+  }
+  .msg-bubble.ai {
+    align-self: flex-start;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid rgba(201,149,42,0.25);
+    border-bottom-left-radius: 0;
+    position: relative;
+  }
+  .msg-bubble.ai::before {
+    content: '✦ NUR MAKRIFAT AI';
+    display: block;
+    font-size: 0.58rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  .msg-bubble.thinking {
+    background: #fff;
+    border: 1px dashed rgba(201,149,42,0.3);
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.72rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dots span {
+    display: inline-block;
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: dotBounce 1.2s infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotBounce {
+    0%,100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  .ai-input-row {
+    display: flex;
+    border-top: 1px solid rgba(201,149,42,0.2);
+    overflow: hidden;
+  }
+  .ai-input-row input {
+    flex: 1;
+    padding: 12px 16px;
+    background: #fff;
+    border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink);
+    outline: none;
+  }
+  .ai-input-row input::placeholder { color: rgba(138,122,80,0.5); }
+  .ai-send {
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    border: none;
+    padding: 12px 18px;
+    color: var(--green-deep);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ai-send:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light)); }
+
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.73rem;
+  }
+  .log-table thead tr {
+    background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+  }
+  .log-table thead th {
+    padding: 10px 14px;
+    text-align: left;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .log-table tbody tr {
+    border-bottom: 1px solid rgba(201,149,42,0.12);
+    transition: background 0.15s;
+  }
+  .log-table tbody tr:hover { background: rgba(201,149,42,0.04); }
+  .log-table tbody td {
+    padding: 9px 14px;
+    color: var(--ink);
+    vertical-align: middle;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .badge-coin { background: rgba(16,185,129,0.12); color: #059669; border: 1px solid rgba(16,185,129,0.3); }
+  .badge-voucher { background: rgba(201,149,42,0.12); color: var(--gold-dim); border: 1px solid rgba(201,149,42,0.3); }
+  .badge-qris { background: rgba(99,102,241,0.12); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
+
+  .divider {
+    text-align: center;
+    padding: 4px 0;
+    position: relative;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    opacity: 0.6;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+
+  @media (max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; }
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--cream);
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    width: 380px;
+    max-width: 95vw;
+    box-shadow: 0 0 60px rgba(201,149,42,0.3);
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-header {
+    background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+    padding: 16px 20px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header span {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+  .modal-close {
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    cursor: pointer; font-size: 1rem;
+  }
+  .receipt-print {
+    padding: 24px 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 2;
+  }
+  .receipt-print .rp-logo {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--green-deep);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .receipt-print .rp-sub {
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .receipt-print .rp-line {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    padding: 2px 0;
+    color: var(--ink);
+  }
+  .receipt-print .rp-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 2px solid var(--gold-dim);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    color: var(--green-deep);
+  }
+  .receipt-print .rp-thanks {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(201,149,42,0.2);
+    display: flex;
+    gap: 10px;
+  }
+  .modal-footer button {
+    flex: 1;
+    padding: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  #btnPrint { background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: var(--green-deep); }
+  #btnPrint:hover { transform: translateY(-2px); }
+  #btnClose { background: rgba(0,0,0,0.06); color: var(--muted); border: 1px solid rgba(0,0,0,0.1); }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,149,42,0.3); border-radius: 99px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header>
+  <div class="header-inner">
+    <div class="logo-zone">
+      <div class="logo-emblem"></div>
+      <div class="logo-text">
+        <h1>INDRAMAYU CLUB</h1>
+        <p>Ekosistem Digital Makrifat · Kasir AI Engine</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>PIRAMIDA GUARD ACTIVE</span>
+      </div>
+      <div class="clock-display" id="nurClock">--:--:--</div>
+    </div>
+  </div>
+</header>
+
+<div class="main-layout">
+
+  <div class="sidebar">
+
+    <div class="panel">
+      <div class="panel-header">
+        <i class="fas fa-plus-circle"></i>
+        <span>Input Alur Makrifat</span>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label>Identitas Anggota</label>
+          <input type="text" id="nurNasabah" placeholder="Nama anggota..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Keterangan Layanan / Produk</label>
+          <input type="text" id="nurKeterangan" placeholder="Aktivitas ekosistem..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Jumlah Nilai (Rp)</label>
+          <input type="number" id="nurJumlah" placeholder="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>Jenis Mutasi</label>
+          <select id="nurJenis">
+            <option value="simpanan">Simpanan Konsolidasi</option>
+            <option value="penarikan">Penarikan Dana</option>
+            <option value="kontribusi">Kontribusi Nilai</option>
+            <option value="alokasi">Alokasi Voucher</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Metode Pertukaran</label>
+          <select id="nurMetode">
+            <option value="coin">Coin Makrifat</option>
+            <option value="voucher">Voucher Sentral</option>
+            <option value="qris">Gerbang QRIS</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" onclick="nurTambahItem()">
+          <i class="fas fa-plus"></i> Validasi ke Struk
+        </button>
+        <button class="btn btn-green" onclick="nurProsesSelesai()">
+          <i class="fas fa-check-double"></i> Stempel & Eksekusi
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <i class="fas fa-chart-bar"></i>
+        <span>Ringkasan Gerbang Utama</span>
+      </div>
+      <div class="panel-body">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-value" id="nurStatTrx">0</span>
+            <span class="stat-label">Mutasi</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="nurStatNasabah">0</span>
+            <span class="stat-label">Anggota</span>
+          </div>
+          <div class="stat-item" style="grid-column: 1/-1;">
+            <span class="stat-value" id="nurStatTotal" style="font-size:1.05rem;">Rp 0</span>
+            <span class="stat-label">Arus Masuk Ekosistem</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="content-area">
+
+    <div class="receipt-zone">
+      <div class="receipt-header">
+        <div class="receipt-title">
+          <i class="fas fa-receipt"></i>
+          MANIFEST STRUK NUR
+        </div>
+        <div class="trx-id" id="nurTrxId">NUR-000000</div>
+      </div>
+      <div class="receipt-body" id="nurReceiptBody">
+        <div class="empty-state">
+          <i class="fas fa-file-invoice"></i>
+          <p>Belum ada manifest terdaftar</p>
+          <p style="font-size:0.65rem">Isi form di kiri & klik Validasi ke Struk</p>
+        </div>
+      </div>
+      <div class="receipt-footer">
+        <div class="total-row">
+          <span class="label">Subtotal Alur</span>
+          <span class="val" id="nurSubtotal">Rp 0</span>
+        </div>
+        <div class="total-row">
+          <span class="label">Pajak Pemeliharaan Guard (0%)</span>
+          <span class="val">Rp 0</span>
+        </div>
+        <div class="total-row grand">
+          <span class="label">Total Otoritas</span>
+          <span class="val" id="nurGrandTotal">Rp 0</span>
+        </div>
+        <div class="payment-row">
+          <div class="form-group" style="margin:0">
+            <label>Jumlah Serahan (Rp)</label>
+            <input type="number" id="nurBayar" placeholder="0" oninput="nurHitungKembalian()">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Sisa Pengembalian</label>
+            <input type="text" id="nurKembalian" readonly value="Rp 0" style="background:#f5f0e0; color: var(--green-accent); font-weight:600;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-zone">
+      <div class="panel-header">
+        <i class="fas fa-robot"></i>
+        <span>NUR ENGINE GATEWAY — Integrasi Kecerdasan Makrifat</span>
+      </div>
+      <div class="ai-messages" id="nurAiMessages">
+        <div class="msg-bubble ai">
+          Sistem Utama Aktif. Menghubungkan Otoritas Nur Makrifat. Sila tanyakan rekap, analisis, atau status otorisasi data manifest hari ini.
+        </div>
+      </div>
+      <div class="ai-input-row">
+        <input type="text" id="nurAiInput" placeholder="Ketik perintah analisis ekosistem... (contoh: rekap manifest hari ini)" onkeydown="if(event.key==='Enter') nurKirimAI()">
+        <button class="ai-send" onclick="nurKirimAI()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <i class="fas fa-history"></i>
+        <span>Arsip Berkas Selesai</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th>ID Berkas</th>
+              <th>Nama Anggota</th>
+              <th>Keterangan Aset</th>
+              <th>Jenis Mutasi</th>
+              <th>Total Nilai</th>
+              <th>Instrumen</th>
+              <th>Waktu Sinkron</th>
+            </tr>
+          </thead>
+          <tbody id="nurLogBody">
+            <tr>
+              <td colspan="7" style="text-align:center; padding:20px; color: var(--muted); font-size:0.72rem; opacity:0.6;">
+                Belum ada arsip termanifestasi hari ini
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="nurModalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span><i class="fas fa-print" style="margin-right:8px;color:var(--gold)"></i>Stempel Cetak Manifest</span>
+      <button class="modal-close" onclick="nurTutupModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="receipt-print" id="nurReceiptPrint"></div>
+    <div class="modal-footer">
+      <button id="btnPrint" onclick="window.print()"><i class="fas fa-print"></i> Eksekusi Cetak</button>
+      <button id="btnClose" onclick="nurTutupModal()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// STATE UTAMA ECOSYSTEM
+let nurItems = [];
+let nurLog = [];
+let nurTrxCounter = 5000;
+let nurTotalHarian = 0;
+let nurNasabahSet = new Set();
+
+// CLOCK
+function nurUpdateClock() {
+  const now = new Date();
+  document.getElementById('nurClock').textContent = now.toLocaleTimeString('id-ID', {hour12:false});
+}
+setInterval(nurUpdateClock, 1000);
+nurUpdateClock();
+
+function nurGenTrxId() {
+  nurTrxCounter++;
+  return 'NUR-' + String(nurTrxCounter).padStart(6,'0');
+}
+document.getElementById('nurTrxId').textContent = nurGenTrxId();
+
+function nurFmt(n) {
+  return 'Rp ' + Number(n).toLocaleString('id-ID');
+}
+
+// TAMBAH MANIFEST ITEM
+function nurTambahItem() {
+  const nasabah = document.getElementById('nurNasabah').value.trim();
+  const ket = document.getElementById('nurKeterangan').value.trim();
+  const jumlah = parseFloat(document.getElementById('nurJumlah').value) || 0;
+  const jenis = document.getElementById('nurJenis').value;
+  const metode = document.getElementById('nurMetode').value;
+
+  if (!nasabah || !ket || jumlah <= 0) {
+    alert('Lengkapi identitas anggota, keterangan aset, dan nilai nominal!');
+    return;
+  }
+
+  nurItems.push({ nasabah, ket, jumlah, jenis, metode });
+  nurRenderReceipt();
+  document.getElementById('nurKeterangan').value = '';
+  document.getElementById('nurJumlah').value = '';
+}
+
+// RENDERING STRUK KENDALI
+function nurRenderReceipt() {
+  const body = document.getElementById('nurReceiptBody');
+  if (nurItems.length === 0) {
+    body.innerHTML = `<div class="empty-state"><i class="fas fa-file-invoice"></i><p>Belum ada manifest terdaftar</p></div>`;
+    document.getElementById('nurSubtotal').textContent = 'Rp 0';
+    document.getElementById('nurGrandTotal').textContent = 'Rp 0';
+    return;
+  }
+
+  let total = 0;
+  let html = '';
+  nurItems.forEach((it, i) => {
+    total += it.jumlah;
+    html += `
+      <div class="item-row">
+        <span class="item-name">${it.nasabah} — ${it.ket}</span>
+        <span class="item-qty" style="text-transform:uppercase; font-size:0.65rem;">${it.jenis}</span>
+        <span class="item-price">${nurFmt(it.jumlah)}</span>
+        <button class="item-del" onclick="nurHapusItem(${i})"><i class="fas fa-times"></i></button>
+      </div>`;
+  });
+  body.innerHTML = html;
+  document.getElementById('nurSubtotal').textContent = nurFmt(total);
+  document.getElementById('nurGrandTotal').textContent = nurFmt(total);
+  nurHitungKembalian();
+}
+
+function nurHapusItem(i) {
+  nurItems.splice(i, 1);
+  nurRenderReceipt();
+}
+
+function nurHitungKembalian() {
+  const total = nurItems.reduce((s,it) => s+it.jumlah, 0);
+  const bayar = parseFloat(document.getElementById('nurBayar').value) || 0;
+  const kembalian = bayar - total;
+  const el = document.getElementById('nurKembalian');
+  el.value = nurFmt(Math.max(0, kembalian));
+  el.style.color = kembalian < 0 ? '#e55' : 'var(--green-accent)';
+}
+
+// STEMPEL & ARSIPKAN FILE
+function nurProsesSelesai() {
+  if (nurItems.length === 0) { alert('Tidak ada entri manifest untuk dieksekusi!'); return; }
+  const total = nurItems.reduce((s,it) => s+it.jumlah, 0);
+  const now = new Date();
+  const trxId = document.getElementById('nurTrxId').textContent;
+  const metode = nurItems[0].metode;
+
+  const entry = {
+    id: trxId,
+    nasabah: [...new Set(nurItems.map(i=>i.nasabah))].join(', '),
+    ket: nurItems.map(i=>i.ket).join('; '),
+    jenis: nurItems.map(i=>i.jenis).join(', '),
+    total,
+    metode,
+    waktu: now.toLocaleTimeString('id-ID', {hour12:false})
+  };
+  nurLog.unshift(entry);
+  nurRenderLog();
+
+  nurTotalHarian += total;
+  nurItems.forEach(it => nurNasabahSet.add(it.nasabah));
+  document.getElementById('nurStatTrx').textContent = nurLog.length;
+  document.getElementById('nurStatNasabah').textContent = nurNasabahSet.size;
+  document.getElementById('nurStatTotal').textContent = nurFmt(nurTotalHarian);
+
+  nurBukaModal(entry, now);
+
+  nurItems = [];
+  nurRenderReceipt();
+  document.getElementById('nurBayar').value = '';
+  document.getElementById('nurKembalian').value = 'Rp 0';
+  document.getElementById('nurNasabah').value = '';
+  document.getElementById('nurTrxId').textContent = nurGenTrxId();
+}
+
+function nurRenderLog() {
+  const body = document.getElementById('nurLogBody');
+  if (nurLog.length === 0) {
+    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);font-size:0.72rem;opacity:0.6;">Belum ada arsip termanifestasi</td></tr>`;
+    return;
+  }
+  body.innerHTML = nurLog.map(e => `
+    <tr>
+      <td style="color:var(--muted)">${e.id}</td>
+      <td style="font-weight:600">${e.nasabah}</td>
+      <td>${e.ket}</td>
+      <td style="text-transform:capitalize; font-size:0.65rem;">${e.jenis}</td>
+      <td style="color:var(--gold-dim);font-weight:700">${nurFmt(e.total)}</td>
+      <td><span class="badge badge-${e.metode}">${e.metode.toUpperCase()}</span></td>
+      <td style="color:var(--muted)">${e.waktu}</td>
+    </tr>`).join('');
+}
+
+function nurBukaModal(entry, now) {
+  document.getElementById('nurReceiptPrint').innerHTML = `
+    <div class="rp-logo">✦ INDRAMAYU CLUB ✦</div>
+    <div class="rp-sub">Ekosistem Digital Makrifat — Stempel Otoritas</div>
+    <div class="divider" style="margin:8px 0; font-size:0.6rem; letter-spacing:0.3em;">✦ ✦ ✦</div>
+    <div class="rp-line"><span>No. Manifest</span><span>${entry.id}</span></div>
+    <div class="rp-line"><span>Otoritas Anggota</span><span>${entry.nasabah}</span></div>
+    <div class="rp-line"><span>Tanggal Sinkron</span><span>${now.toLocaleDateString('id-ID')}</span></div>
+    <div class="rp-line"><span>Waktu Puncak</span><span>${entry.waktu}</span></div>
+    <div class="rp-line"><span>Instrumen Tukar</span><span>${entry.metode.toUpperCase()}</span></div>
+    <div class="divider" style="margin:8px 0; font-size:0.6rem; letter-spacing:0.3em;">✦ ✦ ✦</div>
+    <div class="rp-line"><span style="font-weight:600;color:var(--muted)">KETERANGAN MUTASI</span><span style="font-weight:600;color:var(--muted)">NILAI</span></div>
+    ${entry.ket.split('; ').map((k,i) => `<div class="rp-line"><span>${k}</span><span>${nurFmt(entry.total)}</span></div>`).join('')}
+    <div class="rp-total"><span>TOTAL OTORITAS</span><span>${nurFmt(entry.total)}</span></div>
+    <div class="rp-thanks">Alhamdulillahirabbil'alamin<br>— Sistem Otomatisasi Piramida Guard Disetujui —</div>
+  `;
+  document.getElementById('nurModalOverlay').classList.add('active');
+}
+function nurTutupModal() {
+  document.getElementById('nurModalOverlay').classList.remove('active');
+}
+
+// INTERFACES INTELLIGENT ROUTER (NUR_ENGINE_GATEWAY)
+async function nurKirimAI() {
+  const input = document.getElementById('nurAiInput');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+
+  const msgBox = document.getElementById('nurAiMessages');
+  msgBox.innerHTML += `<div class="msg-bubble user">${q}</div>`;
+
+  const thinkId = 'think-' + Date.now();
+  msgBox.innerHTML += `<div class="msg-bubble thinking" id="${thinkId}"><div class="dots"><span></span><span></span><span></span></div> Menghubungkan Gateway...</div>`;
+  msgBox.scrollTop = msgBox.scrollHeight;
+
+  const totalNow = nurLog.reduce((s,e) => s+e.total, 0);
+  
+  // SYSTEM INSTRUCTION INTEGRATED WITH GATEWAY
+  const systemPrompt = `Kamu adalah AI Kasir Indramayu Club Makrifat berbasis Gemini API. Bertugas mengelola laporan atas nama Nur Makrifat. Gaya bahasa campuran Indonesia-Jawa halus yang berwibawa, penuh rasa hormat, profesional dan hangat. Selalu gunakan prefix Rp untuk representasi mata uang rupiah. Gunakan terminologi Coin Makrifat dan Voucher untuk instrumen keuangan.
+
+Data sistem saat ini:
+- Jumlah manifest diproses: ${nurLog.length}
+- Total sirkulasi nilai: ${nurFmt(totalNow)}
+- Jumlah entitas anggota unik: ${nurNasabahSet.size}
+- Riwayat log mutasi terbaru: ${JSON.stringify(nurLog.slice(0,10))}
+- Item antrean aktif: ${JSON.stringify(nurItems)}
+
+Berikan analisis terstruktur, ringkas, dan langsung tepat sasaran.`;
+
+  try {
+    // Diarahkan langsung menggunakan router otomatisasi lokal / Apps Script engine Anda
+    // Menggunakan fallback model operasional tercepat us-central
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${window.NUR_ENGINE_GATEWAY || 'MASUKKAN_KUNCI_API_STUDIO_ANDA'}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ role: 'user', parts: [{ text: q }] }],
+        generationConfig: { maxOutputTokens: 1000, temperature: 0.5 }
+      })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const reply = data.candidates?.[0]?.content?.parts?.map(p => p.text||'').join('') || 'Koneksi terputus. Silakan perbarui token gerbang.';
+
+    document.getElementById(thinkId)?.remove();
+    msgBox.innerHTML += `<div class="msg-bubble ai">${reply.replace(/\n/g,'<br>')}</div>`;
+  } catch(e) {
+    document.getElementById(thinkId)?.remove();
+    msgBox.innerHTML += `<div class="msg-bubble ai" style="color:#e55;">Gerbang Timeout. Silakan pastikan skrip rotasi kunci API Studio di server.gs berjalan normal.</div>`;
+  }
+  msgBox.scrollTop = msgBox.scrollHeight;
+}
+</script>
+</body>
+</html>
