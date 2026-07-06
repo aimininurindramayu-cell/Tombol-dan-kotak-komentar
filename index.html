@@ -496,6 +496,67 @@ body {
 </div>
 
 <div class="toast-box" id="toastBox"></div>
+<div id="toastBox" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+<div id="loginScreen">
+  <h2>Masuk Panggung Member</h2>
+  <input type="text" id="inputId" placeholder="ID Member (M001, M002, dll)">
+  <input type="password" id="inputPass" placeholder="Password">
+  <button onclick="doLogin()">Masuk</button>
+  <div id="loginErr" style="color: red; display: none;"></div>
+</div>
+
+<div id="mainApp" style="display: none;">
+  <div class="header">
+    <span id="memberAvatar"></span>
+    <h3 id="memberNama"></h3>
+    <p id="memberId"></p>
+    <p id="memberLevel"></p>
+    <span id="badgeLevel"></span>
+  </div>
+
+  <div id="serverStatus">
+    <span id="serverDot" class="offline"></span> <span id="serverText">Menghubungkan...</span>
+  </div>
+
+  <div id="izinBox" class="izin-box">
+    <span id="izinIcon">❓</span>
+    <h4 id="izinStatus">Memeriksa Izin...</h4>
+    <p id="izinSub"></p>
+  </div>
+
+  <div id="panggungGrid"></div>
+
+  <div class="kamera-section">
+    <h4 id="kameraTitle">📷 Kamera Standby</h4>
+    <span id="liveBadge" style="display:none; color:red; font-weight:bold;">🔴 LIVE</span>
+    <video id="video" autoplay playsinline style="display:none; width:100%; max-width:400px;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="foto" style="display:none; width:100%; max-width:400px; border-radius:8px;" />
+    
+    <div class="kamera-controls">
+      <button id="btnKamera" class="off" onclick="toggleKamera()">📷 ON</button>
+      <button onclick="gantKamera()">🔄 Ganti</button>
+      <button onclick="ambilFoto()">📸 Foto</button>
+    </div>
+  </div>
+
+  <div class="properti-section">
+    <h4>Dompet & Properti Sultan</h4>
+    <p>KARA: <span id="saldoKara">0</span> | Rp NUR: <span id="saldoNur">0</span></p>
+    <p>GifNur: <span id="saldoGif">0</span> | Voucher: <span id="saldoVch">0</span></p>
+    
+    <button class="prop-btn" onclick="lempar('👑', 'Mahkota', 1, 'Voucher Nur')">👑 Lempar Mahkota (1 Vch)</button>
+    <button class="prop-btn" onclick="lempar('⚡', 'Petir', 500, 'KARA')">⚡ Lempar Petir (500 KARA)</button>
+  </div>
+
+  <div class="chat-section">
+    <input type="text" id="chatInput" placeholder="Ketik pesan panggung...">
+    <button onclick="kirimChat()">Kirim</button>
+  </div>
+
+  <div id="logBox" style="height: 150px; overflow-y: auto; background: #000; color: #0f0; font-family: monospace; padding: 10px; margin-top: 20px;"></div>
+</div>
 
 <script>
 // ══════════════════════════════════════
@@ -621,8 +682,181 @@ function renderPanggung() {
   });
 }
 
-// ══ KAMERA ══
+//<script>
+// ══════════════════════════════════════
+//  CONFIG — PASTIKAN IP VM GCP BAPAK DI SINI
+// ══════════════════════════════════════
+const IP_SERVER = 'http://ALAMAT_IP_GCP_ANDA:8888'; 
+
+// Data lokal awal untuk backup jika mode offline
+const MEMBER_DB_LOCAL = {
+  'M001': { nama: 'Member Satu',   level: '👑 Sultan 1', avatar: '👑', kara: 1250, nur: 87500, gif: 3, vch: 2 },
+  'M002': { nama: 'Member Dua',    level: '👑 Sultan 2', avatar: '🌟', kara: 800,  nur: 56000, gif: 2, vch: 1 },
+  'M003': { nama: 'Member Tiga',   level: '🏅 Raja',     avatar: '🏅', kara: 500,  nur: 35000, gif: 1, vch: 1 },
+  'M005': { nama: 'Member Lima',   level: '⭐ Bangsawan', avatar: '⭐', kara: 300,  nur: 21000, gif: 1, vch: 0 },
+};
+
+const PEMENANG = ['M001','M002','M003','M005'];
+
+let memberAktif = null;
+let streamKamera = null;
+let facingMode   = 'user';
+let kameraOn     = false;
+
+// ══ PROSES LOGIN ASLI (MENEMBAK KE VM GCP) ══
+async function doLogin() {
+  const id   = document.getElementById('inputId').value.trim().toUpperCase();
+  const pass = document.getElementById('inputPass').value.trim();
+  const err  = document.getElementById('loginErr');
+
+  if (!id || !pass) {
+    alert("ID dan Password tidak boleh kosong!");
+    return;
+  }
+
+  try {
+    // Tembak API login ke port 8888 server GCP
+    const respon = await fetch(`${IP_SERVER}/login-member`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, password: pass })
+    });
+
+    const hasil = await respon.json();
+
+    if (respon.status === 200 && hasil.status === "sukses") {
+      // Ambil template profil lokal berdasarkan ID yang sukses login
+      const profilLokal = MEMBER_DB_LOCAL[id] || { nama: hasil.nama, level: '⭐ Member', avatar: '👤', kara: 0, nur: 0, gif: 0, vch: 0 };
+      
+      memberAktif = { id, ...profilLokal };
+      masukApp();
+    } else {
+      err.textContent = `❌ ${hasil.pesan || 'Akses ditolak!'}`;
+      err.classList.add('show');
+    }
+  } catch (errKoneksi) {
+    console.log("Koneksi gagal, beralih ke validasi lokal...");
+    // BACKUP: Jika server GCP mati/belum di-run, gunakan data lokal agar APK tidak macet
+    const member = MEMBER_DB_LOCAL[id];
+    if (member && id === 'M001' && pass === 'nur001' || id === 'M002' && pass === 'nur002' || id === 'M003' && pass === 'nur003' || id === 'M005' && pass === 'nur005') {
+      memberAktif = { id, ...member };
+      masukApp();
+      addLog('SISTEM', 'Masuk menggunakan backup data lokal (Server GCP Offline).');
+    } else {
+      err.textContent = "❌ Gagal terhubung ke server pusat & data lokal tidak cocok!";
+      err.classList.add('show');
+    }
+  }
+}
+
+function masukApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+
+  // Isi data member ke UI
+  document.getElementById('memberAvatar').textContent = memberAktif.avatar;
+  document.getElementById('memberNama').textContent   = memberAktif.nama;
+  document.getElementById('memberId').textContent     = 'ID: ' + memberAktif.id;
+  document.getElementById('memberLevel').textContent  = memberAktif.level;
+  document.getElementById('badgeLevel').textContent   = memberAktif.level + ' PANGGUNG';
+
+  // Sinkronisasi Tampilan Saldo
+  updateTampilanSaldo();
+
+  // Render 4 papan panggung member
+  renderPanggung();
+
+  // Jalankan pengecekan izin live streaming langsung ke server PiramidaGuard
+  cekIzinServer();
+
+  addLog('SISTEM', `${memberAktif.nama} (${memberAktif.id}) berhasil naik panggung.`);
+  toast('🎭 Selamat datang ' + memberAktif.nama + '!');
+}
+
+function updateTampilanSaldo() {
+  document.getElementById('saldoKara').textContent = memberAktif.kara.toLocaleString('id');
+  document.getElementById('saldoNur').textContent  = memberAktif.nur.toLocaleString('id');
+  document.getElementById('saldoGif').textContent  = memberAktif.gif;
+  document.getElementById('saldoVch').textContent  = memberAktif.vch;
+}
+
+// ══ CEK IZIN LIVE STREAMING KE VM GCP ══
+async function cekIzinServer() {
+  const dot  = document.getElementById('serverDot');
+  const text = document.getElementById('serverText');
+  const izinBox = document.getElementById('izinBox');
+  const izinIcon = document.getElementById('izinIcon');
+  const izinStatus = document.getElementById('izinStatus');
+  const izinSub = document.getElementById('izinSub');
+
+  try {
+    const r = await fetch(`${IP_SERVER}/cek-izin-streaming?id=${memberAktif.id}`);
+    const d = await r.json();
+
+    if (d.bolehStreaming) {
+      dot.classList.remove('offline');
+      text.textContent = 'PiramidaGuard: ✅ Jalur Koneksi Aman';
+      izinBox.className = "izin-box boleh";
+      izinIcon.textContent = "✅";
+      izinStatus.textContent = "Izin Panggung Aktif";
+      izinSub.textContent = "Kamera Anda diizinkan mengudara minggu ini.";
+      addLog('SERVER', `Izin streaming dikonfirmasi oleh pusat untuk ID: ${memberAktif.id}`);
+    } else {
+      dot.classList.add('offline');
+      text.textContent = 'PiramidaGuard: 🔒 Hak Akses Terkunci';
+      izinBox.className = "izin-box tolak";
+      izinIcon.textContent = "❌";
+      izinStatus.textContent = "Izin Panggung Ditangguhkan";
+      izinSub.textContent = "Anda belum terpilih dalam undian minggu ini.";
+      addLog('SERVER', `ID ${memberAktif.id} dilarang live oleh sistem pusat.`);
+    }
+  } catch(e) {
+    // Fallback jika tidak terkoneksi ke internet server
+    dot.classList.add('offline');
+    text.textContent = 'Mode Offline: Menggunakan Sesi Mandiri';
+    addLog('SERVER', 'Gagal verifikasi ke server GCP, berjalan dalam mode luring.');
+  }
+}
+
+// ══ RENDER TAMPILAN 4 MEMBER PANGGUNG ══
+function renderPanggung() {
+  const grid = document.getElementById('panggungGrid');
+  grid.innerHTML = '';
+  PEMENANG.forEach(id => {
+    const m   = MEMBER_DB_LOCAL[id];
+    const aku = id === memberAktif.id;
+    grid.innerHTML += `
+    <div class="panggung-card ${aku ? 'aktif' : 'nonaktif'}" id="kartu-${id}">
+      <div style="position:relative;">
+        <div class="panggung-video" style="background:#000;display:flex;align-items:center;justify-content:center;height:100px;">
+          <span style="font-size:${aku ? '40px' : '28px'}">${m.avatar}</span>
+        </div>
+        ${aku ? '<div style="position:absolute;top:4px;left:4px;background:#C9A84C;color:#061F14;font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;">ANDA</div>' : ''}
+      </div>
+      <div class="panggung-info">
+        <div class="panggung-nama">${m.nama.split(' ')[0]}</div>
+        <div class="panggung-status">${aku ? '🔴 LIVE' : '⚫ Standby'}</div>
+      </div>
+    </div>`;
+  });
+}
+
+// ══ KONTROL KAMERA MEMBER ══
 async function toggleKamera() {
+  // Cek validasi hak streaming terlebih dahulu sebelum menyalakan hardware
+  try {
+    const r = await fetch(`${IP_SERVER}/cek-izin-streaming?id=${memberAktif.id}`);
+    const d = await r.json();
+    
+    if (!d.bolehStreaming) {
+      toast('❌ Akses ditolak! Anda tidak memenangkan undian panggung.');
+      addLog('SISTEM', 'Pemblokiran kamera: ID tidak terdaftar di daftar pemenang.');
+      return;
+    }
+  } catch(e) {
+    console.log("Koneksi bypass offline");
+  }
+
   if (kameraOn) {
     matikanKamera();
   } else {
@@ -646,11 +880,11 @@ async function nyalakanKamera() {
     document.getElementById('liveBadge').style.display = 'inline';
     document.getElementById('kameraTitle').textContent = '🔴 LIVE — ' + memberAktif.nama;
     kameraOn = true;
-    addLog('KAMERA', 'Kamera ' + (facingMode === 'user' ? 'depan' : 'belakang') + ' aktif · LIVE');
+    addLog('KAMERA', 'Kamera HP aktif mengudara ke Stasiun Pusat.');
     toast('📸 Kamera ON · Anda sedang LIVE!');
   } catch(err) {
-    addLog('ERROR', 'Gagal buka kamera: ' + err.message);
-    toast('❌ ' + err.message);
+    addLog('ERROR', 'Gagal membuka hardware kamera: ' + err.message);
+    toast('❌ Jalur HTTPS/WebKit diblokir: ' + err.message);
   }
 }
 
@@ -665,7 +899,7 @@ function matikanKamera() {
   document.getElementById('liveBadge').style.display = 'none';
   document.getElementById('kameraTitle').textContent = '📷 Kamera Standby';
   kameraOn = false;
-  addLog('KAMERA', 'Kamera dimatikan');
+  addLog('KAMERA', 'Aktivitas kamera dihentikan.');
   toast('⏹ Kamera OFF');
 }
 
@@ -685,20 +919,24 @@ function ambilFoto() {
   canvas.getContext('2d').drawImage(video, 0, 0);
   foto.src = canvas.toDataURL('image/jpeg', 0.85);
   foto.style.display = 'block';
-  addLog('FOTO', 'Foto diambil · ' + new Date().toLocaleTimeString('id'));
-  toast('📸 Foto berhasil diambil!');
+  addLog('FOTO', ' snapshot panggung berhasil disimpan.');
+  toast('📸 Foto panggung disimpan!');
 }
 
-// ══ PROPERTI MELAYANG ══
+// ══ FITUR LEMPAR PROPERTI SULTAN ══
 function lempar(emoji, nama, nilai, satuan) {
-  // Cari target — kartu member lain
+  // Validasi kecukupan Saldo
+  if (satuan === 'Rp NUR' && memberAktif.nur < nilai) { toast('❌ Saldo Rp NUR tidak mencukupi!'); return; }
+  if (satuan === 'GifNur' && memberAktif.gif < nilai) { toast('❌ Saldo GifNur tidak mencukupi!'); return; }
+  if (satuan === 'Voucher Nur' && memberAktif.vch < nilai) { toast('❌ Saldo Voucher tidak mencukupi!'); return; }
+  if (satuan === 'KARA' && memberAktif.kara < nilai) { toast('❌ Saldo KARA tidak mencukupi!'); return; }
+
   const targets = document.querySelectorAll('.panggung-card:not(.aktif)');
-  if (targets.length === 0) { toast('Tidak ada target!'); return; }
+  if (targets.length === 0) { toast('Tidak ada target member lain di panggung!'); return; }
   const target = targets[Math.floor(Math.random() * targets.length)];
   const tR = target.getBoundingClientRect();
   const bR = event.target.closest('.prop-btn').getBoundingClientRect();
 
-  // Buat properti terbang
   const fly = document.createElement('div');
   fly.className = 'prop-fly';
   fly.textContent = emoji;
@@ -709,7 +947,6 @@ function lempar(emoji, nama, nilai, satuan) {
   document.body.appendChild(fly);
   setTimeout(() => fly.remove(), 1400);
 
-  // Efek hit
   setTimeout(() => {
     const hit = document.createElement('div');
     hit.className = 'hit-fx';
@@ -720,36 +957,28 @@ function lempar(emoji, nama, nilai, satuan) {
     setTimeout(() => hit.remove(), 750);
   }, 1200);
 
-  // Kurangi saldo
-  if (satuan === 'Rp NUR') {
-    memberAktif.nur = Math.max(0, memberAktif.nur - nilai);
-    document.getElementById('saldoNur').textContent = memberAktif.nur.toLocaleString('id');
-  } else if (satuan === 'GifNur') {
-    memberAktif.gif = Math.max(0, memberAktif.gif - nilai);
-    document.getElementById('saldoGif').textContent = memberAktif.gif;
-  } else if (satuan === 'Voucher Nur') {
-    memberAktif.vch = Math.max(0, memberAktif.vch - nilai);
-    document.getElementById('saldoVch').textContent = memberAktif.vch;
-  } else if (satuan === 'KARA') {
-    memberAktif.kara = Math.max(0, memberAktif.kara - nilai);
-    document.getElementById('saldoKara').textContent = memberAktif.kara.toLocaleString('id');
-  }
+  // Pengurangan Saldo Otomatis
+  if (satuan === 'Rp NUR') { memberAktif.nur -= nilai; } 
+  else if (satuan === 'GifNur') { memberAktif.gif -= nilai; } 
+  else if (satuan === 'Voucher Nur') { memberAktif.vch -= nilai; } 
+  else if (satuan === 'KARA') { memberAktif.kara -= nilai; }
 
-  addLog('PROPERTI', `${emoji} ${nama} dikirim · −${nilai} ${satuan}`);
-  toast(`${emoji} +${nilai.toLocaleString('id')} ${satuan} dikirim!`);
+  updateTampilanSaldo();
+  addLog('PROPERTI', `${emoji} ${nama} dilemparkan · Beban −${nilai.toLocaleString('id')} ${satuan}`);
+  toast(`${emoji} ${nama} Sukses Dikirim!`);
 }
 
-// ══ CHAT ══
+// ══ KOTAK CHAT PANGGUNG ══
 function kirimChat() {
   const input = document.getElementById('chatInput');
   const msg   = input.value.trim();
   if (!msg) return;
   input.value = '';
   addLog('CHAT', `${memberAktif.nama}: ${msg}`);
-  toast('💬 Pesan terkirim ke panggung');
+  toast('💬 Pesan disiarkan ke panggung');
 }
 
-// ══ LOG ══
+// ══ LOGGING SYSTEM ══
 function addLog(tipe, pesan) {
   const box  = document.getElementById('logBox');
   const item = document.createElement('div');
@@ -759,7 +988,7 @@ function addLog(tipe, pesan) {
   box.scrollTop = box.scrollHeight;
 }
 
-// ══ TOAST ══
+// ══ SYSTEM TOAST NTIFICATION ══
 function toast(pesan) {
   const box = document.getElementById('toastBox');
   const t   = document.createElement('div');
@@ -769,5 +998,4 @@ function toast(pesan) {
   setTimeout(() => t.remove(), 3000);
 }
 </script>
-</body>
-</html>
+
