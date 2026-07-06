@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎭 Panggung Sultan — Indramayu Club</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: #061F14;
+  color: #FFFFFF;
+  font-family: monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══ LOGIN SCREEN ══ */
+.login-screen {
+  position: fixed; inset: 0; background: #061F14;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999; padding: 24px;
+}
+.login-screen.hide { display: none; }
+
+.ascii {
+  font-size: 8px; line-height: 1.3; color: #C9A84C;
+  white-space: pre; margin-bottom: 14px; text-align: left;
+}
+.login-title {
+  font-size: 15px; color: #C9A84C;
+  letter-spacing: 3px; font-weight: 700;
+  margin-bottom: 4px; text-align: center;
+}
+.login-sub {
+  font-size: 10px; color: #FFFFFF; opacity: 0.4;
+  letter-spacing: 2px; margin-bottom: 24px; text-align: center;
+}
+.login-box {
+  width: 100%; max-width: 320px;
+  border: 1px solid #C9A84C; border-radius: 14px; padding: 20px;
+}
+.login-label {
+  font-size: 9px; color: #C9A84C;
+  letter-spacing: 2px; margin-bottom: 6px; display: block;
+}
+.login-input {
+  width: 100%; background: #061F14;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 8px; padding: 11px 12px;
+  color: #FFFFFF; font-size: 15px; outline: none;
+  margin-bottom: 10px; letter-spacing: 3px; font-family: monospace;
+}
+.login-input:focus { border-color: #C9A84C; }
+.login-btn {
+  width: 100%; padding: 12px; background: #C9A84C;
+  border: none; border-radius: 8px; color: #061F14;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  letter-spacing: 2px;
+}
+.login-btn:active { opacity: 0.8; }
+.login-err {
+  font-size: 11px; color: #ff6b6b;
+  text-align: center; margin-top: 8px; display: none;
+}
+.login-err.show { display: block; }
+
+/* ══ MAIN APP ══ */
+.wrap { max-width: 480px; margin: 0 auto; padding: 16px 14px 48px; }
+
+/* HEADER */
+.header { text-align: center; margin-bottom: 16px; }
+.header .badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #C9A84C, #FFD700);
+  color: #061F14; font-size: 9px; font-weight: 700;
+  padding: 4px 14px; border-radius: 20px;
+  letter-spacing: 2px; margin-bottom: 8px;
+}
+.header h1 { font-size: 17px; color: #C9A84C; letter-spacing: 2px; }
+.header .sub { font-size: 10px; opacity: 0.4; letter-spacing: 1px; margin-top: 3px; }
+.g-line {
+  width: 60px; height: 1px; margin: 8px auto;
+  background: linear-gradient(90deg, #061F14, #C9A84C, #061F14);
+}
+
+/* STATUS SERVER */
+.server-box {
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 10px; padding: 10px 12px;
+  margin-bottom: 14px; font-size: 11px;
+  display: flex; align-items: center; gap: 8px;
+}
+.s-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #C9A84C; flex-shrink: 0;
+  animation: blink 2s infinite;
+}
+.s-dot.offline { background: #ff6b6b; animation: none; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.s-text { color: #C9A84C; font-weight: 600; flex: 1; font-size: 10px; }
+
+/* MEMBER INFO */
+.member-card {
+  border: 1px solid #C9A84C; border-radius: 12px;
+  padding: 14px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.member-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid #C9A84C;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.member-info .nama { font-size: 13px; font-weight: 700; color: #FFFFFF; }
+.member-info .id { font-size: 10px; color: #C9A84C; margin-top: 2px; }
+.member-info .level {
+  display: inline-block; margin-top: 5px;
+  border: 1px solid #C9A84C; border-radius: 20px;
+  padding: 2px 10px; font-size: 9px; color: #C9A84C; letter-spacing: 1px;
+}
+
+/* IZIN PANGGUNG */
+.izin-box {
+  border-radius: 12px; padding: 14px;
+  margin-bottom: 14px; text-align: center;
+  border: 1px solid #C9A84C;
+}
+.izin-box.boleh { border-color: #C9A84C; }
+.izin-box.tolak { border-color: #ff6b6b; }
+.izin-icon { font-size: 32px; margin-bottom: 6px; }
+.izin-status { font-size: 13px; font-weight: 700; }
+.izin-box.boleh .izin-status { color: #C9A84C; }
+.izin-box.tolak .izin-status { color: #ff6b6b; }
+.izin-sub { font-size: 10px; opacity: 0.5; margin-top: 4px; }
+
+/* POIN MINI */
+.poin-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 6px; margin-bottom: 14px;
+}
+.poin-mini {
+  border: 1px solid #C9A84C; border-radius: 8px;
+  padding: 8px 4px; text-align: center;
+}
+.poin-mini .ico { font-size: 14px; display: block; margin-bottom: 3px; }
+.poin-mini .nm { font-size: 8px; color: #C9A84C; font-weight: 700; }
+.poin-mini .vl { font-size: 13px; font-weight: 700; color: #FFFFFF; }
+
+/* KAMERA PANGGUNG */
+.s-label {
+  font-size: 9px; color: #C9A84C; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 8px; font-weight: 700;
+}
+
+.kamera-wrap {
+  border: 1px solid #C9A84C; border-radius: 12px;
+  overflow: hidden; margin-bottom: 14px;
+  position: relative;
+}
+.kamera-header {
+  background: rgba(201,168,76,0.1);
+  padding: 10px 12px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+}
+.live-badge {
+  background: #ff3b3b; color: #fff;
+  font-size: 9px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px;
+  animation: blink 1s infinite;
+}
+.kamera-title { font-size: 11px; color: #C9A84C; font-weight: 700; flex: 1; }
+
+#video {
+  width: 100%; display: none;
+  background: #000; max-height: 280px;
+  object-fit: cover;
+}
+#foto {
+  width: 100%; display: none;
+  border-top: 1px solid rgba(201,168,76,0.3);
+}
+
+.kamera-controls {
+  padding: 10px 12px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+.ctrl-btn {
+  padding: 10px 4px; border-radius: 8px;
+  border: 1px solid #C9A84C; font-size: 10px;
+  font-weight: 700; cursor: pointer;
+  text-align: center; transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.ctrl-btn.on  { background: #C9A84C; color: #061F14; }
+.ctrl-btn.off { background: transparent; color: #C9A84C; }
+.ctrl-btn:active { opacity: 0.7; transform: scale(0.95); }
+
+/* 4 MEMBER PANGGUNG */
+.panggung-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 14px;
+}
+.panggung-card {
+  border: 1px solid #C9A84C; border-radius: 10px;
+  overflow: hidden; position: relative;
+}
+.panggung-card.aktif { border-color: #C9A84C; box-shadow: 0 0 15px rgba(201,168,76,0.3); }
+.panggung-card.nonaktif { opacity: 0.5; }
+
+.panggung-video {
+  width: 100%; aspect-ratio: 4/3;
+  background: #000; object-fit: cover;
+  display: block;
+}
+.panggung-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.6); font-size: 24px;
+}
+.panggung-info {
+  padding: 6px 8px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.panggung-nama { font-size: 10px; color: #C9A84C; font-weight: 700; }
+.panggung-status { font-size: 8px; color: #FFFFFF; opacity: 0.5; }
+
+/* PROPERTI MELAYANG */
+.prop-section { margin-bottom: 14px; }
+.prop-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 6px;
+}
+.prop-btn {
+  border: 1px solid #C9A84C; border-radius: 10px;
+  padding: 12px 4px; text-align: center;
+  cursor: pointer; transition: all 0.2s;
+  position: relative;
+}
+.prop-btn:active { transform: scale(0.92); background: rgba(201,168,76,0.1); }
+.prop-btn .emoji { font-size: 22px; display: block; margin-bottom: 3px; }
+.prop-btn .nama { font-size: 8px; color: #C9A84C; font-weight: 700; }
+.prop-btn .nilai { font-size: 9px; color: #FFFFFF; opacity: 0.5; margin-top: 1px; }
+
+/* PROPERTI TERBANG */
+.prop-fly {
+  position: fixed; font-size: 32px; z-index: 9999;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px #C9A84C);
+  animation: terbang 1.3s forwards;
+}
+@keyframes terbang {
+  0%   { transform: translate(0,0) scale(0.5) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--tx),var(--ty)) scale(1.5) rotate(720deg); opacity: 0; }
+}
+.hit-fx {
+  position: fixed; font-size: 40px; z-index: 9998;
+  pointer-events: none; animation: pop 0.7s forwards;
+  filter: drop-shadow(0 0 14px #FFD700);
+}
+@keyframes pop {
+  0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
+}
+
+/* LOG BOX */
+.log-box {
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 10px; padding: 10px 12px;
+  margin-bottom: 14px; max-height: 140px;
+  overflow-y: auto; font-size: 11px;
+  line-height: 1.7; color: #FFFFFF; opacity: 0.7;
+  font-family: monospace;
+}
+.log-item { border-bottom: 1px solid rgba(201,168,76,0.1); padding: 2px 0; }
+.log-item:last-child { border-bottom: none; }
+.log-item span { color: #C9A84C; }
+
+/* CHAT PANGGUNG */
+.chat-input-row { display: flex; gap: 6px; margin-bottom: 14px; }
+.chat-input {
+  flex: 1; background: #061F14; border: 1px solid #C9A84C;
+  border-radius: 8px; padding: 10px 12px;
+  color: #FFFFFF; font-size: 12px; outline: none;
+  font-family: monospace;
+}
+.chat-input::placeholder { color: #FFFFFF; opacity: 0.3; }
+.chat-send {
+  padding: 10px 14px; background: #C9A84C; border: none;
+  border-radius: 8px; color: #061F14; font-size: 11px;
+  font-weight: 700; cursor: pointer; letter-spacing: 1px;
+}
+.chat-send:active { opacity: 0.7; }
+
+/* TOAST */
+.toast-box { position: fixed; bottom: 20px; right: 14px; z-index: 99999; }
+.toast {
+  background: #061F14; color: #C9A84C;
+  border: 1px solid #C9A84C; padding: 8px 14px;
+  border-radius: 8px; font-size: 11px; margin-top: 5px;
+  font-weight: 600; animation: slideIn 0.3s ease;
+}
+@keyframes slideIn { from{transform:translateX(60px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* FOOTER */
+.footer {
+  text-align: center; padding-top: 14px;
+  border-top: 1px solid rgba(201,168,76,0.2);
+  font-size: 9px; color: #FFFFFF; opacity: 0.3; letter-spacing: 1px;
+}
+.footer b { color: #C9A84C; opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN (SUDAH DIPERBAIKI) ══ -->
+<div class="login-screen" id="loginScreen">
+<pre class="ascii">     ___           ___     
+    /__/\         /__/\    
+    \  \:\        \  \:\   
+ _____\__\:\   _____\__\:\ 
+/__/::::::::\ /__/::::::::\
+\  \:\~~\~~\/ \  \:\~~\~~\/
+    \__\/         \__\/    </pre>
+
+  <div class="login-title">🎭 PANGGUNG SULTAN</div>
+  <div class="login-sub">KHUSUS MEMBER TERPILIH · IMC</div>
+
+  <div class="login-box">
+    <label class="login-label">ID MEMBER</label>
+    <input class="login-input" id="inputId" placeholder="M001" maxlength="10"
+      onkeydown="if(event.key==='Enter') doLogin()">
+    <label class="login-label" style="margin-top:8px;">PASSWORD</label>
+    <input class="login-input" type="password" id="inputPass" placeholder="••••••"
+      onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">🎭 NAIK PANGGUNG</button>
+    <div class="login-err" id="loginErr">❌ ID/Password salah atau belum terpilih minggu ini!</div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div class="wrap" id="mainApp" style="display:none;">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge" id="badgeLevel">🎭 PANGGUNG SULTAN</div>
+    <h1>INDRAMAYU CLUB TV</h1>
+    <div class="g-line"></div>
+    <p class="sub">Member Terpilih · Minggu Ini · Live Panggung</p>
+  </div>
+
+  <!-- STATUS SERVER -->
+  <div class="server-box">
+    <div class="s-dot" id="serverDot"></div>
+    <div class="s-text" id="serverText">Menghubungkan ke PiramidaGuard...</div>
+    <span style="font-size:9px;color:#FFFFFF;opacity:0.3;" id="serverPort">:8888</span>
+  </div>
+
+  <!-- MEMBER INFO -->
+  <div class="member-card">
+    <div class="member-avatar" id="memberAvatar">👤</div>
+    <div class="member-info">
+      <div class="nama" id="memberNama">Member</div>
+      <div class="id" id="memberId">ID: —</div>
+      <div class="level" id="memberLevel">⭐ PANGGUNG SULTAN</div>
+    </div>
+  </div>
+
+  <!-- STATUS IZIN -->
+  <div class="izin-box boleh" id="izinBox">
+    <div class="izin-icon" id="izinIcon">✅</div>
+    <div class="izin-status" id="izinStatus">Izin Panggung Aktif</div>
+    <div class="izin-sub" id="izinSub">Kamera siap dinyalakan</div>
+  </div>
+
+  <!-- SALDO POIN -->
+  <div class="s-label">✦ Saldo Poin</div>
+  <div class="poin-grid">
+    <div class="poin-mini">
+      <span class="ico">🟡</span>
+      <div class="nm">KARA</div>
+      <div class="vl" id="saldoKara">0</div>
+    </div>
+    <div class="poin-mini">
+      <span class="ico">💠</span>
+      <div class="nm">Rp NUR</div>
+      <div class="vl" id="saldoNur">0</div>
+    </div>
+    <div class="poin-mini">
+      <span class="ico">🎁</span>
+      <div class="nm">GifNur</div>
+      <div class="vl" id="saldoGif">0</div>
+    </div>
+    <div class="poin-mini">
+      <span class="ico">🎟️</span>
+      <div class="nm">Vch Nur</div>
+      <div class="vl" id="saldoVch">0</div>
+    </div>
+  </div>
+
+  <!-- KAMERA PANGGUNG -->
+  <div class="s-label">📸 Kamera Panggung Anda</div>
+  <div class="kamera-wrap">
+    <div class="kamera-header">
+      <div class="live-badge" id="liveBadge" style="display:none;">● LIVE</div>
+      <div class="kamera-title" id="kameraTitle">📷 Kamera Siap</div>
+    </div>
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="foto" alt="Foto">
+    <div class="kamera-controls">
+      <div class="ctrl-btn off" id="btnKamera" onclick="toggleKamera()">📷 ON</div>
+      <div class="ctrl-btn off" onclick="gantKamera()">🔄 Ganti</div>
+      <div class="ctrl-btn off" onclick="ambilFoto()">📸 Foto</div>
+    </div>
+  </div>
+
+  <!-- 4 MEMBER PANGGUNG -->
+  <div class="s-label">🎭 4 Member Panggung Minggu Ini</div>
+  <div class="panggung-grid" id="panggungGrid">
+    <!-- diisi JS -->
+  </div>
+
+  <!-- PROPERTI MELAYANG -->
+  <div class="prop-section">
+    <div class="s-label">✦ Lempar Properti</div>
+    <div class="prop-grid">
+      <div class="prop-btn" onclick="lempar('💣','Bom',50000,'Rp NUR')">
+        <span class="emoji">💣</span>
+        <div class="nama">BOM</div>
+        <div class="nilai">50K Rp NUR</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('🩴','Sandal',25000,'Rp NUR')">
+        <span class="emoji">🩴</span>
+        <div class="nama">SANDAL</div>
+        <div class="nilai">25K Rp NUR</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('🎁','GifNur',1,'GifNur')">
+        <span class="emoji">🎁</span>
+        <div class="nama">GIFNUR</div>
+        <div class="nilai">1 GifNur</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('🎟️','Voucher',1,'Voucher Nur')">
+        <span class="emoji">🎟️</span>
+        <div class="nama">VOUCHER</div>
+        <div class="nilai">1 Vch Nur</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('💐','Bunga',5000,'Rp NUR')">
+        <span class="emoji">💐</span>
+        <div class="nama">BUNGA</div>
+        <div class="nilai">5K Rp NUR</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('👑','Mahkota',100000,'KARA')">
+        <span class="emoji">👑</span>
+        <div class="nama">MAHKOTA</div>
+        <div class="nilai">100K KARA</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('🌟','Bintang',10000,'Rp NUR')">
+        <span class="emoji">🌟</span>
+        <div class="nama">BINTANG</div>
+        <div class="nilai">10K Rp NUR</div>
+      </div>
+      <div class="prop-btn" onclick="lempar('🎆','Kembang Api',15000,'Rp NUR')">
+        <span class="emoji">🎆</span>
+        <div class="nama">KEMBANG</div>
+        <div class="nilai">15K Rp NUR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG SISTEM -->
+  <div class="s-label">📋 Log Panggung</div>
+  <div class="log-box" id="logBox">
+    <div class="log-item"><span>[SISTEM]</span> PiramidaGuard aktif. Menunggu koneksi...</div>
+  </div>
+
+  <!-- CHAT PANGGUNG -->
+  <div class="s-label">💬 Chat Panggung</div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput"
+      placeholder="Kirim pesan ke panggung..."
+      onkeydown="if(event.key==='Enter') kirimChat()">
+    <button class="chat-send" onclick="kirimChat()">KIRIM</button>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <b>✦ INDRAMAYU CLUB TV · PANGGUNG SULTAN ✦</b><br>
+    KARA · Rp NUR · GifNur · Voucher Nur<br>
+    Deploy @32 · PiramidaGuard v3.2
+  </div>
+
+</div>
+
+<div class="toast-box" id="toastBox"></div>
+
+<script>
+// ══════════════════════════════════════
+//  CONFIG — IP GCP SUDAH DIMASUKKAN!
+// ══════════════════════════════════════
+const IP_SERVER = 'http://34.170.37.50:8888'; 
+
+// Data lokal awal untuk backup jika mode offline
+const MEMBER_DB_LOCAL = {
+  'M001': { nama: 'Member Satu',   level: '👑 Sultan 1', avatar: '👑', kara: 1250, nur: 87500, gif: 3, vch: 2 },
+  'M002': { nama: 'Member Dua',    level: '👑 Sultan 2', avatar: '🌟', kara: 800,  nur: 56000, gif: 2, vch: 1 },
+  'M003': { nama: 'Member Tiga',   level: '🏅 Raja',     avatar: '🏅', kara: 500,  nur: 35000, gif: 1, vch: 1 },
+  'M005': { nama: 'Member Lima',   level: '⭐ Bangsawan', avatar: '⭐', kara: 300,  nur: 21000, gif: 1, vch: 0 },
+};
+
+const PEMENANG = ['M001','M002','M003','M005'];
+
+let memberAktif = null;
+let streamKamera = null;
+let facingMode   = 'user';
+let kameraOn     = false;
+
+// ══ PROSES LOGIN ASLI (MENEMBAK KE VM GCP) ══
+async function doLogin() {
+  const id   = document.getElementById('inputId').value.trim().toUpperCase();
+  const pass = document.getElementById('inputPass').value.trim();
+  const err  = document.getElementById('loginErr');
+
+  if (!id || !pass) {
+    alert("ID dan Password tidak boleh kosong!");
+    return;
+  }
+
+  try {
+    const respon = await fetch(`${IP_SERVER}/login-member`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, password: pass })
+    });
+
+    const hasil = await respon.json();
+
+    if (respon.status === 200 && hasil.status === "sukses") {
+      const profilLokal = MEMBER_DB_LOCAL[id] || { nama: hasil.nama, level: '⭐ Member', avatar: '👤', kara: 0, nur: 0, gif: 0, vch: 0 };
+      memberAktif = { id, ...profilLokal };
+      masukApp();
+    } else {
+      err.textContent = `❌ ${hasil.pesan || 'Akses ditolak!'}`;
+      err.classList.add('show');
+    }
+  } catch (errKoneksi) {
+    console.log("Koneksi gagal, beralih ke validasi lokal...");
+    const member = MEMBER_DB_LOCAL[id];
+    if (member && ((id === 'M001' && pass === 'nur001') || (id === 'M002' && pass === 'nur002') || (id === 'M003' && pass === 'nur003') || (id === 'M005' && pass === 'nur005'))) {
+      memberAktif = { id, ...member };
+      masukApp();
+      addLog('SISTEM', 'Masuk menggunakan backup data lokal (Server GCP Offline).');
+    } else {
+      err.textContent = "❌ Gagal terhubung ke server pusat & data lokal tidak cocok!";
+      err.classList.add('show');
+    }
+  }
+}
+
+function masukApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+
+  document.getElementById('memberAvatar').textContent = memberAktif.avatar;
+  document.getElementById('memberNama').textContent   = memberAktif.nama;
+  document.getElementById('memberId').textContent     = 'ID: ' + memberAktif.id;
+  document.getElementById('memberLevel').textContent  = memberAktif.level;
+  document.getElementById('badgeLevel').textContent   = memberAktif.level + ' PANGGUNG';
+
+  updateTampilanSaldo();
+  renderPanggung();
+  cekIzinServer();
+
+  addLog('SISTEM', `${memberAktif.nama} (${memberAktif.id}) berhasil naik panggung.`);
+  toast('🎭 Selamat datang ' + memberAktif.nama + '!');
+}
+
+function updateTampilanSaldo() {
+  document.getElementById('saldoKara').textContent = memberAktif.kara.toLocaleString('id');
+  document.getElementById('saldoNur').textContent  = memberAktif.nur.toLocaleString('id');
+  document.getElementById('saldoGif').textContent  = memberAktif.gif;
+  document.getElementById('saldoVch').textContent  = memberAktif.vch;
+}
+
+async function cekIzinServer() {
+  const dot  = document.getElementById('serverDot');
+  const text = document.getElementById('serverText');
+  const izinBox = document.getElementById('izinBox');
+  const izinIcon = document.getElementById('izinIcon');
+  const izinStatus = document.getElementById('izinStatus');
+  const izinSub = document.getElementById('izinSub');
+
+  try {
+    const r = await fetch(`${IP_SERVER}/cek-izin-streaming?id=${memberAktif.id}`);
+    const d = await r.json();
+
+    if (d.bolehStreaming) {
+      dot.classList.remove('offline');
+      text.textContent = 'PiramidaGuard: ✅ Jalur Koneksi Aman';
+      izinBox.className = "izin-box boleh";
+      izinIcon.textContent = "✅";
+      izinStatus.textContent = "Izin Panggung Aktif";
+      izinSub.textContent = "Kamera Anda diizinkan mengudara minggu ini.";
+      addLog('SERVER', `Izin streaming dikonfirmasi oleh pusat untuk ID: ${memberAktif.id}`);
+    } else {
+      dot.classList.add('offline');
+      text.textContent = 'PiramidaGuard: 🔒 Hak Akses Terkunci';
+      izinBox.className = "izin-box tolak";
+      izinIcon.textContent = "❌";
+      izinStatus.textContent = "Izin Panggung Ditangguhkan";
+      izinSub.textContent = "Anda belum terpilih dalam undian minggu ini.";
+      addLog('SERVER', `ID ${memberAktif.id} dilarang live oleh sistem pusat.`);
+    }
+  } catch(e) {
+    dot.classList.add('offline');
+    text.textContent = 'Mode Offline: Menggunakan Sesi Mandiri';
+    addLog('SERVER', 'Gagal verifikasi ke server GCP, berjalan dalam mode luring.');
+  }
+}
+
+function renderPanggung() {
+  const grid = document.getElementById('panggungGrid');
+  grid.innerHTML = '';
+  PEMENANG.forEach(id => {
+    const m   = MEMBER_DB_LOCAL[id];
+    const aku = id === memberAktif.id;
+    grid.innerHTML += `
+    <div class="panggung-card ${aku ? 'aktif' : 'nonaktif'}" id="kartu-${id}">
+      <div style="position:relative;">
+        <div class="panggung-video" style="background:#000;display:flex;align-items:center;justify-content:center;height:100px;">
+          <span style="font-size:${aku ? '40px' : '28px'}">${m.avatar}</span>
+        </div>
+        ${aku ? '<div style="position:absolute;top:4px;left:4px;background:#C9A84C;color:#061F14;font-size:8px;padding:2px 6px;border-radius:4px;font-weight:700;">ANDA</div>' : ''}
+      </div>
+      <div class="panggung-info">
+        <div class="panggung-nama">${m.nama.split(' ')[0]}</div>
+        <div class="panggung-status">${aku ? '🔴 LIVE' : '⚫ Standby'}</div>
+      </div>
+    </div>`;
+  });
+}
+
+async function toggleKamera() {
+  try {
+    const r = await fetch(`${IP_SERVER}/cek-izin-streaming?id=${memberAktif.id}`);
+    const d = await r.json();
+    
+    if (!d.bolehStreaming) {
+      toast('❌ Akses ditolak! Anda tidak memenangkan undian panggung.');
+      addLog('SISTEM', 'Pemblokiran kamera: ID tidak terdaftar di daftar pemenang.');
+      return;
+    }
+  } catch(e) {
+    console.log("Koneksi bypass offline");
+  }
+
+  if (kameraOn) {
+    matikanKamera();
+  } else {
+    await nyalakanKamera();
+  }
+}
+
+async function nyalakanKamera() {
+  const video = document.getElementById('video');
+  const btn   = document.getElementById('btnKamera');
+  try {
+    if (streamKamera) streamKamera.getTracks().forEach(t => t.stop());
+    streamKamera = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode, width: 640, height: 480 },
+      audio: false
+    });
+    video.srcObject = streamKamera;
+    video.style.display = 'block';
+    btn.textContent = '⏹ OFF';
+    btn.classList.replace('off','on');
+    document.getElementById('liveBadge').style.display = 'inline';
+    document.getElementById('kameraTitle').textContent = '🔴 LIVE — ' + memberAktif.nama;
+    kameraOn = true;
+    addLog('KAMERA', 'Kamera HP aktif mengudara ke Stasiun Pusat.');
+    toast('📸 Kamera ON · Anda sedang LIVE!');
+  } catch(err) {
+    addLog('ERROR', 'Gagal membuka hardware kamera: ' + err.message);
+    toast('❌ Jalur HTTPS/WebKit diblokir: ' + err.message);
+  }
+}
+
+function matikanKamera() {
+  if (streamKamera) streamKamera.getTracks().forEach(t => t.stop());
+  const video = document.getElementById('video');
+  video.style.display = 'none';
+  video.srcObject = null;
+  const btn = document.getElementById('btnKamera');
+  btn.textContent = '📷 ON';
+  btn.classList.replace('on','off');
+  document.getElementById('liveBadge').style.display = 'none';
+  document.getElementById('kameraTitle').textContent = '📷 Kamera Standby';
+  kameraOn = false;
+  addLog('KAMERA', 'Aktivitas kamera dihentikan.');
+  toast('⏹ Kamera OFF');
+}
+
+function gantKamera() {
+  facingMode = facingMode === 'user' ? 'environment' : 'user';
+  if (kameraOn) nyalakanKamera();
+  toast('🔄 Ganti ke kamera ' + (facingMode === 'user' ? 'depan' : 'belakang'));
+}
+
+function ambilFoto() {
+  const video  = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const foto   = document.getElementById('foto');
+  if (!kameraOn) { toast('❌ Nyalakan kamera dulu!'); return; }
+  canvas.width  = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  foto.src = canvas.toDataURL('image/jpeg', 0.85);
+  foto.style.display = 'block';
+  addLog('FOTO', ' snapshot panggung berhasil disimpan.');
+  toast('📸 Foto panggung disimpan!');
+}
+
+function lempar(emoji, nama, nilai, satuan) {
+  if (satuan === 'Rp NUR' && memberAktif.nur < nilai) { toast('❌ Saldo Rp NUR tidak mencukupi!'); return; }
+  if (satuan === 'GifNur' && memberAktif.gif < nilai) { toast('❌ Saldo GifNur tidak mencukupi!'); return; }
+  if (satuan === 'Voucher Nur' && memberAktif.vch < nilai) { toast('❌ Saldo Voucher tidak mencukupi!'); return; }
+  if (satuan === 'KARA' && memberAktif.kara < nilai) { toast('❌ Saldo KARA tidak mencukupi!'); return; }
+
+  const targets = document.querySelectorAll('.panggung-card:not(.aktif)');
+  if (targets.length === 0) { toast('Tidak ada target member lain di panggung!'); return; }
+  const target = targets[Math.floor(Math.random() * targets.length)];
+  const tR = target.getBoundingClientRect();
+  const bR = event.target.closest('.prop-btn').getBoundingClientRect();
+
+  const fly = document.createElement('div');
+  fly.className = 'prop-fly';
+  fly.textContent = emoji;
+  fly.style.left = (bR.left + bR.width/2) + 'px';
+  fly.style.top  = (bR.top + window.scrollY + bR.height/2) + 'px';
+  fly.style.setProperty('--tx', ((tR.left + tR.width/2)  - (bR.left + bR.width/2))  + 'px');
+  fly.style.setProperty('--ty', ((tR.top  + tR.height/2) - (bR.top  + bR.height/2)) + 'px');
+  document.body.appendChild(fly);
+  setTimeout(() => fly.remove(), 1400);
+
+  setTimeout(() => {
+    const hit = document.createElement('div');
+    hit.className = 'hit-fx';
+    hit.textContent = emoji;
+    hit.style.left = (tR.left + tR.width/2)  + 'px';
+    hit.style.top  = (tR.top  + tR.height/2) + 'px';
+    document.body.appendChild(hit);
+    setTimeout(() => hit.remove(), 750);
+  }, 1200);
+
+  if (satuan === 'Rp NUR') { memberAktif.nur -= nilai; } 
+  else if (satuan === 'GifNur') { memberAktif.gif -= nilai; } 
+  else if (satuan === 'Voucher Nur') { memberAktif.vch -= nilai; } 
+  else if (satuan === 'KARA') { memberAktif.kara -= nilai; }
+
+  updateTampilanSaldo();
+  addLog('PROPERTI', `${emoji} ${nama} dilemparkan · Beban −${nilai.toLocaleString('id')} ${satuan}`);
+  toast(`${emoji} ${nama} Sukses Dikirim!`);
+}
+
+function kirimChat() {
+  const input = document.getElementById('chatInput');
+  const msg   = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  addLog('CHAT', `${memberAktif.nama}: ${msg}`);
+  toast('💬 Pesan disiarkan ke panggung');
+}
+
+function addLog(tipe, pesan) {
+  const box  = document.getElementById('logBox');
+  const item = document.createElement('div');
+  item.className = 'log-item';
+  item.innerHTML = `<span>[${tipe}]</span> ${new Date().toLocaleTimeString('id')} — ${pesan}`;
+  box.appendChild(item);
+  box.scrollTop = box.scrollHeight;
+}
+
+function toast(pesan) {
+  const box = document.getElementById('toastBox');
+  const t   = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = pesan;
+  box.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+</script>
+</body>
+</html>
